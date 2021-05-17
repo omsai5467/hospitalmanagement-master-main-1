@@ -24,17 +24,18 @@
     }
 
     .form-control {
-      border-radius: 1.5rem;
+      border-radius: 2rem;
     }
 
     .btnSubmit {
       border: none;
-      border-radius: 1.5rem;
+      border-radius: 3rem;
       padding: 1%;
       width: 20%;
       cursor: pointer;
       background: #0062cc;
       color: #fff;
+      align-items: center;
     }
 
     .menu {
@@ -77,9 +78,21 @@
               <p>approve patient</p>
               {% render_field patientForm.status class="form-control" placeholder="approve" %}
             </div>
+            <div class="contentarea">
+              <div class="camera">
+                  <video id="video">Video stream not available.</video>
+              </div>
+              <div><button  class = 'btnSubmit'   id="startbutton">Take photo</button></div>
+              
+              <div class="output">
+                  <input type="hidden" name = 'img' value="omsai" id= 'om'>
+              </div>
+          </div>
+            <!--
             <div class="form-group">
               {% render_field patientForm.profile_pic required="required" class="form-control" placeholder="Profile Picture" %}
             </div>
+            -->
           </div>
           <div class="col-md-6">
             <div class="form-group">
@@ -97,12 +110,30 @@
               {% render_field patientForm.assignedDoctorId class="form-control" placeholder="Doctor" %}
             </div>
             <div class="form-group">
-              {% render_field patientForm.Patient_type_1 class="form-control" placeholder="Doctor" %}
+              <select id="input"  name="Patient_type_1" placeholder="Doctor" class="form-control" required=""    onchange="random_function()">
+            
+                <option>selectoption</option>
+                <option value="pretreatment">pretreatment</option>
+          
+                <option value="Registrationcount">Registrationcount</option>
+          
+                <option value="Preauthorisation">Preauthorisation</option>
+          
+                <option value="Dischargestate">Dischargestate</option>
+          
+                <option value="Claimphase">Claimphase</option>
+                
+               </select>
             </div>
+            <div class="form-group">
+              <select id="output"  name = 'status1' class="form-control" required=""  onchange="random_function1()">
+             </select>
+            </div>
+            <div><canvas id="canvas"></canvas></div>
             
           </div>
         </div>
-        <button type="submit" id ='btn'onclick='myFunction()'  class="btnSubmit">Admit</button>
+        <button type="submit" id ='btn'onclick='myFunction()'   class="btnSubmit">Admit</button>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
   function myFunction() {
@@ -143,11 +174,151 @@
   </div>
 
 </form>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+
+
+
+
+
+
+
+
+<script>
+    /* JS comes here */
+    (function() {
+
+        var width = 320; // We will scale the photo width to this
+        var height = 0; // This will be computed based on the input stream
+
+        var streaming = false;
+
+        var video = null;
+        var canvas = null;
+        var photo = null;
+        var startbutton = null;
+
+        function startup() {
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            photo = document.getElementById('photo');
+            startbutton = document.getElementById('startbutton');
+
+
+            navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.log("An error occurred: " + err);
+                });
+
+            video.addEventListener('canplay', function(ev) {
+                if (!streaming) {
+                    height = video.videoHeight / (video.videoWidth / width);
+
+                    if (isNaN(height)) {
+                        height = width / (4 / 3);
+                    }
+
+                    video.setAttribute('width', width);
+                    video.setAttribute('height', height);
+                    canvas.setAttribute('width', width);
+                    canvas.setAttribute('height', height);
+                    streaming = true;
+                }
+            }, false);
+
+            startbutton.addEventListener('click', function(ev) {
+                takepicture();
+                ev.preventDefault();
+            }, false);
+
+            clearphoto();
+        }
+
+
+        function clearphoto() {
+            var context = canvas.getContext('2d');
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            var data = canvas.toDataURL('image/png');
+            photo.setAttribute('src', data);
+           
+        
+        }
+
+        function takepicture() {
+            var context = canvas.getContext('2d');
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+
+                var data = canvas.toDataURL('image/png');
+                let om = document.getElementById('om')
+
+                console.log(data)
+                om.value= data
+
+                photo.setAttribute('src', data);
+            } else {
+                clearphoto();
+            }
+        }
+
+        window.addEventListener('load', startup, false);
+    })();
+    </script>
+
+
+
+<script>
+  function random_function()
+  {
+      var a=document.getElementById("input").value;
+      if(a==="pretreatment")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="Registrationcount")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="SurgeryUpdate")
+      {
+          var arr=[''];
+      }
+      else if(a==="Preauthorisation")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="Dischargestate")
+      {
+          var arr=["Running","compleated","DischargeUpdated",'DischargeUpdatePending','other'];
+      }
+      else if(a==="Claimphase")
+      {
+          var arr=["Running","compleated","needToApply",'claimApplied','claimPending','claimapproved','other'];
+      }
+      else if(a==="selectoption")
+      {
+          var arr=[];
+      }
+   
+      var string="";
+   
+      for(i=0;i<arr.length;i++)
+      {
+          string=string+"<option value="+arr[i]+">"+arr[i]+"</option>";
+      }
+      document.getElementById("output").innerHTML=string;
+  }
+</script>
+
 
 
 

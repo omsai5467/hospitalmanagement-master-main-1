@@ -21,6 +21,47 @@ Patient_type = [
 ]
 
 
+
+Patient = [
+    ('approved','approved'),
+    ('pending','pending'),
+    ('approvedExcept','approvedExcept'),
+    ('other','other'),
+    ('caseStartedWithoutApproval','caseStartedWithoutApproval'),
+    ('Running','Running'),
+    ('compleated','compleated'),
+    ('DischargeUpdated','DischargeUpdated'),
+    ('DischargeUpdatePending','DischargeUpdatePending'),
+    ('needToApply','needToApply'),
+    ('claimApplied','claimApplied'),
+    ('claimPending','claimPending'),
+    ('claimapproved','claimapproved'),
+]
+status = [
+    ('approved','approved'),
+    ('pending','pending'),
+    ('approvedExcept','approvedExcept'),
+    ('other','other'),
+    ('caseStartedWithoutApproval','caseStartedWithoutApproval'),
+    ('Running','Running'),
+    ('compleated','compleated'),
+    ('DischargeUpdated','DischargeUpdated'),
+    ('DischargeUpdatePending','DischargeUpdatePending'),
+    ('needToApply','needToApply'),
+    ('claimApplied','claimApplied'),
+    ('claimPending','claimPending'),
+    ('claimapproved','claimapproved')
+
+
+]
+
+
+
+
+
+
+
+
 class Doctor(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     profile_pic= models.ImageField(upload_to='profile_pic/DoctorProfilePic/',null=True,blank=True)
@@ -39,6 +80,9 @@ class Doctor(models.Model):
 
 
 
+
+
+
 class Patient(models.Model):
     #user=models.OneToOneField(User,on_delete=models.CASCADE)
     profile_pic= models.ImageField(upload_to='profile_pic/PatientProfilePic/',null=True,blank=True)
@@ -51,11 +95,14 @@ class Patient(models.Model):
     admitDate=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now=True)
     status=models.BooleanField(default=False)
-    Patient_type_1  = models.CharField(max_length=50,choices=Patient_type,default='doctor')
+    Patient_type_1  = models.CharField(max_length=50,choices=Patient_type)
     test1 = models.ImageField(upload_to='testphotos/test1/', null=True,blank=True)
     test2 = models.ImageField(upload_to='testphotos/test2/', null=True,blank=True)
     discription =  models.CharField(max_length=100,null=False)
     discription1 =  models.CharField(max_length=100,null=False)
+    status1  = models.CharField(max_length=50,choices=Patient)
+
+    
     
    
     def __str__(self):
@@ -99,4 +146,7 @@ class PatientDischargeDetails(models.Model):
 
 
 class test(models.Model):
-    pass
+    Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+    test = models.CharField(max_length=100)
+    def __str__():
+        pass

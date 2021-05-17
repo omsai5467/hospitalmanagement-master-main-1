@@ -150,12 +150,12 @@ def admin_dashboard_view(request):
 
     appointmentcount=models.Appointment.objects.all().filter(status=True).count()
     pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
-    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
-    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
-    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
-    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
-    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
-    print(pretreatment)
+    #pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    #Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    #Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    #Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    #Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
+    #print(pretreatment)
 
     mydict={
     'doctors':doctors,
@@ -342,6 +342,7 @@ def update_patient_view(request,pk):
     return render(request,'hospital/admin_update_patient.html',context=mydict)
 
 
+import base64
 
 
 import os
@@ -352,33 +353,77 @@ def admin_add_patient_view(request):
     patientForm=forms.PatientForm()
     mydict={'patientForm':patientForm}
     if request.method=='POST':
+        img  = request.POST['img']
+        a = img[22:]
+        # imgdata = base64.b64decode(a)
+        # filename = 'some_image.jpg'  # I assume you have a way of picking unique filenames
+        # with open(filename, 'wb') as f:
+        #     f.write(imgdata)
+
+
+   
+
+
+        
         first_name = request.POST['first_name']
         address = request.POST['address']
         symptoms = request.POST['symptoms']
         status = request.POST['status']
-        profile_pic = request.POST['profile_pic']
+        
         assignedDoctorId = request.POST['assignedDoctorId']
-        
-        
         #patient.assignedDoctorId=request.POST.get('assignedDoctorId')
         last_name = request.POST['last_name']
         mobile = request.POST['mobile']
         Patient_type_1 = request.POST['Patient_type_1']
+        status1 = request.POST['status1']
+        import base64, secrets, io
+        from PIL import Image
+        from django.core.files.base import ContentFile
+        _format, _dataurl       = img.split(';base64,')
+        _filename, _extension   = secrets.token_hex(20), _format.split('/')[-1]
+
+        file = ContentFile( base64.b64decode(_dataurl), name=f"{_filename}.{_extension}")
         
+        from PIL import Image, ImageDraw
+        from PIL import Image, ImageDraw, ImageFont
+
+        image = Image.open(file)
+        width, height = image.size 
+        draw = ImageDraw.Draw(image)
+        text = 'https://devnote.in'
+        textwidth, textheight = draw.textsize(text)
+        margin = 10
+        x = width - textwidth - margin
+        y = height - textheight - margin
+
+        draw.text((x, y), text)
+
+        image.save('devnote.png')
+        image = Image.open('devnote.png')
+        im = open('devnote.png','rb')
+        str=  base64.b64encode(im.read())
+        modImage = ContentFile( base64.b64decode(str), name=f"{_filename}.{_extension}")
+        
+        # import os
+        # os.remove('devnote.png')       
+        #img2 = ContentFile(img1.save('om.jpg'), name=f"{_filename}.{_extension}")
         p = models.Patient.objects.get_or_create(
             first_name =first_name,
             address = address,
             symptoms =symptoms,
             status ='True',
-            profile_pic = profile_pic,
+            profile_pic = modImage,
             last_name =last_name,
             mobile = mobile,
-            Patient_type_1 = Patient_type_1,
-            test1 = profile_pic,
-            test2 = profile_pic,
-            discription = 'default',
-            discription1='default',
-            assignedDoctorId = assignedDoctorId    
+            Patient_type_1 =Patient_type_1,
+            
+        
+            
+        
+            assignedDoctorId = assignedDoctorId,
+            status1= status1
+           
+
                                                           )
         print('oms')
 

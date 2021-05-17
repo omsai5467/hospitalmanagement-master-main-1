@@ -16,3 +16,4 @@ admin.site.register(Appointment, AppointmentAdmin)
 class PatientDischargeDetailsAdmin(admin.ModelAdmin):
     pass
 admin.site.register(PatientDischargeDetails, PatientDischargeDetailsAdmin)
+

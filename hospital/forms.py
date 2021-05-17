@@ -38,7 +38,7 @@ class PatientForm(forms.ModelForm):
     assignedDoctorId=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Name and Department", to_field_name="user_id")
     class Meta:
         model=models.Patient
-        fields=['first_name','last_name','address','mobile','status','symptoms','profile_pic','Patient_type_1','test1','test2','discription','discription1' ]
+        fields=['first_name','last_name','address','mobile','status','symptoms','profile_pic','test1','test2','discription','discription1', 'Patient_type_1','status1']
 
 class testForm(forms.ModelForm):
     class meta :
@@ -68,6 +68,3 @@ class ContactusForm(forms.Form):
 
 
 
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders

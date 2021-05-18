@@ -52,15 +52,14 @@
         </thead>
         {% for p in patients %}
         <tr>
-          <td> {{p.get_name}}</td>
+          <td> {{p.first_name}}</td>
           <td>{{p.symptoms}}</td>
           <td>{{p.mobile}}</td>
           <td>{{p.address}}</td>
-          {%if p.status%}
-          <td> <span class="label label-primary">Admitted</span></td>
-          {% else %}
-          <td> <span class="label label-success">On Hold</span></td>
-          {% endif %}
+          
+          <td> <span class="label label-primary">{{p.status1}}</span></td>
+          <td><a class="btn btn-primary btn-xs" href="{% url 'test-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
+          
 
         </tr>
         {% endfor %}

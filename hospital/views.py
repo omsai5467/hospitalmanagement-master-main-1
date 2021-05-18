@@ -150,12 +150,12 @@ def admin_dashboard_view(request):
 
     appointmentcount=models.Appointment.objects.all().filter(status=True).count()
     pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
-    #pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
-    #Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
-    #Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
-    #Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
-    #Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
-    #print(pretreatment)
+    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
+    print(pretreatment)
 
     mydict={
     'doctors':doctors,
@@ -359,6 +359,10 @@ def admin_add_patient_view(request):
         # filename = 'some_image.jpg'  # I assume you have a way of picking unique filenames
         # with open(filename, 'wb') as f:
         #     f.write(imgdata)
+        from datetime import datetime
+        now = str(datetime.now())
+
+        print(now)
 
 
    
@@ -390,8 +394,8 @@ def admin_add_patient_view(request):
         image = Image.open(file)
         width, height = image.size 
         draw = ImageDraw.Draw(image)
-        text = 'https://devnote.in'
-        textwidth, textheight = draw.textsize(text)
+        text = now
+        textwidth, textheight = draw.textsize(now)
         margin = 10
         x = width - textwidth - margin
         y = height - textheight - margin
@@ -401,8 +405,8 @@ def admin_add_patient_view(request):
         image.save('devnote.png')
         image = Image.open('devnote.png')
         im = open('devnote.png','rb')
-        str=  base64.b64encode(im.read())
-        modImage = ContentFile( base64.b64decode(str), name=f"{_filename}.{_extension}")
+        str1=  base64.b64encode(im.read())
+        modImage = ContentFile( base64.b64decode(str1), name=f"{_filename}.{_extension}")
         
         # import os
         # os.remove('devnote.png')       
@@ -984,49 +988,230 @@ def contactus_view(request):
 
 
 def pretreatment(request):
+    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    doctors=models.Doctor.objects.all().order_by('-id')
+    patients=models.Patient.objects.all().order_by('-id')
+    #for three cards
+    doctorcount=models.Doctor.objects.all().filter(status=True).count()
+    pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+
+    patientcount=models.Patient.objects.all().filter(status=True).count()
+    pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
+
+    appointmentcount=models.Appointment.objects.all().filter(status=True).count()
+    pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
     patients = models.Patient.objects.all().filter(Patient_type_1='pretreatment')
+    mydict={
+    'doctors':doctors,
+    'patients':patients,
+    'doctorcount':doctorcount,
+    'pendingdoctorcount':pendingdoctorcount,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    'pretreatment':pretreatment,
+    'Registrationcount':Registrationcount,
+    'Preauthorisation':Preauthorisation,
+    'Dischargestate':Dischargestate,
+    'Claimphase':Claimphase,
+    'patients':patients
+    #context=mydict
+    }
 
     
 
-    return render(request,'hospital/pretreatment.html',{'patients':patients})
+    return render(request,'hospital/pretreatment.html',context=mydict)
 
 def Registrationcount(request):
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Registrationcount')
-    return render(request,'hospital/Registrationcount.html',{'patients':patients})
+    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    doctors=models.Doctor.objects.all().order_by('-id')
+    patients1=models.Patient.objects.all().order_by('-id')
+    #for three cards
+    doctorcount=models.Doctor.objects.all().filter(status=True).count()
+    pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+
+    patientcount=models.Patient.objects.all().filter(status=True).count()
+    pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
+
+    appointmentcount=models.Appointment.objects.all().filter(status=True).count()
+    pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
+    patients2 = models.Patient.objects.all().filter(Patient_type_1='pretreatment')
+    mydict={
+    'doctors':doctors,
+    'patients':patients,
+    'doctorcount':doctorcount,
+    'pendingdoctorcount':pendingdoctorcount,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    'pretreatment':pretreatment,
+    'Registrationcount':Registrationcount,
+    'Preauthorisation':Preauthorisation,
+    'Dischargestate':Dischargestate,
+    'Claimphase':Claimphase,
+
+    #context=mydict
+    }
+
+    return render(request,'hospital/Registrationcount.html',context=mydict)
 
 def Preauthorisation(request):
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation')
-    return render(request,'hospital/Preauthorisation.html',{'patients':patients})
+    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    doctors=models.Doctor.objects.all().order_by('-id')
+    patients1=models.Patient.objects.all().order_by('-id')
+    #for three cards
+    doctorcount=models.Doctor.objects.all().filter(status=True).count()
+    pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+
+    patientcount=models.Patient.objects.all().filter(status=True).count()
+    pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
+
+    appointmentcount=models.Appointment.objects.all().filter(status=True).count()
+    pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
+    patients2 = models.Patient.objects.all().filter(Patient_type_1='pretreatment')
+    mydict={
+    'doctors':doctors,
+    'patients':patients,
+    
+    'doctorcount':doctorcount,
+    'pendingdoctorcount':pendingdoctorcount,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    'pretreatment':pretreatment,
+    'Registrationcount':Registrationcount,
+    'Preauthorisation':Preauthorisation,
+    'Dischargestate':Dischargestate,
+    'Claimphase':Claimphase,
+    
+    #context=mydict
+    }
+    return render(request,'hospital/Preauthorisation.html',context=mydict)
 
 def Dischargestate(request):
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Dischargestate')
-    return render(request,'hospital/Dischargestate.html',{'patients':patients})    
+    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    doctors=models.Doctor.objects.all().order_by('-id')
+    patients1=models.Patient.objects.all().order_by('-id')
+    #for three cards
+    doctorcount=models.Doctor.objects.all().filter(status=True).count()
+    pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+
+    patientcount=models.Patient.objects.all().filter(status=True).count()
+    pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
+
+    appointmentcount=models.Appointment.objects.all().filter(status=True).count()
+    pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
+    mydict={
+    'doctors':doctors,
+    
+    'doctorcount':doctorcount,
+    'pendingdoctorcount':pendingdoctorcount,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    'pretreatment':pretreatment,
+    'Registrationcount':Registrationcount,
+    'Preauthorisation':Preauthorisation,
+    'Dischargestate':Dischargestate,
+    'Claimphase':Claimphase,
+    'patients':patients
+    #context=mydict
+    }
+    
+    return render(request,'hospital/Dischargestate.html',context=mydict)  
 
 def Claimphase(request):
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Claimphase')
-    return render(request,'hospital/Claimphase.html',{'patients':patients}) 
+    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    doctors=models.Doctor.objects.all().order_by('-id')
+    patients1=models.Patient.objects.all().order_by('-id')
+    #for three cards
+    doctorcount=models.Doctor.objects.all().filter(status=True).count()
+    pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+
+    patientcount=models.Patient.objects.all().filter(status=True).count()
+    pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
+
+    appointmentcount=models.Appointment.objects.all().filter(status=True).count()
+    pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
+
+    mydict={
+    'doctors':doctors,
+    
+    'doctorcount':doctorcount,
+    'pendingdoctorcount':pendingdoctorcount,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    'pretreatment':pretreatment,
+    'Registrationcount':Registrationcount,
+    'Preauthorisation':Preauthorisation,
+    'Dischargestate':Dischargestate,
+    'Claimphase':Claimphase,
+    'patients':patients
+    #context=mydict
+    }
+    return render(request,'hospital/Claimphase.html',context=mydict)
 #---------------------------------------------------------------------------------
 #------------------------ ADMIN RELATED VIEWS END ------------------------------
 #---------------------------------------------------------------------------------
 
 
 
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
+
 def test(request,pk):
 
     patient=models.Patient.objects.get(id=pk)
-    #user=models.User.objects.get(id=patient.user_id)
-
-    #userForm=forms.PatientUserForm(instance=user)
+    
     patientForm=forms.PatientForm(instance=patient)
+  #  Patient_type_1=Claimphase&status1=compleated
     mydict={'patientForm':patientForm,'patient':patient}
     if request.method=='POST':
+        patient=models.Patient.objects.get(id=pk)
+        Patient_type = request.POST['Patient_type_1']
+        status1 = request.POST['status1']
+        #        p = models.Patient.objects.get_or_create(
+
+        #p = models.Patient.objects.update_or_create(id=pk,Patient_type_1=Patient_type,status1=status1)
+        patient.Patient_type_1 = Patient_type
+        patient.status1 = status1
+        patient.save()
+        print(Patient_type)
+        return redirect('admin-dashboard')
+
+
         #userForm=forms.PatientUserForm(request.POST,instance=user)
         patientForm=forms.PatientForm(request.POST,instance=patient)
         if   patientForm.is_valid():
@@ -1040,3 +1225,10 @@ def test(request,pk):
             patient.save()
             return redirect('admin-view-patient')
     return render(request,'hospital/test1.html',context=mydict)
+
+
+
+
+
+def update(request,pk):
+    pass

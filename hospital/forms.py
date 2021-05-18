@@ -38,12 +38,13 @@ class PatientForm(forms.ModelForm):
     assignedDoctorId=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Name and Department", to_field_name="user_id")
     class Meta:
         model=models.Patient
+        #fields = ['Patient_type_1','status1']
         fields=['first_name','last_name','address','mobile','status','symptoms','profile_pic','test1','test2','discription','discription1', 'Patient_type_1','status1']
 
 class testForm(forms.ModelForm):
     class meta :
         model = models.Patient
-        fields = ['test1','test2','discription','discription1']
+        fields = ['Patient_type_1','status1']
 
 class AppointmentForm(forms.ModelForm):
     doctorId=forms.ModelChoiceField(queryset=models.Doctor.objects.all().filter(status=True),empty_label="Doctor Name and Department", to_field_name="user_id")

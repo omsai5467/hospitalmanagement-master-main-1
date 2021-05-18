@@ -60,7 +60,7 @@
           <div class="col-md-6">
             <div class="form-group">
                 <h2>PATIENT NAME :  {{patient.first_name}} </h2>
-                <select id="input"  name="Patient_type_1" placeholder="Doctor" class="form-control" required=""    onchange="random_function()">
+                <select id="input"  name="Patient_type_1" placeholder="Doctor" class="form-control" required=""    onclick="random_function()">
             
                   <option>selectoption</option>
                   <option value="pretreatment"  {% if patient.Patient_type_1 == "pretreatment" %}selected="selected"{% endif %} >pretreatment</option>

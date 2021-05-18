@@ -60,21 +60,30 @@
           <div class="col-md-6">
             <div class="form-group">
                 <h2>PATIENT NAME :  {{patient.first_name}} </h2>
-                <p style="text-align:left"> test1 photos</p>
-                {% render_field patientForm.test1 class="form-control" placeholder="Doctor" %}
+                <select id="input"  name="Patient_type_1" placeholder="Doctor" class="form-control" required=""    onchange="random_function()">
+            
+                  <option>selectoption</option>
+                  <option value="pretreatment"  {% if patient.Patient_type_1 == "pretreatment" %}selected="selected"{% endif %} >pretreatment</option>
+            
+                  <option value="Registrationcount"   {% if patient.Patient_type_1 == "Registrationcount" %}selected="selected"{% endif %} >Registrationcount</option>
+            
+                  <option value="Preauthorisation" {% if patient.Patient_type_1 == "Preauthorisation" %}selected="selected"{% endif %} >Preauthorisation</option>
+            
+                  <option value="Dischargestate" {% if patient.Patient_type_1 == "Dischargestate" %}selected="selected"{% endif %} >Dischargestate</option>
+            
+                  <option value="Claimphase" {% if patient.Patient_type_1 == "Claimphase" %}selected="selected"{% endif %} >Claimphase</option>
+                  
+              </select>
+               
               </div>
               <div class="form-group">
-                
-              {% render_field patientForm.discription class="form-control" placeholder="enter test discription" %}
-            </div>
-              
-              
+                <select id="output"  name = 'status1' class="form-control" required=""  onchange="random_function1()">
+                  <option  >{{patient.status1}}</option>
 
-              <div class="form-group">
+                </select>
                 
-              {% render_field patientForm.discription_1 class="form-control" placeholder="enter test 2 details" %}
-            </div>
-             
+              </div
+            
 
 
            
@@ -82,48 +91,61 @@
            
             
           </div>
-          <div class="col-md-6">
-           
-            
-            
-            
-            
-            <h3> PHONE NUMBER : {{ patient.mobile}}</h3>
 
-            <style>
-                h3{
-                    margin-top: 0.40em;
-                    margin-bottom: 0.60em;
-
-
-
-                }
-            </style>
-
-
-<div class="form-group">
-    <p style="text-align:left">test 2 photos</p>
-  {% render_field patientForm.test2 class="form-control" placeholder="Doctor" %}
-</div>
-            <div class="form-group">
-                <p>discriprition</p>
-                
-                {% render_field patientForm.discription1 class="form-control" placeholder="enter test 3 details" %}
-              </div>
-            
-          
-           
-          </div>
-        </div>
+        
         <button type="submit" class="btnSubmit">Update</button>
       </div>
     </div>
   </div>
 </form>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+
+
+
+
+
+
+
+<script>
+  function random_function()
+  {
+      var a=document.getElementById("input").value;
+      if(a==="pretreatment")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="Registrationcount")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="SurgeryUpdate")
+      {
+          var arr=[''];
+      }
+      else if(a==="Preauthorisation")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="Dischargestate")
+      {
+          var arr=["Running","compleated","DischargeUpdated",'DischargeUpdatePending','other'];
+      }
+      else if(a==="Claimphase")
+      {
+          var arr=["Running","compleated","needToApply",'claimApplied','claimPending','claimapproved','other'];
+      }
+      else if(a==="selectoption")
+      {
+          var arr=[];
+      }
+   
+      var string="";
+   
+      for(i=0;i<arr.length;i++)
+      {
+          string=string+"<option value="+arr[i]+">"+arr[i]+"</option>";
+      }
+      document.getElementById("output").innerHTML=string;
+  }
+</script>
 
 {% endblock content %}

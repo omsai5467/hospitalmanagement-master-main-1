@@ -1,3 +1,5 @@
+import turtledemo
+
 from django.shortcuts import render,redirect,reverse
 from . import forms,models
 from django.db.models import Sum
@@ -1227,8 +1229,6 @@ def test(request,pk):
     return render(request,'hospital/test1.html',context=mydict)
 
 
-
-
-
-def update(request,pk):
+def update(request, pk):
     pass
+# added python 3.9 dashboard update

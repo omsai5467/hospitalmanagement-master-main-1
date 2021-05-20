@@ -1211,6 +1211,8 @@ def test(request,pk):
         patient.status1 = status1
         patient.save()
         print(Patient_type)
+        # for i in range(20):
+
         return redirect('admin-dashboard')
 
 

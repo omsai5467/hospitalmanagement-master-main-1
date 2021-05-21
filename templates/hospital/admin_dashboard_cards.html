@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  {% load static %}
 
 <head>
   <meta charset="utf-8">
@@ -143,6 +144,13 @@
 </head>
 
 <body>
+  <div>
+    <form action="search" method="post">
+      {% csrf_token %}
+    <input type="text" placeholder="enter id of the patient" name = 'id' align = 'right'>
+    <button type="submit"  align="right">search</button>
+     </form>
+  </div>
   <div class="row" style="border:0.2px solid red">
     <div class="col-xs-2 col-half-offset">
       <div class="market-update-block clr-block-1">

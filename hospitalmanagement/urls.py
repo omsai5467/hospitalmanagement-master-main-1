@@ -5,6 +5,7 @@
 
 from django.contrib import admin
 from django.urls import path
+from django.urls.resolvers import _PATH_PARAMETER_COMPONENT_RE
 from hospital import views
 from django.contrib.auth.views import LoginView,LogoutView
 
@@ -17,6 +18,7 @@ urlpatterns = [
 
     path('aboutus', views.aboutus_view),
     path('contactus', views.contactus_view),
+    path('search', views.search),
 
 
     path('adminclick', views.adminclick_view),

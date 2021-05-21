@@ -42,6 +42,7 @@
       <table class="table table-hover" id="dev-table">
         <thead>
           <tr>
+            <th>id</th>
             <th>Name</th>
             <th>Symptoms</th>
             <th>Mobile</th>
@@ -52,6 +53,7 @@
         </thead>
         {% for p in patients %}
         <tr>
+          <td>{{p.id}}</td>
           <td> {{p.first_name}}</td>
           <td>{{p.symptoms}}</td>
           <td>{{p.mobile}}</td>

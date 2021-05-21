@@ -571,6 +571,11 @@ def discharge_patient_view(request,pk):
         pDD.OtherCharge=int(request.POST['OtherCharge'])
         pDD.total=(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
         pDD.save()
+    # patient=models.Patient.objects.get(id=pk)
+        patient.delete()
+        print('patient deleted')
+        
+
         return render(request,'hospital/patient_final_bill.html',context=patientDict)
     return render(request,'hospital/patient_generate_bill.html',context=patientDict)
 
@@ -645,7 +650,7 @@ def admin_add_appointment_view(request):
             appointment.patientId=request.POST.get('patientId')
             appointment.doctorName=models.User.objects.get(id=request.POST.get('doctorId')).first_name
             appointment.patientName=models.User.objects.get(id=request.POST.get('patientId')).first_name
-            appointment.status=True
+            appointment.status=False
             appointment.save()
         return HttpResponseRedirect('admin-view-appointment')
     return render(request,'hospital/admin_add_appointment.html',context=mydict)
@@ -1235,3 +1240,7 @@ def update(request, pk):
     pass
 # added python 3.9 dashboard update
 #addddd
+def search(request):
+    search = request.POST['id']
+    p = models.Patient.objects.get(id=search)
+    return render(request,'hospital/search.html',{'p':p})

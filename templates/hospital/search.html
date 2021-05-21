@@ -44,7 +44,7 @@
           <th>Delete</th>
         </tr>
       </thead>
-      {% for p in patients %}
+      
       <tr>
         <td>{{p.id}}</td>
         <td> {{p.first_name }}</td>
@@ -56,13 +56,13 @@
         <td>{{p.symptoms}}</td>
         <td>{{p.mobile}}</td>
         <td>{{p.address}}</td>
-        <td><a class="btn btn-primary btn-xs" href="{% url 'update-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
+        <!-- <td><a class="btn btn-primary btn-xs" href="{% url 'update-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
         <td><a class="btn btn-danger btn-xs" href="{% url 'delete-patient-from-hospital' p.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
         <td><a class="btn btn-primary btn-xs" href="{% url 'test-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
-        
+         -->
         
       </tr>
-      {% endfor %}
+      
     </table>
   </div>
 </div>

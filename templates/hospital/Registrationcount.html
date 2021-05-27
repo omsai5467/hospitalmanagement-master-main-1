@@ -16,6 +16,7 @@
             <th>Department</th>
             <th>Mobile</th>
             <th>Status</th>
+            <th>images</th>
 
           </tr>
         </thead>
@@ -62,7 +63,7 @@
          
           <td> <span class="label label-primary">{{p.status1}}</span></td>
           <td><a class="btn btn-primary btn-xs" href="{% url 'test-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
-
+          <td><a class="btn btn-primary btn-xs" href="{% url 'test' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
          
         </tr>
         {% endfor %}

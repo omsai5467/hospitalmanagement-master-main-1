@@ -98,8 +98,12 @@ class Patient(models.Model):
     Patient_type_1  = models.CharField(max_length=50,choices=Patient_type)
     test1 = models.ImageField(upload_to='testphotos/test1/', null=True,blank=True)
     test2 = models.ImageField(upload_to='testphotos/test2/', null=True,blank=True)
-    discription =  models.CharField(max_length=100,null=False)
-    discription1 =  models.CharField(max_length=100,null=False)
+    test_3 = models.ImageField(upload_to='testphotos/test3',null=True,blank=True)
+    test_4 = models.ImageField(upload_to='testphotos/test4',null=True,blank=True)
+    discription =  models.CharField(max_length=500,null=False)
+    discription1 =  models.CharField(max_length=500,null=False)
+    discription3 =  models.CharField(max_length=500,null=False)
+    discription4 =  models.CharField(max_length=500,null=False)
     status1  = models.CharField(max_length=50,choices=Patient)
 
     
@@ -128,6 +132,7 @@ class PatientDischargeDetails(models.Model):
     address = models.CharField(max_length=40)
     mobile = models.CharField(max_length=20,null=True)
     symptoms = models.CharField(max_length=100,null=True)
+    profile_pic= models.ImageField(upload_to='profile_pic/dicharge/',null=True,blank=True)
 
     admitDate=models.DateField(null=False)
     releaseDate=models.DateField(null=False)

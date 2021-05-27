@@ -57,6 +57,12 @@ urlpatterns = [
     path('delete-patient-from-hospital/<int:pk>', views.delete_patient_from_hospital_view,name='delete-patient-from-hospital'),
     path('update-patient/<int:pk>', views.update_patient_view,name='update-patient'),
     path('test-patient/<int:pk>',views.test , name = 'test-patient'),
+    # path('test1-patient/<int:pk>',views.folders , name = 'test-patient'),
+    path('test/<int:pk>',views.folders , name = 'test'),
+    path('test/images1', views.images1 , name = 'images1'),
+    path('test/images2', views.images2 , name = 'images2'),
+    path('test/images3', views.images3 , name = 'images3'),
+    path('test/images4', views.images4 , name = 'images4'),
     
     
     path('admin-add-patient', views.admin_add_patient_view,name='admin-add-patient'),
@@ -80,7 +86,13 @@ urlpatterns = [
     path('Preauthorisation', views.Preauthorisation),
     path('Dischargestate', views.Dischargestate),
     path('Claimphase', views.Claimphase),
-    path('admin_add_patient_view',views.admin_add_patient_view)
+    path('admin_add_patient_view',views.admin_add_patient_view),
+    path('testpatient',views.test_patient,name='testpatient'),
+    path('testingpatient/<int:pk>',views.testing_patient,name='testingpatient'),
+    path('testingpatient/upload_test',views.upload_test,name='upload_test'),
+    
+    
+    
     
 ]
 

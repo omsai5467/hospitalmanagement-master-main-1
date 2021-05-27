@@ -48,7 +48,7 @@
 </head>
 <br><br>
 <!------ update page for doctor by admin(sumit)  ---------->
-<form method="post" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="container register-form">
     <div class="form">
@@ -72,15 +72,9 @@
             <div class="form-group">
               {% render_field patientForm.symptoms class="form-control" placeholder="Symptoms" %}
             </div>
-            <div class="form-group">
-              {% render_field patientForm.profile_pic class="form-control" placeholder="Profile Picture" %}
-            </div>
-            <div class="form-group">
-              {% render_field patientForm.test1 class="form-control" placeholder="Profile Picture" %}
-            </div>
-            <div class="form-group">
-              {% render_field patientForm.discription class="form-control" placeholder="Profile Picture" %}
-            </div>
+            
+           
+            
           </div>
           <div class="col-md-6">
             <div class="form-group">
@@ -93,28 +87,10 @@
             <div class="form-group">
               {% render_field patientForm.mobile class="form-control" placeholder="Mobile" %}
             </div>
-            <div class="form-group">
-              {% render_field patientForm.assignedDoctorId class="form-control" placeholder="Doctor" %}
-            </div>
-            <div class="form-group">
-              {% render_field patientForm.Patient_type_1 class="form-control" placeholder="Doctor" %}
-            </div>
-            <div class="form-group">
-              {% render_field patientForm.test_1 class="form-control" placeholder="Doctor" %}
-            </div>
-            <div class="form-group">
-              {% render_field patientForm.test_2 class="form-control" placeholder="Doctor" %}
-            </div>
-            <div class="form-group">
-              {% render_field patientForm.test_3 class="form-control" placeholder="Doctor" %}
-            </div>
-            <div class="form-group">
-              {% render_field patientForm.test2 class="form-control" placeholder="Doctor" %}
-            </div>
-            <div class="form-group">
-              {% render_field patientForm.discription1 class="form-control" placeholder="Doctor" %}
-            </div>
             
+           
+            
+           
           
            
           </div>

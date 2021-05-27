@@ -1,6 +1,9 @@
 {% extends 'hospital/admin_base.html' %}
 {% load widget_tweaks %}
 {% block content %}
+{% load static %}
+<link  href="{%static 'dist\cropper.css'%}" rel="stylesheet">
+<script src="{% static '\dist\cropper.js'%}"></script>
 
 <head>
   <style media="screen">
@@ -42,7 +45,54 @@
       top: 50px;
     }
   </style>
-
+    <style>
+      /* CSS comes here */
+      #video {
+          border: 1px solid black;
+          width: 320px;
+          height: 240px;
+      }
+  
+      #photo {
+          border: 1px solid black;
+          width: 320px;
+          height: 240px;
+      }
+  
+      #canvas {
+          display: none;
+      }
+  
+      .camera {
+          width: 340px;
+          display: inline-block;
+      }
+  
+      .output {
+          width: 340px;
+          display: inline-block;
+      }
+  
+      #startbutton {
+          display: block;
+          position: relative;
+          margin-left: auto;
+          margin-right: auto;
+          bottom: 36px;
+          padding: 5px;
+          background-color: #6a67ce;
+          border: 1px solid rgba(255, 255, 255, 0.7);
+          font-size: 14px;
+          color: rgba(255, 255, 255, 1.0);
+          cursor: pointer;
+      }
+  
+      .contentarea {
+          font-size: 16px;
+          font-family: Arial;
+          text-align: center;
+      } 
+      </style>
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -85,7 +135,7 @@
               <div><button  class = 'btnSubmit'   id="startbutton">Take photo</button></div>
               
               <div class="output">
-                  <input type="hidden" name = 'img' value="omsai" id= 'om'>
+                  <input type="text" name = 'img' value="omsai" id= 'om'>
               </div>
           </div>
             <!--
@@ -130,12 +180,15 @@
              </select>
             </div>
             <div><canvas id="canvas"></canvas></div>
+            <div class="output">
+            <img id="image" alt="The screen capture will appear in this box."     >
+            </div>
             
           </div>
         </div>
         <button type="submit" id ='btn'onclick='myFunction()'   class="btnSubmit">Admit</button>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
+<!-- <script>
   function myFunction() {
     
     var a = 'saved'
@@ -165,7 +218,7 @@
 
 
 
-</script>
+</script> -->
         
 
         
@@ -175,104 +228,129 @@
 
 </form>
 
-
-
-
-
-
-
-
 <script>
-    /* JS comes here */
-    (function() {
+  /* JS comes here */
+  (function() {
 
-        var width = 320; // We will scale the photo width to this
-        var height = 0; // This will be computed based on the input stream
+      var width = 320; // We will scale the photo width to this
+      var height = 0; // This will be computed based on the input stream
 
-        var streaming = false;
+      var streaming = false;
 
-        var video = null;
-        var canvas = null;
-        var photo = null;
-        var startbutton = null;
+      var video = null;
+      var canvas = null;
+      var photo = null;
+      var startbutton = null;
 
-        function startup() {
-            video = document.getElementById('video');
-            canvas = document.getElementById('canvas');
-            photo = document.getElementById('photo');
-            startbutton = document.getElementById('startbutton');
+      function startup() {
+          video = document.getElementById('video');
+          canvas = document.getElementById('canvas');
+          photo = document.getElementById('image');
+          startbutton = document.getElementById('startbutton');
+          value = document.getElementById('om')
+
+          navigator.mediaDevices.getUserMedia({
+                  video: true,
+                  audio: false
+              })
+              .then(function(stream) {
+                  video.srcObject = stream;
+                  video.play();
+              })
+              .catch(function(err) {
+                  console.log("An error occurred: " + err);
+              });
+
+          video.addEventListener('canplay', function(ev) {
+              if (!streaming) {
+                  height = video.videoHeight / (video.videoWidth / width);
+
+                  if (isNaN(height)) {
+                      height = width / (4 / 3);
+                  }
+
+                  video.setAttribute('width', width);
+                  video.setAttribute('height', height);
+                  photo.setAttribute('width', width);
+                  photo.setAttribute('height', height);
+                  streaming = true;
+              }
+          }, false);
+
+          startbutton.addEventListener('click', function(ev) {
+              takepicture();
+              ev.preventDefault();
+          }, false);
+
+          clearphoto();
+      }
 
 
-            navigator.mediaDevices.getUserMedia({
-                    video: true,
-                    audio: false
-                })
-                .then(function(stream) {
-                    video.srcObject = stream;
-                    video.play();
-                })
-                .catch(function(err) {
-                    console.log("An error occurred: " + err);
-                });
+      function clearphoto() {
+          var context = canvas.getContext('2d');
+          context.fillStyle = "#AAA";
+          context.fillRect(0, 0, canvas.width, canvas.height);
 
-            video.addEventListener('canplay', function(ev) {
-                if (!streaming) {
-                    height = video.videoHeight / (video.videoWidth / width);
+          var data = canvas.toDataURL('image/png');
+          photo.setAttribute('src', data);
+      }
 
-                    if (isNaN(height)) {
-                        height = width / (4 / 3);
-                    }
+      function takepicture() {
+          var context = canvas.getContext('2d');
+          if (width && height) {
+              canvas.width = width;
+              canvas.height = height;
+              context.drawImage(video, 0, 0, width, height);
 
-                    video.setAttribute('width', width);
-                    video.setAttribute('height', height);
-                    canvas.setAttribute('width', width);
-                    canvas.setAttribute('height', height);
-                    streaming = true;
-                }
-            }, false);
+              var data = canvas.toDataURL('image/png');
+              // console.log(data)
+              photo.setAttribute('src', data);
+              const image = document.getElementById('image');
+              const cropper = new Cropper(image, {
+              aspectRatio:  10/ 9,
+              crop(event) {
+                  Cropper.zoomOnWheel = false;
+                  // cropper.rotate(90);
+                  // console.log(event.detail.x);
+                  // console.log(event.detail.y);
+                  // console.log(event.detail.width);
+                  // console.log(event.detail.height);
+                  // console.log(event.detail.rotate);
+                  // console.log(event.detail.scaleX);
+                  // console.log(event.detail.scaleY);
+                  a = cropper.getCroppedCanvas().toDataURL('image/jpeg')
+                  om = document.getElementById('om');
+                  // // om.value =this.cropper.crop()
+                 
+                  // const imageData = cropper.getCropBoxData();
+                  // // // imageData.toDataURL('image/png');
+                  // // console.log(imageData);
+                  // // cropper.replace(imageData) = url;
+                  // // console.log(cropper.image.src = url)
+                  cropper.background = false;
+              
+// cropper.rotate(-90);
 
-            startbutton.addEventListener('click', function(ev) {
-                takepicture();
-                ev.preventDefault();
-            }, false);
-
-            clearphoto();
-        }
+                  om.value = a
+                  
 
 
-        function clearphoto() {
-            var context = canvas.getContext('2d');
-            context.fillStyle = "#AAA";
-            context.fillRect(0, 0, canvas.width, canvas.height);
+              },
+              });
+          } else {
+              clearphoto();
+          }
+      }
 
-            var data = canvas.toDataURL('image/png');
-            photo.setAttribute('src', data);
-           
-        
-        }
+      window.addEventListener('load', startup, false);
+  })();
+  </script>
 
-        function takepicture() {
-            var context = canvas.getContext('2d');
-            if (width && height) {
-                canvas.width = width;
-                canvas.height = height;
-                context.drawImage(video, 0, 0, width, height);
 
-                var data = canvas.toDataURL('image/png');
-                let om = document.getElementById('om')
 
-                console.log(data)
-                om.value= data
 
-                photo.setAttribute('src', data);
-            } else {
-                clearphoto();
-            }
-        }
 
-        window.addEventListener('load', startup, false);
-    })();
-    </script>
+
 
 
 

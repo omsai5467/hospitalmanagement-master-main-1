@@ -1,0 +1,260 @@
+{%load static%}
+<link  href="{%static '\dist\cropper.css'%}" rel="stylesheet">
+<script src="{% static '\dist\cropper.js'%}"></script>
+
+
+<!doctype html>
+
+
+<head>
+    <style>
+    /* CSS comes here */
+    #video {
+        border: 1px solid black;
+        width: 320px;
+        height: 240px;
+    }
+
+    #photo {
+        border: 1px solid black;
+        width: 320px;
+        height: 240px;
+    }
+
+    #canvas {
+        display: none;
+    }
+
+    .camera {
+        width: 340px;
+        display: inline-block;
+    }
+
+    .output {
+        width: 340px;
+        display: inline-block;
+    }
+
+    #startbutton {
+        display: block;
+        position: relative;
+        margin-left: auto;
+        margin-right: auto;
+        bottom: 36px;
+        padding: 5px;
+        background-color: #6a67ce;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        font-size: 14px;
+        color: rgba(255, 255, 255, 1.0);
+        cursor: pointer;
+    }
+
+    .contentarea {
+        font-size: 16px;
+        font-family: Arial;
+        text-align: center;
+    }
+    </style>
+    <title>My Favorite Sport</title>
+</head>
+<script>
+    function myFunction() {
+const image = document.getElementById('image');
+const cropper = new Cropper(image, {
+  aspectRatio: 16 / 9,
+  crop(event) {
+
+      cropper.rotate(90);
+    
+  },
+});
+    }
+    </script>
+<body>
+    <div class="contentarea">
+        <h1>
+            testing of patients
+        </h1>
+        <div class="camera">
+            <video id="video">Video stream not available.</video>
+        </div>
+        <div><button id="startbutton">Take photo</button></div>
+        <canvas id="canvas"></canvas>
+        <div class="output">
+            <img id="image" alt="The screen capture will appear in this box.">
+            <form name="myForm" action="upload_test" onsubmit="return validateForm()" method="POST">
+               {%   csrf_token %}
+            <p>upload to</p>
+  <input type="radio" id="test1" name="test" value="test1">
+  <label for="male">test1</label><br>
+  <input type="radio" id="test2" name="test" value="test2">
+  <label for="female">test2</label><br>
+  <input type="radio" id="test_3" name="test" value="test_3">
+  <label for="other">test3</label><br>
+  <input type="radio" id="test_4" name="test" value="test_4">
+  <label for="test4">test4</label><br>
+  <textarea id="w3review" name="w3review" rows="4" cols="50" ></textarea>
+    
+   
+
+  <button type="submit"> upload </button>
+        </div>
+    </div>
+    <input type="hidden" id = 'om' name = 'photo'>
+    
+</form>
+    <script>
+    /* JS comes here */
+    (function() {
+
+        var width = 320; // We will scale the photo width to this
+        var height = 0; // This will be computed based on the input stream
+
+        var streaming = false;
+
+        var video = null;
+        var canvas = null;
+        var photo = null;
+        var startbutton = null;
+
+        function startup() {
+            video = document.getElementById('video');
+            canvas = document.getElementById('canvas');
+            photo = document.getElementById('image');
+            startbutton = document.getElementById('startbutton');
+            value = document.getElementById('om')
+
+            navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false
+                })
+                .then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch(function(err) {
+                    console.log("An error occurred: " + err);
+                });
+
+            video.addEventListener('canplay', function(ev) {
+                if (!streaming) {
+                    height = video.videoHeight / (video.videoWidth / width);
+
+                    if (isNaN(height)) {
+                        height = width / (4 / 3);
+                    }
+
+                    video.setAttribute('width', width);
+                    video.setAttribute('height', height);
+                    canvas.setAttribute('width', width);
+                    canvas.setAttribute('height', height);
+                    streaming = true;
+                }
+            }, false);
+
+            startbutton.addEventListener('click', function(ev) {
+                takepicture();
+                ev.preventDefault();
+            }, false);
+
+            clearphoto();
+        }
+
+
+        function clearphoto() {
+            var context = canvas.getContext('2d');
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            var data = canvas.toDataURL('image/png');
+            photo.setAttribute('src', data);
+        }
+
+        function takepicture() {
+            var context = canvas.getContext('2d');
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+
+                var data = canvas.toDataURL('image/png');
+                // console.log(data)
+                photo.setAttribute('src', data);
+                const image = document.getElementById('image');
+                const cropper = new Cropper(image, {
+                aspectRatio: 16 / 9,
+                crop(event) {
+                    Cropper.zoomOnWheel = false;
+                    // cropper.rotate(90);
+                    // console.log(event.detail.x);
+                    // console.log(event.detail.y);
+                    // console.log(event.detail.width);
+                    // console.log(event.detail.height);
+                    // console.log(event.detail.rotate);
+                    // console.log(event.detail.scaleX);
+                    // console.log(event.detail.scaleY);
+                    a = cropper.getCroppedCanvas().toDataURL('image/jpeg')
+                    om = document.getElementById('om');
+                    // // om.value =this.cropper.crop()
+                   
+                    // const imageData = cropper.getCropBoxData();
+                    // // // imageData.toDataURL('image/png');
+                    // // console.log(imageData);
+                    // // cropper.replace(imageData) = url;
+                    // // console.log(cropper.image.src = url)
+                    cropper.background = false;
+                   
+
+                    om.value = a
+                    
+
+
+                },
+                });
+            } else {
+                clearphoto();
+            }
+        }
+
+        window.addEventListener('load', startup, false);
+    })();
+    </script>
+</body>
+
+</html>
+<link  href="cropper.css" rel="stylesheet">
+<script src="cropper.js"></script>
+<script >
+
+
+</script>
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function validateForm() {
+  var x = document.forms["myForm"]["photo"].value;
+  if (x == "") {
+    alert("please capture photo");
+    return false;
+  }
+  var y = document.forms["myForm"]["test"].value;
+  if (y == "") {
+      alert("select option")
+      return false;
+  }
+  var z = document.forms["myForm"]["w3review"].value;
+  if (z == "") {
+      alert("enter discription")
+      return false;
+  }
+}
+</script>
+</head>
+<body>
+
+
+  
+
+</body>
+</html>

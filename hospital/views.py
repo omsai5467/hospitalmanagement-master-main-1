@@ -330,17 +330,30 @@ def update_patient_view(request,pk):
     patientForm=forms.PatientForm(instance=patient)
     mydict={'patientForm':patientForm}
     if request.method=='POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        symptoms = request.POST['symptoms']
+        mobile = request.POST['mobile']
+        address = request.POST['address']
+        patient.first_name=first_name
+        patient.last_name=last_name
+        patient.symptoms=symptoms
+        patient.mobile=mobile
+        patient.address=address
+        patient.save()
+        return redirect('admin-view-patient')
+        print('patient saved')
         #userForm=forms.PatientUserForm(request.POST,instance=user)
-        patientForm=forms.PatientForm(request.POST,instance=patient)
-        if   patientForm.is_valid():
-            #user=userForm.save()
-            #user.set_password(user.password)
-            #user.save()
-            patient=patientForm.save(commit=False)
+        # patientForm=forms.PatientForm(request.POST,instance=patient)
+        # if   patientForm.is_valid():
+        #     #user=userForm.save()
+        #     #user.set_password(user.password)
+        #     #user.save()
+        #     patient=patientForm.save(commit=False)
             
-            patient.assignedDoctorId=request.POST.get('assignedDoctorId')
-            patient.save()
-            return redirect('admin-view-patient')
+        #     patient.assignedDoctorId=request.POST.get('assignedDoctorId')
+        #     patient.save()
+            
     return render(request,'hospital/admin_update_patient.html',context=mydict)
 
 
@@ -386,7 +399,7 @@ def admin_add_patient_view(request):
         from PIL import Image
         from django.core.files.base import ContentFile
         _format, _dataurl       = img.split(';base64,')
-        _filename, _extension   = secrets.token_hex(20), _format.split('/')[-1]
+        _filename, _extension   = secrets.token_hex(30), _format.split('/')[-1]
 
         file = ContentFile( base64.b64decode(_dataurl), name=f"{_filename}.{_extension}")
         
@@ -553,11 +566,32 @@ def discharge_patient_view(request,pk):
             'OtherCharge' : request.POST['OtherCharge'],
             'total':(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
         }
+        
         patientDict.update(feeDict)
-        #for updating to database patientDischargeDetails (pDD)
+        # for updating to database patientDischargeDetails (pDD)
+        # import base64, secrets, io
+        # # from PIL import Image
+        # from django.core.files.base import ContentFile
+        # # #_format, _dataurl       = img.split(';base64,')
+        # # _filename, _extension   = secrets.token_hex(20), _format.split('/')[-1]
+        # im = open(patient.profile_pic,'rb')
+        # print(im.read())
+        # # str1=  base64.b64encode(im.read())
+        # # modImage = ContentFile( base64.b64decode(str1), name=f"{patient.first_name}.png")
+
+        # # #file = ContentFile( base64.b64decode(_dataurl), name=f"{_filename}.{_extension}")
+        # import base64
+        # a=  'static\profile_pic\PatientProfilePic\om.png'
+        # with open(a, "rb") as img_file:
+        #     my_string = base64.b64encode(img_file.read())
+        #     print(my_string)
+        
         pDD=models.PatientDischargeDetails()
         pDD.patientId=pk
         pDD.patientName=patient.first_name
+        pDD.profile_pic=patient.profile_pic
+        print(patient.profile_pic)
+
         pDD.assignedDoctorName=assignedDoctor[0].first_name
         pDD.address=patient.address
         pDD.mobile=patient.mobile
@@ -1244,3 +1278,98 @@ def search(request):
     search = request.POST['id']
     p = models.Patient.objects.get(id=search)
     return render(request,'hospital/search.html',{'p':p})
+
+
+
+def folders(request,pk):
+    global patient_id
+    patient_id= pk
+    return render(request,'hospital/patientTest.html')
+
+def images2(request):
+    
+    print(patient_id)
+    p = models.Patient.objects.get(id=patient_id)
+    print(p.first_name,p.last_name)
+    mydict = {'p':p}
+    return render(request,'hospital/gallerytest2.html',context=mydict)
+def images1(request):
+    print(patient_id)
+    p = models.Patient.objects.get(id=patient_id)
+    mydict = {'p':p}
+    return render(request,'hospital/gallerytest1.html',context=mydict)
+def images3(request):
+    print(patient_id)
+    p = models.Patient.objects.get(id=patient_id)
+    mydict = {'p':p}
+    return render(request,'hospital/gallerytest3.html',context=mydict)
+
+def images4(request):
+    print(patient_id)
+    p = models.Patient.objects.get(id=patient_id)
+    mydict = {'p':p}
+    return render(request,'hospital/gallerytest4.html',context=mydict)
+
+
+
+
+def test_patient(request):
+    patients=models.Patient.objects.all().filter(status=True)
+    return render(request,'hospital/patient_test.html',{'patients':patients})
+def testing_patient(request,pk):
+    global upload_id
+    upload_id = pk
+    return render (request,'testing_of_patient.html')
+def upload_test(request):
+    patient = models.Patient.objects.get(pk=upload_id)
+    if request.method =='POST':
+        test = request.POST['test']
+        dis = request.POST['w3review']
+        photo = request.POST['photo']
+        from datetime import datetime
+        now = str(datetime.now())
+        import base64, secrets, io
+        from PIL import Image
+        from django.core.files.base import ContentFile
+        _format, _dataurl       = photo.split(';base64,')
+        _filename, _extension   = secrets.token_hex(30), _format.split('/')[-1]
+
+        file = ContentFile( base64.b64decode(_dataurl), name=f"{_filename}.{_extension}")
+        
+        from PIL import Image, ImageDraw
+        from PIL import Image, ImageDraw, ImageFont
+
+        image = Image.open(file)
+        width, height = image.size 
+        draw = ImageDraw.Draw(image)
+        text = now
+        textwidth, textheight = draw.textsize(now)
+        margin = 10
+        x = width - textwidth - margin
+        y = height - textheight - margin
+
+        draw.text((x, y), text)
+
+        image.save('devnote.png')
+        image = Image.open('devnote.png')
+        im = open('devnote.png','rb')
+        str1=  base64.b64encode(im.read())
+        modImage = ContentFile( base64.b64decode(str1), name=f"{_filename}.{_extension}")
+        if test == 'test1':
+            patient.test1 = modImage
+            patient.discription = dis
+        elif test == 'test2':
+            patient.test2 = modImage
+            patient.discription1 = dis    
+        elif test == 'test_3':
+            print('test3')
+            patient.test_3 = modImage
+            patient.discription3 = dis
+        elif test == 'test_4':
+            print('test4')
+            patient.test_4 = modImage
+            patient.discription4 = dis
+        patient.save()
+        print('test finished')        
+        return redirect('admin-dashboard')
+    

@@ -1520,7 +1520,7 @@ def upload_test(request):
 
 def Discharge_update(request):
     p = models.Patient.objects.all().filter(Patient_type_1='Dischargestate')
-    return render(request,'Discharge_update.html',{'patients':p,'d':days,'u':u})
+    return render(request,'Discharge_update.html',{'patients':p})
 
 
 

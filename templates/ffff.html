@@ -1,0 +1,39 @@
+<html>  
+   <head>  
+      <title>Calculate days between the dates using default system dates</title>  
+   </head>  
+   <body>  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
+<!-- 1 -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script> -->
+      <script>  
+         var date1, date2;  
+         //define two date object variables with dates inside it  
+         date1 = new Date();  
+         x = 'June 5, 2021, 7:27 p.m.'
+          // console.log(x.split(','))
+          c = x.split(',')
+          d = c.slice(0,2)
+          console.log(d.join())
+          var convertedTime = moment(c[2], 'hh:mm A').format('HH:mm')
+         console.log(convertedTime);
+
+
+          date2 = new Date (d.join());  
+          console.log(date2)
+
+
+  
+         //calculate total number of seconds between two dates  
+         var total_seconds = Math.abs(date2 - date1) / 1000;  
+  
+         //calculate days difference by dividing total seconds in a day  
+         var days_difference = Math.floor (total_seconds / (60 * 60 * 24));  
+           
+         document.write("Number of days between dates from current date <br>" +   
+                         date1 + " and <br>" + date2 + " are: <br>"   
+                         + days_difference + " days");  
+      </script>    
+</body>  
+</html>  

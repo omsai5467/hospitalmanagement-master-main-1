@@ -16,7 +16,8 @@ Patient_type = [
     ('Registrationcount','Registrationcount'),
     ('Preauthorisation','Preauthorisation'),
     ('Dischargestate','Dischargestate'),
-    ('Claimphase','Claimphase')
+    ('Claimphase','Claimphase'),
+    ('surgery_update','surgery_update')
 
 ]
 

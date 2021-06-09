@@ -44,7 +44,7 @@
           <tr>
             <th>id</th>
             <th>Name</th>
-            <th>Symptoms</th>
+            <th>no of days or time </th>
             <th>Mobile</th>
             <th>Address</th>
             <th>Status</th>
@@ -56,7 +56,8 @@
         <tr>
           <td>{{p.id}}</td>
           <td> {{p.first_name}}</td>
-          <td>{{p.symptoms}}</td>
+          <!-- <td>{{p.symptoms}}</td> -->
+           <td >{{p.updated|timesince }} </td>
           <td>{{p.mobile}}</td>
           <td>{{p.address}}</td>
           

@@ -152,19 +152,7 @@
      </form>
   </div>
   <div class="row" style="border:0.2px solid red">
-    <div class="col-xs-2 col-half-offset">
-      <div class="market-update-block clr-block-1">
-        <div class="col-md-8 market-update-left">
-<!--          <h3>{{patientcount}}</h3>-->
-          <h4>Total Patient</h4>
-          <p>Count : {{patientcount}}</p>
-        </div>
-        <div class="col-md-4 market-update-right">
-          <i class="fa fa-user-o"></i>
-        </div>
-        <div class="clearfix"> </div>
-      </div>
-    </div>
+    
     <div class="col-xs-2 col-half-offset">
       <div class="market-update-block clr-block-2">
         <div class="col-md-8 market-update-left">
@@ -187,8 +175,19 @@
       <div class="market-update-block clr-block-3">
         <div class="col-md-8 market-update-left">
 <!--          <h3>{{appointmentcount}}</h3>-->
-          <h4> <a href="Registrationcount">Registration count</a></h4>
+          <h4> Registrationcount</h4>
           <p>Count :{{Registrationcount}} </p>
+          <form action = 'Registrationcount'  method="GET">  
+            <button style="background:coral">submit</button>
+          
+          </form> 
+          <!-- <h4>
+           
+          <p>Count :{{Registrationcount}} </p>
+          <form action = 'Registrationcount'  method="GET">  
+            <button style="background:coral">submit</button>
+          
+          </form>  -->
           
           
           </form> 
@@ -199,6 +198,7 @@
         <div class="clearfix"> </div>
       </div>
     </div>
+    <a href='Preauthorisation'>
     <div class="col-xs-2 col-half-offset">
       <div class="market-update-block clr-block-1">
         <div class="col-md-8 market-update-left">
@@ -206,13 +206,43 @@
         
           <h4>Pre Authorisation</h4>
           <p>Count :{{Preauthorisation}} </p>
-          <form action = 'Preauthorisation'  method="GET">  
+          <!-- <form action = 'Preauthorisation'  method="GET">  
             <button style="background:coral">submit</button>
           
-          </form> 
+          </form>  -->
+        </a>
          
 
         </div>
+         <div class="col-md-4 market-update-right">
+          <i class="fa fa-user-md"> </i>
+        </div>
+        <div class="clearfix"> </div>
+      </div>
+    </div>
+    <div class="col-xs-2 col-half-offset">
+      <div class="market-update-block clr-block-1">
+        <div class="col-md-8 market-update-left">
+<!--          <h3>{{appointmentcount}}</h3>-->
+          <h4>Surgery update</h4>
+          <p>Count :{{Surgery_update}} </p>
+          <form action = 'surgery'  method="GET">  
+            <button style="background:coral">submit</button>
+          </form>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="col-md-4 market-update-right">
           <i class="fa fa-user-md"> </i>
         </div>

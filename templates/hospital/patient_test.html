@@ -40,9 +40,9 @@
           <th>Symptoms</th>
           <th>Mobile</th>
           <th>Address</th>
-          <th>Update</th>
-          <th>Delete</th>
-          <th>Change</th>
+          <th>Test</th>
+          <th>gallery</th>
+         
         </tr>
       </thead>
       {% for p in patients %}
@@ -60,7 +60,7 @@
         <!-- <td><a class="btn btn-primary btn-xs" href="{% url 'update-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
         <td><a class="btn btn-danger btn-xs" href="{% url 'delete-patient-from-hospital' p.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td> -->
         <td><a class="btn btn-primary btn-xs" href="{% url 'testingpatient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
-        
+        <td><a class="btn btn-primary btn-xs" href="{% url 'test' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
         
       </tr>
       {% endfor %}

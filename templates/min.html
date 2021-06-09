@@ -1,10 +1,4 @@
-{%load static%}
-<link  href="{%static '\dist\cropper.css'%}" rel="stylesheet">
-<script src="{% static '\dist\cropper.js'%}"></script>
-
-
 <!doctype html>
-
 
 <head>
     <style>
@@ -55,25 +49,24 @@
         text-align: center;
     }
     </style>
+
+    <!-- <script  src= 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js'  type="text/javascript"/> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+
+    <script type="text/javascript">
+    
+    var socket
+    socket = io.connect('http://localhost:3000')
+</script>
+
     <title>My Favorite Sport</title>
 </head>
-<script>
-    function myFunction() {
-const image = document.getElementById('image');
-const cropper = new Cropper(image, {
-  aspectRatio: 16 / 9,
-  crop(event) {
 
-      cropper.rotate(90);
-    
-  },
-});
-    }
-    </script>
 <body>
     <div class="contentarea">
         <h1>
-            testing of patients
+            Using Javascript to capture Photo
         </h1>
         <div class="camera">
             <video id="video">Video stream not available.</video>
@@ -81,28 +74,10 @@ const cropper = new Cropper(image, {
         <div><button id="startbutton">Take photo</button></div>
         <canvas id="canvas"></canvas>
         <div class="output">
-            <img id="image" alt="The screen capture will appear in this box.">
-            <form name="myForm" action="upload_test" onsubmit="return validateForm()" method="POST">
-               {%   csrf_token %}
-            <p>upload to</p>
-  <input type="radio" id="test1" name="test" value="test1">
-  <label for="male">test1</label><br>
-  <input type="radio" id="test2" name="test" value="test2">
-  <label for="female">test2</label><br>
-  <input type="radio" id="test_3" name="test" value="test_3">
-  <label for="other">test3</label><br>
-  <input type="radio" id="test_4" name="test" value="test_4">
-  <label for="test4">test4</label><br>
-  <textarea id="w3review" name="w3review" rows="4" cols="50" ></textarea>
-    
-   
-
-  <button type="submit"> upload </button>
+            <img id="photo" alt="The screen capture will appear in this box.">
         </div>
     </div>
-    <input type="hidden" id = 'om' name = 'photo'>
-    
-</form>
+
     <script>
     /* JS comes here */
     (function() {
@@ -120,9 +95,8 @@ const cropper = new Cropper(image, {
         function startup() {
             video = document.getElementById('video');
             canvas = document.getElementById('canvas');
-            photo = document.getElementById('image');
+            photo = document.getElementById('photo');
             startbutton = document.getElementById('startbutton');
-            value = document.getElementById('om')
 
             navigator.mediaDevices.getUserMedia({
                     video: true,
@@ -178,39 +152,9 @@ const cropper = new Cropper(image, {
                 context.drawImage(video, 0, 0, width, height);
 
                 var data = canvas.toDataURL('image/png');
-                // console.log(data)
-                photo.setAttribute('src', data);
-                const image = document.getElementById('image');
-                const cropper = new Cropper(image, {
-                aspectRatio: 16 / 9,
-                crop(event) {
-                    Cropper.zoomOnWheel = false;
-                    // cropper.rotate(90);
-                    // console.log(event.detail.x);
-                    // console.log(event.detail.y);
-                    // console.log(event.detail.width);
-                    // console.log(event.detail.height);
-                    // console.log(event.detail.rotate);
-                    // console.log(event.detail.scaleX);
-                    // console.log(event.detail.scaleY);
-                    a = cropper.getCroppedCanvas().toDataURL('image/jpeg')
-                    om = document.getElementById('om');
-                    // // om.value =this.cropper.crop()
-                   
-                    // const imageData = cropper.getCropBoxData();
-                    // // // imageData.toDataURL('image/png');
-                    // // console.log(imageData);
-                    // // cropper.replace(imageData) = url;
-                    // // console.log(cropper.image.src = url)
-                    cropper.background = false;
-                   
+                // photo.setAttribute('src', data);
+                console.log(data)
 
-                    om.value = a
-                    
-
-
-                },
-                });
             } else {
                 clearphoto();
             }
@@ -221,40 +165,8 @@ const cropper = new Cropper(image, {
     </script>
 </body>
 
-</html>
-<link  href="cropper.css" rel="stylesheet">
-<script src="cropper.js"></script>
-<script >
 
 
-</script>
-<!DOCTYPE html>
-<html>
-<head>
-<script>
-function validateForm() {
-  var x = document.forms["myForm"]["photo"].value;
-  if (x == "") {
-    alert("please capture photo");
-    return false;
-  }
-  var y = document.forms["myForm"]["test"].value;
-  if (y == "") {
-      alert("select option")
-      return false;
-  }
-  var z = document.forms["myForm"]["w3review"].value;
-  if (z == "") {
-      alert("enter discription")
-      return false;
-  }
-}
-</script>
-</head>
-<body>
-    
 
-  
 
-</body>
 </html>

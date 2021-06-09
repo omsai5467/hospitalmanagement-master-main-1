@@ -142,6 +142,10 @@ def afterlogin_view(request):
 def admin_dashboard_view(request):
     #for both table in admin dashboard
     doctors=models.Doctor.objects.all().order_by('-id')
+    Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
+    print(Surgery_update)
+
+
     patients=models.Patient.objects.all().order_by('-id')
     #for three cards
     doctorcount=models.Doctor.objects.all().filter(status=True).count()
@@ -160,6 +164,7 @@ def admin_dashboard_view(request):
     print(pretreatment)
 
     mydict={
+    'Surgery_update':Surgery_update,
     'doctors':doctors,
     'patients':patients,
     'doctorcount':doctorcount,
@@ -521,97 +526,116 @@ def admin_discharge_patient_view(request):
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
 def discharge_patient_view(request,pk):
-    from datetime import datetime,date
 
-    patient=models.Patient.objects.get(id=pk)
-    print(type(patient.admitDate))
-    now = patient.admitDate
-    year = int(now.strftime("%Y"))
-    month = int(now.strftime("%m"))
-    day = int(now.strftime("%d"))
-    t1 = date(year = year , month = month , day = day)
-    up = datetime.today()
-    year1 = int(up.strftime("%Y"))
-    month2 = int(up.strftime("%m"))
-    day2 = int(up.strftime("%d"))
-    t2 = date(year = year1,month=month2,day= day2)
-    t3 = t2 - t1
+    p = models.Patient.objects.get(id=pk)
+    if p.discription == '' or p.discription1 == '' or p.discription3 == '' or p.discription4 == '':
+        print('hi')
+        import datetime
+        now = datetime.datetime.now()
+        if p.discription == '':
+            html = "<html><body><script> alert('test the patient TEST1')  </script></body></html>" 
+            return HttpResponse(html)
+        if p.discription1 == '':
+            html = "<html><body><script> alert('test the patient TEST2')  </script></body></html>" 
+            return HttpResponse(html)
+        if p.discription3 == '':
+            html = "<html><body><script> alert('test the patient TEST3')  </script></body></html>" 
+            return HttpResponse(html)
+        if p.discription4 == '':
+            html = "<html><body><script> alert('test the patient TEST4')  </script></body></html>" 
+            return HttpResponse(html)            
+    else:
+        from datetime import datetime,date
 
-   
-    print(datetime.now())
+        patient=models.Patient.objects.get(id=pk)
+        print(type(patient.admitDate))
+        now = patient.admitDate
+        year = int(now.strftime("%Y"))
+        month = int(now.strftime("%m"))
+        day = int(now.strftime("%d"))
+        t1 = date(year = year , month = month , day = day)
+        up = datetime.today()
+        year1 = int(up.strftime("%Y"))
+        month2 = int(up.strftime("%m"))
+        day2 = int(up.strftime("%d"))
+        t2 = date(year = year1,month=month2,day= day2)
+        t3 = t2 - t1
 
-    print(t1)
-    print(t3)
-   
-    days=t3 #2 days, 0:00:00
-    print(type(patient.admitDate))
-    assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctorId)
-    d=days.days # only how many day that is 2
-    patientDict={
-        'patientId':pk,
-        'name':patient.first_name,
-        'mobile':patient.mobile,
-        'address':patient.address,
-        'symptoms':patient.symptoms,
-        'admitDate':patient.admitDate,
-        'todayDate':date.today(),
-        'day':d,
-        'assignedDoctorName':assignedDoctor[0].first_name,
-    }
-    if request.method == 'POST':
-        feeDict ={
-            'roomCharge':int(request.POST['roomCharge'])*int(d),
-            'doctorFee':request.POST['doctorFee'],
-            'medicineCost' : request.POST['medicineCost'],
-            'OtherCharge' : request.POST['OtherCharge'],
-            'total':(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
+       
+        print(datetime.now())
+
+        print(t1)
+        print(t3)
+       
+        days=t3 #2 days, 0:00:00
+        print(type(patient.admitDate))
+        assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctorId)
+        d=days.days # only how many day that is 2
+        patientDict={
+            'patientId':pk,
+            'name':patient.first_name,
+            'mobile':patient.mobile,
+            'address':patient.address,
+            'symptoms':patient.symptoms,
+            'admitDate':patient.admitDate,
+            'todayDate':date.today(),
+            'day':d,
+            'assignedDoctorName':assignedDoctor[0].first_name,
         }
-        
-        patientDict.update(feeDict)
-        # for updating to database patientDischargeDetails (pDD)
-        # import base64, secrets, io
-        # # from PIL import Image
-        # from django.core.files.base import ContentFile
-        # # #_format, _dataurl       = img.split(';base64,')
-        # # _filename, _extension   = secrets.token_hex(20), _format.split('/')[-1]
-        # im = open(patient.profile_pic,'rb')
-        # print(im.read())
-        # # str1=  base64.b64encode(im.read())
-        # # modImage = ContentFile( base64.b64decode(str1), name=f"{patient.first_name}.png")
+        if request.method == 'POST':
+            feeDict ={
+                'roomCharge':int(request.POST['roomCharge'])*int(d),
+                'doctorFee':request.POST['doctorFee'],
+                'medicineCost' : request.POST['medicineCost'],
+                'OtherCharge' : request.POST['OtherCharge'],
+                'total':(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
+            }
+            
+            patientDict.update(feeDict)
+            # for updating to database patientDischargeDetails (pDD)
+            # import base64, secrets, io
+            # # from PIL import Image
+            # from django.core.files.base import ContentFile
+            # # #_format, _dataurl       = img.split(';base64,')
+            # # _filename, _extension   = secrets.token_hex(20), _format.split('/')[-1]
+            # im = open(patient.profile_pic,'rb')
+            # print(im.read())
+            # # str1=  base64.b64encode(im.read())
+            # # modImage = ContentFile( base64.b64decode(str1), name=f"{patient.first_name}.png")
 
-        # # #file = ContentFile( base64.b64decode(_dataurl), name=f"{_filename}.{_extension}")
-        # import base64
-        # a=  'static\profile_pic\PatientProfilePic\om.png'
-        # with open(a, "rb") as img_file:
-        #     my_string = base64.b64encode(img_file.read())
-        #     print(my_string)
-        
-        pDD=models.PatientDischargeDetails()
-        pDD.patientId=pk
-        pDD.patientName=patient.first_name
-        pDD.profile_pic=patient.profile_pic
-        print(patient.profile_pic)
+            # # #file = ContentFile( base64.b64decode(_dataurl), name=f"{_filename}.{_extension}")
+            # import base64
+            # a=  'static\profile_pic\PatientProfilePic\om.png'
+            # with open(a, "rb") as img_file:
+            #     my_string = base64.b64encode(img_file.read())
+            #     print(my_string)
+            
+            pDD=models.PatientDischargeDetails()
+            pDD.patientId=pk
+            pDD.patientName=patient.first_name
+            pDD.profile_pic=patient.profile_pic
+            print(patient.profile_pic)
 
-        pDD.assignedDoctorName=assignedDoctor[0].first_name
-        pDD.address=patient.address
-        pDD.mobile=patient.mobile
-        pDD.symptoms=patient.symptoms
-        pDD.admitDate=patient.admitDate
-        pDD.releaseDate=date.today()
-        pDD.daySpent=int(d)
-        pDD.medicineCost=int(request.POST['medicineCost'])
-        pDD.roomCharge=int(request.POST['roomCharge'])*int(d)
-        pDD.doctorFee=int(request.POST['doctorFee'])
-        pDD.OtherCharge=int(request.POST['OtherCharge'])
-        pDD.total=(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
-        pDD.save()
-    # patient=models.Patient.objects.get(id=pk)
-        patient.delete()
-        print('patient deleted')
-        
+            pDD.assignedDoctorName=assignedDoctor[0].first_name
+            pDD.address=patient.address
+            pDD.mobile=patient.mobile
+            pDD.symptoms=patient.symptoms
+            pDD.admitDate=patient.admitDate
+            pDD.releaseDate=date.today()
+            pDD.daySpent=int(d)
+            pDD.medicineCost=int(request.POST['medicineCost'])
+            pDD.roomCharge=int(request.POST['roomCharge'])*int(d)
+            pDD.doctorFee=int(request.POST['doctorFee'])
+            pDD.OtherCharge=int(request.POST['OtherCharge'])
+            pDD.total=(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
+            pDD.save()
+        # patient=models.Patient.objects.get(id=pk)
+            patient.delete()
+            print('patient deleted')
+            
 
-        return render(request,'hospital/patient_final_bill.html',context=patientDict)
-    return render(request,'hospital/patient_generate_bill.html',context=patientDict)
+            return render(request,'hospital/patient_final_bill.html',context=patientDict)
+        return render(request,'hospital/patient_generate_bill.html',context=patientDict)
 
 
 
@@ -1029,6 +1053,7 @@ def contactus_view(request):
 
 
 def pretreatment(request):
+    Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
     pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
     doctors=models.Doctor.objects.all().order_by('-id')
     patients=models.Patient.objects.all().order_by('-id')
@@ -1047,6 +1072,7 @@ def pretreatment(request):
     Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
     patients = models.Patient.objects.all().filter(Patient_type_1='pretreatment')
     mydict={
+    'Surgery_update':Surgery_update,
     'doctors':doctors,
     'patients':patients,
     'doctorcount':doctorcount,
@@ -1069,6 +1095,7 @@ def pretreatment(request):
     return render(request,'hospital/pretreatment.html',context=mydict)
 
 def Registrationcount(request):
+    Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Registrationcount')
     pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
@@ -1081,6 +1108,7 @@ def Registrationcount(request):
     patientcount=models.Patient.objects.all().filter(status=True).count()
     pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
 
+
     appointmentcount=models.Appointment.objects.all().filter(status=True).count()
     pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
     Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
@@ -1089,6 +1117,8 @@ def Registrationcount(request):
     Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
     patients2 = models.Patient.objects.all().filter(Patient_type_1='pretreatment')
     mydict={
+
+    'Surgery_update':Surgery_update,
     'doctors':doctors,
     'patients':patients,
     'doctorcount':doctorcount,
@@ -1108,15 +1138,60 @@ def Registrationcount(request):
 
     return render(request,'hospital/Registrationcount.html',context=mydict)
 
-def Preauthorisation(request):
 
-    patients = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation')
+def surgery(request):
+
+    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    doctors=models.Doctor.objects.all().order_by('-id')
+    patients=models.Patient.objects.all().order_by('-id')
+    #for three cards
+    doctorcount=models.Doctor.objects.all().filter(status=True).count()
+    pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+
+    patientcount=models.Patient.objects.all().filter(status=True).count()
+    pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
+
+    appointmentcount=models.Appointment.objects.all().filter(status=True).count()
+    pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
+    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
+    patients = models.Patient.objects.all().filter(Patient_type_1='surgery_update')
+    mydict={
+    'Surgery_update':Surgery_update,
+    'doctors':doctors,
+    'patients':patients,
+    'doctorcount':doctorcount,
+    'pendingdoctorcount':pendingdoctorcount,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    'pretreatment':pretreatment,
+    'Registrationcount':Registrationcount,
+    'Preauthorisation':Preauthorisation,
+    'Dischargestate':Dischargestate,
+    'Claimphase':Claimphase,
+    'patients':patients
+    #context=mydict
+    }
+
+    
+
+    return render(request,'hospital/surgery.html',context=mydict)
+
+def Registrationcount(request):
+
+    patients = models.Patient.objects.all().filter(Patient_type_1='Registrationcount')
     pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
     doctors=models.Doctor.objects.all().order_by('-id')
     patients1=models.Patient.objects.all().order_by('-id')
     #for three cards
     doctorcount=models.Doctor.objects.all().filter(status=True).count()
     pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+    Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
 
     patientcount=models.Patient.objects.all().filter(status=True).count()
     pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
@@ -1129,6 +1204,68 @@ def Preauthorisation(request):
     Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
     patients2 = models.Patient.objects.all().filter(Patient_type_1='pretreatment')
     mydict={
+    'Surgery_update':Surgery_update,
+    'doctors':doctors,
+    'patients':patients,
+    'doctorcount':doctorcount,
+    'pendingdoctorcount':pendingdoctorcount,
+    'patientcount':patientcount,
+    'pendingpatientcount':pendingpatientcount,
+    'appointmentcount':appointmentcount,
+    'pendingappointmentcount':pendingappointmentcount,
+    'pretreatment':pretreatment,
+    'Registrationcount':Registrationcount,
+    'Preauthorisation':Preauthorisation,
+    'Dischargestate':Dischargestate,
+    'Claimphase':Claimphase,
+
+    #context=mydict
+    }
+
+    return render(request,'hospital/Registrationcount.html',context=mydict)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def Preauthorisation(request):
+
+    patients = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation')
+    pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
+    doctors=models.Doctor.objects.all().order_by('-id')
+    patients1=models.Patient.objects.all().order_by('-id')
+    #for three cards
+    doctorcount=models.Doctor.objects.all().filter(status=True).count()
+    pendingdoctorcount=models.Doctor.objects.all().filter(status=False).count()
+
+    patientcount=models.Patient.objects.all().filter(status=True).count()
+    pendingpatientcount=models.Patient.objects.all().filter(status=False).count()
+    Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
+
+    appointmentcount=models.Appointment.objects.all().filter(status=True).count()
+    pendingappointmentcount=models.Appointment.objects.all().filter(status=False).count()
+    Registrationcount = models.Patient.objects.all().filter(Patient_type_1='Registrationcount').count()
+    Preauthorisation = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation').count()
+    Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
+    Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
+    patients2 = models.Patient.objects.all().filter(Patient_type_1='pretreatment')
+    mydict={
+    'Surgery_update':Surgery_update,
     'doctors':doctors,
     'patients':patients,
     
@@ -1149,6 +1286,7 @@ def Preauthorisation(request):
     return render(request,'hospital/Preauthorisation.html',context=mydict)
 
 def Dischargestate(request):
+    Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='Surgery_update').count()
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Dischargestate')
     pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
@@ -1168,6 +1306,7 @@ def Dischargestate(request):
     Dischargestate = models.Patient.objects.all().filter(Patient_type_1='Dischargestate').count()
     Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
     mydict={
+    'Surgery_update':Surgery_update,
     'doctors':doctors,
     
     'doctorcount':doctorcount,
@@ -1188,6 +1327,7 @@ def Dischargestate(request):
     return render(request,'hospital/Dischargestate.html',context=mydict)  
 
 def Claimphase(request):
+    Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Claimphase')
     pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
@@ -1208,6 +1348,7 @@ def Claimphase(request):
     Claimphase = models.Patient.objects.all().filter(Patient_type_1='Claimphase').count()
 
     mydict={
+    'Surgery_update':Surgery_update,
     'doctors':doctors,
     
     'doctorcount':doctorcount,
@@ -1290,7 +1431,7 @@ def images2(request):
     
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
-    print(p.first_name,p.last_name)
+    print(p.first_name)
     mydict = {'p':p}
     return render(request,'hospital/gallerytest2.html',context=mydict)
 def images1(request):
@@ -1359,6 +1500,7 @@ def upload_test(request):
             patient.test1 = modImage
             patient.discription = dis
         elif test == 'test2':
+            print('got Test2')
             patient.test2 = modImage
             patient.discription1 = dis    
         elif test == 'test_3':
@@ -1373,3 +1515,19 @@ def upload_test(request):
         print('test finished')        
         return redirect('admin-dashboard')
     
+
+
+
+def Discharge_update(request):
+    p = models.Patient.objects.all().filter(Patient_type_1='Dischargestate')
+    return render(request,'Discharge_update.html',{'patients':p,'d':days,'u':u})
+
+
+
+
+
+def Claim_update_pending(request):
+    pass
+
+
+

@@ -100,7 +100,7 @@
 </head>
 <br><br><br>
 <!------ signup page for doctor by admin(sumit)  ---------->
-<form method="POST" action='admin_add_patient_view' >
+<form       name="myForm"  onsubmit="return validateForm()"      method="POST" action='admin_add_patient_view' >
   {% csrf_token %}
   <div class="container register-form">
     <div class="form">
@@ -135,7 +135,7 @@
               <div><button  class = 'btnSubmit'   id="startbutton">Take photo</button></div>
               
               <div class="output">
-                  <input type="text" name = 'img' value="omsai" id= 'om'>
+                  <input type="text" name = 'img'  id= 'om'>
               </div>
           </div>
             <!--
@@ -168,6 +168,7 @@
                 <option value="Registrationcount">Registrationcount</option>
           
                 <option value="Preauthorisation">Preauthorisation</option>
+                <option value="surgery_update">surgery_update</option>
           
                 <option value="Dischargestate">Dischargestate</option>
           
@@ -382,6 +383,15 @@
       {
           var arr=["Running","compleated","needToApply",'claimApplied','claimPending','claimapproved','other'];
       }
+      else if(a==="surgery_update")
+      {
+          var arr=["Running","compleated",'other'];
+      }
+
+
+
+
+
       else if(a==="selectoption")
       {
           var arr=[];
@@ -399,7 +409,24 @@
 
 
 
+<script>
+function validateForm() {
+  var x = document.forms["myForm"]["img"].value;
+  if (x == "") {
+    alert("please capture photo");
+    return false;
+  }
+  var y = document.forms["myForm"]["test"].value;
+  if (y == "") {
+      alert("select option")
+      return false;
+  }
+ 
+}
 
+
+
+</script>
 
 
 

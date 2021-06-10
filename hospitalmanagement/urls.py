@@ -63,7 +63,7 @@ urlpatterns = [
     path('test/images2', views.images2 , name = 'images2'),
     path('test/images3', views.images3 , name = 'images3'),
     path('test/images4', views.images4 , name = 'images4'),
-    
+   
     
     path('admin-add-patient', views.admin_add_patient_view,name='admin-add-patient'),
     path('admin-approve-patient', views.admin_approve_patient_view,name='admin-approve-patient'),

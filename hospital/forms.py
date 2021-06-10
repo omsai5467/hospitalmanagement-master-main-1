@@ -39,7 +39,7 @@ class PatientForm(forms.ModelForm):
     class Meta:
         model=models.Patient
         #fields = ['Patient_type_1','status1']
-        fields=['first_name','last_name','address','mobile','status','symptoms','profile_pic','test1','test2','discription','discription1', 'Patient_type_1','status1']
+        fields=['first_name','last_name','address','mobile','status','symptoms','profile_pic', 'Patient_type_1','status1']
 
 class testForm(forms.ModelForm):
     class meta :

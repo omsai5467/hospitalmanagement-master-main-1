@@ -97,14 +97,6 @@ class Patient(models.Model):
     updated=models.DateTimeField(auto_now=True)
     status=models.BooleanField(default=False)
     Patient_type_1  = models.CharField(max_length=50,choices=Patient_type)
-    test1 = models.ImageField(upload_to='testphotos/test1/', null=True,blank=True)
-    test2 = models.ImageField(upload_to='testphotos/test2/', null=True,blank=True)
-    test_3 = models.ImageField(upload_to='testphotos/test3',null=True,blank=True)
-    test_4 = models.ImageField(upload_to='testphotos/test4',null=True,blank=True)
-    discription =  models.CharField(max_length=500,null=False)
-    discription1 =  models.CharField(max_length=500,null=False)
-    discription3 =  models.CharField(max_length=500,null=False)
-    discription4 =  models.CharField(max_length=500,null=False)
     status1  = models.CharField(max_length=50,choices=Patient)
 
     
@@ -148,10 +140,32 @@ class PatientDischargeDetails(models.Model):
 
 
 
-class test(models.Model):
+class test1(models.Model):
     Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
-    test = models.CharField(max_length=100)
-    def __str__():
-        pass
+    test = models.ImageField(upload_to='testphotos/test1/', null=True,blank=True)
+    discription = models.CharField(max_length=100 ,null=False)
+    def __str__(self):
+        self.Patient
+
+class test2(models.Model):
+    Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+    test = models.ImageField(upload_to='testphotos/test2/', null=True,blank=True)
+    discription = models.CharField(max_length=100 ,null=False)
+    def __str__(self):
+        self.Patient
+
+class test3(models.Model):
+    Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+    test = models.ImageField(upload_to='testphotos/test3/', null=True,blank=True)
+    discription = models.CharField(max_length=100 ,null=False)
+    def __str__(self):
+        self.Patient
+class test4(models.Model):
+    Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+    test = models.ImageField(upload_to='testphotos/test4/', null=True,blank=True)
+    discription = models.CharField(max_length=100 ,null=False)
+    def __str__(self):
+        self.Patient    
+
 
 

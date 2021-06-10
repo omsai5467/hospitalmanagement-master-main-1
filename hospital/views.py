@@ -440,44 +440,12 @@ def admin_add_patient_view(request):
             last_name =last_name,
             mobile = mobile,
             Patient_type_1 =Patient_type_1,
-            
-        
-            
-        
             assignedDoctorId = assignedDoctorId,
             status1= status1
            
 
                                                           )
-        print('oms')
-
-        
-        
-
-        
-        #userForm=forms.PatientUserForm(request.POST)
-        patientForm=forms.PatientForm(request.POST,request.FILES)
-        if  patientForm.is_valid():
-            #user=userForm.save()
-            #user.set_passwor
-            print('omsai')
-
-            patient=patientForm.save(commit=False)
-            #patient.user=user
-            #patient.status=True
-            patient.test1 = request.FILES.get['profile_pic']
-            patient.test2 = request.FILES.get['profile_pic']
-            print('omd')
-            patient.discription = 'default'
-            patient.discription1 = 'default'
-            print('omd')
-
-            patient.assignedDoctorId=request.POST.get('assignedDoctorId')
-            patient.save()
-
-            my_patient_group = Group.objects.get_or_create(name='PATIENT')
-            #my_patient_group[0].user_set.add(user)
-
+        print('data sucessfully suubmitted')
         return render(request,'hospital/admin_add_patient.html',context=mydict)
     return render(request,'hospital/admin_add_patient.html',context=mydict)
 
@@ -528,20 +496,24 @@ def admin_discharge_patient_view(request):
 def discharge_patient_view(request,pk):
 
     p = models.Patient.objects.get(id=pk)
-    if p.discription == '' or p.discription1 == '' or p.discription3 == '' or p.discription4 == '':
+    t1 = models.test1.objects.all().filter(Patient = p).count()
+    t2 = models.test2.objects.all().filter(Patient = p).count()
+    t3 = models.test3.objects.all().filter(Patient = p).count()
+    t4 = models.test4.objects.all().filter(Patient=p).count() 
+    if t1 == 0 or t2 == 0 or t3 == 0 or t4 == 0:
         print('hi')
         import datetime
         now = datetime.datetime.now()
-        if p.discription == '':
+        if t1 == 0:
             html = "<html><body><script> alert('test the patient TEST1')  </script></body></html>" 
             return HttpResponse(html)
-        if p.discription1 == '':
+        if t2 == 0:
             html = "<html><body><script> alert('test the patient TEST2')  </script></body></html>" 
             return HttpResponse(html)
-        if p.discription3 == '':
+        if t3 == 0 :
             html = "<html><body><script> alert('test the patient TEST3')  </script></body></html>" 
             return HttpResponse(html)
-        if p.discription4 == '':
+        if t4 == 0:
             html = "<html><body><script> alert('test the patient TEST4')  </script></body></html>" 
             return HttpResponse(html)            
     else:
@@ -561,12 +533,12 @@ def discharge_patient_view(request,pk):
         t2 = date(year = year1,month=month2,day= day2)
         t3 = t2 - t1
 
-       
+        
         print(datetime.now())
 
         print(t1)
         print(t3)
-       
+        
         days=t3 #2 days, 0:00:00
         print(type(patient.admitDate))
         assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctorId)
@@ -632,7 +604,7 @@ def discharge_patient_view(request,pk):
         # patient=models.Patient.objects.get(id=pk)
             patient.delete()
             print('patient deleted')
-            
+                
 
             return render(request,'hospital/patient_final_bill.html',context=patientDict)
         return render(request,'hospital/patient_generate_bill.html',context=patientDict)
@@ -1431,24 +1403,28 @@ def images2(request):
     
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
+    t = models.test2.objects.all().filter(Patient = p)
     print(p.first_name)
-    mydict = {'p':p}
+    mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest2.html',context=mydict)
 def images1(request):
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
-    mydict = {'p':p}
+    t = models.test1.objects.all().filter(Patient = p)
+    mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest1.html',context=mydict)
 def images3(request):
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
-    mydict = {'p':p}
+    t = models.test3.objects.all().filter(Patient = p)
+    mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest3.html',context=mydict)
 
 def images4(request):
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
-    mydict = {'p':p}
+    t = models.test4.objects.all().filter(Patient = p)
+    mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest4.html',context=mydict)
 
 
@@ -1497,21 +1473,20 @@ def upload_test(request):
         str1=  base64.b64encode(im.read())
         modImage = ContentFile( base64.b64decode(str1), name=f"{_filename}.{_extension}")
         if test == 'test1':
-            patient.test1 = modImage
-            patient.discription = dis
+            
+            p = models.test1.objects.get_or_create(Patient = patient,test= modImage,discription = dis)
+            
         elif test == 'test2':
             print('got Test2')
-            patient.test2 = modImage
-            patient.discription1 = dis    
+            p = models.test2.objects.get_or_create(Patient = patient,test= modImage,discription = dis) 
         elif test == 'test_3':
             print('test3')
-            patient.test_3 = modImage
-            patient.discription3 = dis
+            p = models.test3.objects.get_or_create(Patient = patient,test= modImage,discription = dis)
         elif test == 'test_4':
             print('test4')
-            patient.test_4 = modImage
-            patient.discription4 = dis
-        patient.save()
+            p = models.test4.objects.get_or_create(Patient = patient,test= modImage,discription = dis)
+            
+       
         print('test finished')        
         return redirect('admin-dashboard')
     
@@ -1528,6 +1503,7 @@ def Discharge_update(request):
 
 def Claim_update_pending(request):
     pass
+
 
 
 

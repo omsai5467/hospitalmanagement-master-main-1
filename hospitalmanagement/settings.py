@@ -79,8 +79,11 @@ WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'hospital5467',
+        'USER': 'postgres',
+        'PASSWORD': 'OMSAI5467',
+        'HOST': 'omsai.csagc35x7lqf.us-east-2.rds.amazonaws.com'
     }
 }
 

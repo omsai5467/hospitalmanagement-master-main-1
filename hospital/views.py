@@ -445,35 +445,7 @@ def admin_add_patient_view(request):
            
 
                                                           )
-        print('oms')
-
-        
-        
-
-        
-        #userForm=forms.PatientUserForm(request.POST)
-        patientForm=forms.PatientForm(request.POST,request.FILES)
-        if  patientForm.is_valid():
-            #user=userForm.save()
-            #user.set_passwor
-            print('omsai')
-
-            patient=patientForm.save(commit=False)
-            #patient.user=user
-            #patient.status=True
-            # patient.test1 = request.FILES.get['profile_pic']
-            # patient.test2 = request.FILES.get['profile_pic']
-            print('omd')
-            # patient.discription = 'default'
-            # patient.discription1 = 'default'
-            # print('omd')
-
-            patient.assignedDoctorId=request.POST.get('assignedDoctorId')
-            patient.save()
-
-            my_patient_group = Group.objects.get_or_create(name='PATIENT')
-            #my_patient_group[0].user_set.add(user)
-
+        print('data sucessfully suubmitted')
         return render(request,'hospital/admin_add_patient.html',context=mydict)
     return render(request,'hospital/admin_add_patient.html',context=mydict)
 
@@ -523,115 +495,119 @@ def admin_discharge_patient_view(request):
 @user_passes_test(is_admin)
 def discharge_patient_view(request,pk):
 
-    # p = models.Patient.objects.get(id=pk)
-    # if p.discription == '' or p.discription1 == '' or p.discription3 == '' or p.discription4 == '':
-    #     print('hi')
-    #     import datetime
-    #     now = datetime.datetime.now()
-    #     if p.discription == '':
-    #         html = "<html><body><script> alert('test the patient TEST1')  </script></body></html>" 
-    #         return HttpResponse(html)
-    #     if p.discription1 == '':
-    #         html = "<html><body><script> alert('test the patient TEST2')  </script></body></html>" 
-    #         return HttpResponse(html)
-    #     if p.discription3 == '':
-    #         html = "<html><body><script> alert('test the patient TEST3')  </script></body></html>" 
-    #         return HttpResponse(html)
-    #     if p.discription4 == '':
-    #         html = "<html><body><script> alert('test the patient TEST4')  </script></body></html>" 
-    #         return HttpResponse(html)            
-    # else:
-    from datetime import datetime,date
+    p = models.Patient.objects.get(id=pk)
+    t1 = models.test1.objects.all().filter(Patient = p).count()
+    t2 = models.test2.objects.all().filter(Patient = p).count()
+    t3 = models.test3.objects.all().filter(Patient = p).count()
+    t4 = models.test4.objects.all().filter(Patient=p).count() 
+    if t1 == 0 or t2 == 0 or t3 == 0 or t4 == 0:
+        print('hi')
+        import datetime
+        now = datetime.datetime.now()
+        if t1 == 0:
+            html = "<html><body><script> alert('test the patient TEST1')  </script></body></html>" 
+            return HttpResponse(html)
+        if t2 == 0:
+            html = "<html><body><script> alert('test the patient TEST2')  </script></body></html>" 
+            return HttpResponse(html)
+        if t3 == 0 :
+            html = "<html><body><script> alert('test the patient TEST3')  </script></body></html>" 
+            return HttpResponse(html)
+        if t4 == 0:
+            html = "<html><body><script> alert('test the patient TEST4')  </script></body></html>" 
+            return HttpResponse(html)            
+    else:
+        from datetime import datetime,date
 
-    patient=models.Patient.objects.get(id=pk)
-    print(type(patient.admitDate))
-    now = patient.admitDate
-    year = int(now.strftime("%Y"))
-    month = int(now.strftime("%m"))
-    day = int(now.strftime("%d"))
-    t1 = date(year = year , month = month , day = day)
-    up = datetime.today()
-    year1 = int(up.strftime("%Y"))
-    month2 = int(up.strftime("%m"))
-    day2 = int(up.strftime("%d"))
-    t2 = date(year = year1,month=month2,day= day2)
-    t3 = t2 - t1
+        patient=models.Patient.objects.get(id=pk)
+        print(type(patient.admitDate))
+        now = patient.admitDate
+        year = int(now.strftime("%Y"))
+        month = int(now.strftime("%m"))
+        day = int(now.strftime("%d"))
+        t1 = date(year = year , month = month , day = day)
+        up = datetime.today()
+        year1 = int(up.strftime("%Y"))
+        month2 = int(up.strftime("%m"))
+        day2 = int(up.strftime("%d"))
+        t2 = date(year = year1,month=month2,day= day2)
+        t3 = t2 - t1
 
-    
-    print(datetime.now())
+        
+        print(datetime.now())
 
-    print(t1)
-    print(t3)
-    
-    days=t3 #2 days, 0:00:00
-    print(type(patient.admitDate))
-    assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctorId)
-    d=days.days # only how many day that is 2
-    patientDict={
-        'patientId':pk,
-        'name':patient.first_name,
-        'mobile':patient.mobile,
-        'address':patient.address,
-        'symptoms':patient.symptoms,
-        'admitDate':patient.admitDate,
-        'todayDate':date.today(),
-        'day':d,
-        'assignedDoctorName':assignedDoctor[0].first_name,
-    }
-    if request.method == 'POST':
-        feeDict ={
-            'roomCharge':int(request.POST['roomCharge'])*int(d),
-            'doctorFee':request.POST['doctorFee'],
-            'medicineCost' : request.POST['medicineCost'],
-            'OtherCharge' : request.POST['OtherCharge'],
-            'total':(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
+        print(t1)
+        print(t3)
+        
+        days=t3 #2 days, 0:00:00
+        print(type(patient.admitDate))
+        assignedDoctor=models.User.objects.all().filter(id=patient.assignedDoctorId)
+        d=days.days # only how many day that is 2
+        patientDict={
+            'patientId':pk,
+            'name':patient.first_name,
+            'mobile':patient.mobile,
+            'address':patient.address,
+            'symptoms':patient.symptoms,
+            'admitDate':patient.admitDate,
+            'todayDate':date.today(),
+            'day':d,
+            'assignedDoctorName':assignedDoctor[0].first_name,
         }
-        
-        patientDict.update(feeDict)
-        # for updating to database patientDischargeDetails (pDD)
-        # import base64, secrets, io
-        # # from PIL import Image
-        # from django.core.files.base import ContentFile
-        # # #_format, _dataurl       = img.split(';base64,')
-        # # _filename, _extension   = secrets.token_hex(20), _format.split('/')[-1]
-        # im = open(patient.profile_pic,'rb')
-        # print(im.read())
-        # # str1=  base64.b64encode(im.read())
-        # # modImage = ContentFile( base64.b64decode(str1), name=f"{patient.first_name}.png")
-
-        # # #file = ContentFile( base64.b64decode(_dataurl), name=f"{_filename}.{_extension}")
-        # import base64
-        # a=  'static\profile_pic\PatientProfilePic\om.png'
-        # with open(a, "rb") as img_file:
-        #     my_string = base64.b64encode(img_file.read())
-        #     print(my_string)
-        
-        pDD=models.PatientDischargeDetails()
-        pDD.patientId=pk
-        pDD.patientName=patient.first_name
-        pDD.profile_pic=patient.profile_pic
-        print(patient.profile_pic)
-
-        pDD.assignedDoctorName=assignedDoctor[0].first_name
-        pDD.address=patient.address
-        pDD.mobile=patient.mobile
-        pDD.symptoms=patient.symptoms
-        pDD.admitDate=patient.admitDate
-        pDD.releaseDate=date.today()
-        pDD.daySpent=int(d)
-        pDD.medicineCost=int(request.POST['medicineCost'])
-        pDD.roomCharge=int(request.POST['roomCharge'])*int(d)
-        pDD.doctorFee=int(request.POST['doctorFee'])
-        pDD.OtherCharge=int(request.POST['OtherCharge'])
-        pDD.total=(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
-        pDD.save()
-    # patient=models.Patient.objects.get(id=pk)
-        patient.delete()
-        print('patient deleted')
+        if request.method == 'POST':
+            feeDict ={
+                'roomCharge':int(request.POST['roomCharge'])*int(d),
+                'doctorFee':request.POST['doctorFee'],
+                'medicineCost' : request.POST['medicineCost'],
+                'OtherCharge' : request.POST['OtherCharge'],
+                'total':(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
+            }
             
+            patientDict.update(feeDict)
+            # for updating to database patientDischargeDetails (pDD)
+            # import base64, secrets, io
+            # # from PIL import Image
+            # from django.core.files.base import ContentFile
+            # # #_format, _dataurl       = img.split(';base64,')
+            # # _filename, _extension   = secrets.token_hex(20), _format.split('/')[-1]
+            # im = open(patient.profile_pic,'rb')
+            # print(im.read())
+            # # str1=  base64.b64encode(im.read())
+            # # modImage = ContentFile( base64.b64decode(str1), name=f"{patient.first_name}.png")
 
-        return render(request,'hospital/patient_final_bill.html',context=patientDict)
-    return render(request,'hospital/patient_generate_bill.html',context=patientDict)
+            # # #file = ContentFile( base64.b64decode(_dataurl), name=f"{_filename}.{_extension}")
+            # import base64
+            # a=  'static\profile_pic\PatientProfilePic\om.png'
+            # with open(a, "rb") as img_file:
+            #     my_string = base64.b64encode(img_file.read())
+            #     print(my_string)
+            
+            pDD=models.PatientDischargeDetails()
+            pDD.patientId=pk
+            pDD.patientName=patient.first_name
+            pDD.profile_pic=patient.profile_pic
+            print(patient.profile_pic)
+
+            pDD.assignedDoctorName=assignedDoctor[0].first_name
+            pDD.address=patient.address
+            pDD.mobile=patient.mobile
+            pDD.symptoms=patient.symptoms
+            pDD.admitDate=patient.admitDate
+            pDD.releaseDate=date.today()
+            pDD.daySpent=int(d)
+            pDD.medicineCost=int(request.POST['medicineCost'])
+            pDD.roomCharge=int(request.POST['roomCharge'])*int(d)
+            pDD.doctorFee=int(request.POST['doctorFee'])
+            pDD.OtherCharge=int(request.POST['OtherCharge'])
+            pDD.total=(int(request.POST['roomCharge'])*int(d))+int(request.POST['doctorFee'])+int(request.POST['medicineCost'])+int(request.POST['OtherCharge'])
+            pDD.save()
+        # patient=models.Patient.objects.get(id=pk)
+            patient.delete()
+            print('patient deleted')
+                
+
+            return render(request,'hospital/patient_final_bill.html',context=patientDict)
+        return render(request,'hospital/patient_generate_bill.html',context=patientDict)
 
 
 
@@ -1427,24 +1403,28 @@ def images2(request):
     
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
+    t = models.test2.objects.all().filter(Patient = p)
     print(p.first_name)
-    mydict = {'p':p}
+    mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest2.html',context=mydict)
 def images1(request):
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
-    mydict = {'p':p}
+    t = models.test1.objects.all().filter(Patient = p)
+    mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest1.html',context=mydict)
 def images3(request):
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
-    mydict = {'p':p}
+    t = models.test3.objects.all().filter(Patient = p)
+    mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest3.html',context=mydict)
 
 def images4(request):
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
-    mydict = {'p':p}
+    t = models.test4.objects.all().filter(Patient = p)
+    mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest4.html',context=mydict)
 
 
@@ -1458,7 +1438,7 @@ def testing_patient(request,pk):
     upload_id = pk
     return render (request,'testing_of_patient.html')
 def upload_test(request):
-    # patient = models.Patient.objects.get(pk=upload_id)
+    patient = models.Patient.objects.get(pk=upload_id)
     if request.method =='POST':
         test = request.POST['test']
         dis = request.POST['w3review']
@@ -1493,17 +1473,18 @@ def upload_test(request):
         str1=  base64.b64encode(im.read())
         modImage = ContentFile( base64.b64decode(str1), name=f"{_filename}.{_extension}")
         if test == 'test1':
-            p = models.test1.objects.get_or_create(Patient = upload_id,test= modImage,discription = dis)
+            
+            p = models.test1.objects.get_or_create(Patient = patient,test= modImage,discription = dis)
             
         elif test == 'test2':
             print('got Test2')
-            p = models.test2.objects.get_or_create(Patient = upload_id,test= modImage,discription = dis) 
+            p = models.test2.objects.get_or_create(Patient = patient,test= modImage,discription = dis) 
         elif test == 'test_3':
             print('test3')
-            p = models.test3.objects.get_or_create(Patient = upload_id,test= modImage,discription = dis)
+            p = models.test3.objects.get_or_create(Patient = patient,test= modImage,discription = dis)
         elif test == 'test_4':
             print('test4')
-            p = models.test4.objects.get_or_create(Patient = upload_id,test= modImage,discription = dis)
+            p = models.test4.objects.get_or_create(Patient = patient,test= modImage,discription = dis)
             
        
         print('test finished')        

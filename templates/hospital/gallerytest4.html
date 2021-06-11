@@ -59,17 +59,14 @@ div.desc {
 <h2>{{   p.first_name  }}</h2>
 <h4>Resize the browser window to see the effect.</h4>
 
-{%     for i in t %}
 <div class="responsive">
- 
   <div class="gallery">
-    <a target="_blank" href="{% static i.test.url %}">
-      <img src="{% static i.test.url %}" alt="not found" width="600" height="400">
+    <!-- <a target="_blank" href="{% static p.test_4.url %}"> -->
+      <!-- <img src="{% static p.test_4.url %}" alt="not tested" width="600" height="400"> -->
     </a>
-    <div class="desc">{{ i.discription   }}</div>
+    <!-- <div class="desc">{{  p.discription4   }}</div> -->
   </div>
 </div>
-{%   endfor   %}
 
 
 

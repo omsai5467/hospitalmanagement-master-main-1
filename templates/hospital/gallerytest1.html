@@ -58,17 +58,15 @@ div.desc {
 
 <h2>{{ p.first_name }}</h2>
 <h4>test1 pictures</h4>
-{%     for i in t %}
+
 <div class="responsive">
- 
   <div class="gallery">
     <a target="_blank" href="img_5terre.jpg">
-      <img src="{% static i.test.url %}" alt="Cinque Terre" width="600" height="400">
+      <!-- <img src="{% static p.test1.url %}" alt="Cinque Terre" width="600" height="400"> -->
     </a>
-    <div class="desc">{{ i.discription   }}</div>
+    <!-- <div class="desc">{{  p.discription   }}</div> -->
   </div>
 </div>
-{%   endfor   %}
 
 
 

@@ -1400,6 +1400,12 @@ def folders(request,pk):
     return render(request,'hospital/patientTest.html')
 
 def images2(request):
+    if request.method == 'POST':
+        v = request.POST['test2']
+        p = models.test2.objects.get(id=v)
+        p.delete()
+        print('deleted')
+        return redirect('images2')
     
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
@@ -1415,6 +1421,12 @@ def images1(request):
     return render(request,'hospital/gallerytest1.html',context=mydict)
 def images3(request):
     print(patient_id)
+    if request.method == 'POST':
+        v = request.POST['test2']
+        p = models.test3.objects.get(id=v)
+        p.delete()
+        print('deleted')
+        return redirect('images3')
     p = models.Patient.objects.get(id=patient_id)
     t = models.test3.objects.all().filter(Patient = p)
     mydict = {'p':p,'t':t}
@@ -1422,6 +1434,12 @@ def images3(request):
 
 def images4(request):
     print(patient_id)
+    if request.method == 'POST':
+        v = request.POST['test2']
+        p = models.test4.objects.get(id=v)
+        p.delete()
+        print('deleted')
+        return redirect('images4')
     p = models.Patient.objects.get(id=patient_id)
     t = models.test4.objects.all().filter(Patient = p)
     mydict = {'p':p,'t':t}
@@ -1505,5 +1523,15 @@ def Claim_update_pending(request):
     pass
 
 
+def deletePhoto(request,pk):
+    p = models.test1.objects.get(id=pk)
+    p.delete()
+    return redirect('images1')
+    
+    
 
-
+def delete(request,pk):
+    p = models.test2.objects.get(id=pk)
+    p.delete()
+    return redirect('images2')
+    

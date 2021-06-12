@@ -92,7 +92,9 @@ urlpatterns = [
     path('admin_add_patient_view',views.admin_add_patient_view),
     path('testpatient',views.test_patient,name='testpatient'),
     path('testingpatient/<int:pk>',views.testing_patient,name='testingpatient'),
+    path('delete-patient-photo/<int:pk>',views.deletePhoto,name='delete-patient-photo'),
     path('testingpatient/upload_test',views.upload_test,name='upload_test'),
+    path('delete/<int:pk>',views.delete,name='deletePhoto'),
     
     
     

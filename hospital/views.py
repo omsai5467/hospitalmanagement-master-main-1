@@ -1389,8 +1389,13 @@ def update(request, pk):
 #addddd
 def search(request):
     search = request.POST['id']
-    p = models.Patient.objects.get(id=search)
-    return render(request,'hospital/search.html',{'p':p})
+    try:
+        p = models.Patient.objects.get(id=search)
+        return render(request,'hospital/search.html',{'p':p})
+    except:
+        html = "<html><body><script> alert('Not found patient')  </script></body></html>" 
+        return HttpResponse(html)
+        # return HttpResponse('<script> patient not found</script>')
 
 
 

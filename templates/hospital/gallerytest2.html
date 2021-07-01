@@ -91,7 +91,7 @@ div.desc {
     <button class="btn" ><i class="fa fa-trash"></i> Trash</button>
   </form>
  
-  <a class="btn" download = 'im.jpg' href="{% static i.test.url  %}"><i class="fa fa-trash"></i> download</a>
+  <a class="btn" download = {{ i.test.name }} href="{% static i.test.url  %}"><i class="fa fa-trash"></i> download</a>
 </div>
 
 

@@ -72,7 +72,7 @@
                   <option value="Dischargestate" {% if patient.Patient_type_1 == "Dischargestate" %}selected="selected"{% endif %} >Dischargestate</option>
             
                   <option value="Claimphase" {% if patient.Patient_type_1 == "Claimphase" %}selected="selected"{% endif %} >Claimphase</option>
-                  
+                  <option value="surgery_update"   {% if patient.Patient_type_1 == "surgery_update" %}selected="selected"{% endif %} >surgery_update</option> 
               </select>
                
               </div>
@@ -137,6 +137,11 @@
       {
           var arr=[];
       }
+      else if(a==="surgery_update")
+      {
+          var arr=["Running","compleated",'other'];
+      }
+
    
       var string="";
    

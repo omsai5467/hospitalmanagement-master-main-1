@@ -2,79 +2,40 @@
 {% load static %}
 {% block content %}
 {%include 'hospital/admin_dashboard_cards.html'%}
-<br><br><br><br>
-<div class="container">
-  <div class="row">
-    <div class="panel panel-primary col-md-5" style="margin-left:2%;">
-      <div class="panel-heading" style="text-align:center;">
-        <h6 class="panel-title">Recent Doctors</h6>
-      </div>
-      <table class="table table-hover" id="dev-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Department</th>
-            <th>Mobile</th>
-            <th>Status</th>
+<!-- <h1 class="display-4">Display 4</h1> -->
 
-          </tr>
-        </thead>
-        {% for d in doctors %}
+<br>
+<table class="table table-sm table-dark">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Name</th>
+      <th>no of days or time</th>
+      <th>Mobile</th>
+      <th>Address</th>
+      <th>Status</th>
+      <th>update</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in patients %}
         <tr>
-          <td> {{d.get_name}}</td>
-          <td>{{d.department}}</td>
-          <td>{{d.mobile}}</td>
-          {%if d.status%}
-          <td> <span class="label label-primary">hospital</span></td>
-          {% else %}
-          <td> <span class="label label-success">On Hold</span></td>
-          {% endif %}
-
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-
-    <div class="panel panel-primary col-md-5" style="margin-left:5%;">
-      <div class="panel-heading" style="text-align:center;">
-        <h6 class="panel-title">Claimphase</h6>
-      </div>
-      <table class="table table-hover" id="dev-table">
-        <thead>
-          <tr>
-            <th>id</th>
-            <th>Name</th>
-            <th>no of days or time</th>
-            <th>Mobile</th>
-            <th>Address</th>
-            <th>Status</th>
-
-          </tr>
-        </thead>
-        {% for p in patients %}
-        <tr>
-          <td>{{p.id}}</td>
+          <td>{{ p.id }}</td>
           <td> {{p.first_name}}</td>
-          <!-- <td>{{p.symptoms}}</td> -->
-           <td >{{p.updated|timesince }} </td>
+         <!--  <td>{{p.symptoms}}</td> -->
+          <td >{{p.updated|timesince }} </td>
           <td>{{p.mobile}}</td>
           <td>{{p.address}}</td>
-          
+         
           <td> <span class="label label-primary">{{p.status1}}</span></td>
           <td><a class="btn btn-primary btn-xs" href="{% url 'test-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
           
-
+         
         </tr>
         {% endfor %}
-      </table>
-    </div>
-  </div>
-</div>
-
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+    
+  </tbody>
+</table>
 
 {% endblock content %}

@@ -19,9 +19,11 @@ def home_view(request):
 
 #for showing signup/login button for admin(by sumit)
 def adminclick_view(request):
+    num = Group.objects.all().count()
+    print(num)
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
-    return render(request,'hospital/adminclick.html')
+    return render(request,'hospital/adminclick.html',{'num':num})
 
 
 #for showing signup/login button for doctor(by sumit)
@@ -41,6 +43,9 @@ def patientclick_view(request):
 
 
 def admin_signup_view(request):
+    n = Group.objects.all().count()
+    if n > 0 :
+        return HttpResponse('😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁😁🤣🤣🤣🤣🤣😂😂😂😘😘🤷‍♀️🤷‍♀️🤦‍♂️🤦‍♀️😎🎶😢💖😜')
     form=forms.AdminSigupForm()
     if request.method=='POST':
         form=forms.AdminSigupForm(request.POST)
@@ -1494,7 +1499,8 @@ def upload_test(request):
         image = Image.open('devnote.png')
         im = open('devnote.png','rb')
         str1=  base64.b64encode(im.read())
-        modImage = ContentFile( base64.b64decode(str1), name=f"{_filename}.{_extension}")
+        file_name = patient.first_name + f'{patient.id}'
+        modImage = ContentFile( base64.b64decode(str1), name=f"{file_name}.{_extension}")
         if test == 'test1':
             
             p = models.test1.objects.get_or_create(Patient = patient,test= modImage,discription = dis)

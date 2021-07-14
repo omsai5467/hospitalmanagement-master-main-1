@@ -1,0 +1,153 @@
+{%  load_static   %}
+<head>
+    <style media="screen">
+      a:link {
+        text-decoration: none;
+      }
+  
+      .note {
+        text-align: center;
+        height: 80px;
+        background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+        color: #fff;
+        font-weight: bold;
+        line-height: 80px;
+      }
+  
+      .form-content {
+        padding: 5%;
+        border: 1px solid #ced4da;
+        margin-bottom: 2%;
+      }
+  
+      .form-control {
+        border-radius: 1.5rem;
+      }
+  
+      .btnSubmit {
+        border: none;
+        border-radius: 1.5rem;
+        padding: 1%;
+        width: 20%;
+        cursor: pointer;
+        background: #0062cc;
+        color: #fff;
+      }
+  
+      .menu {
+        top: 50px;
+      }
+    </style>
+  
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <br><br>
+  <!------ update page for doctor by admin(sumit)  ---------->
+  <form method="POST" enctype="multipart/form-data"  >
+    {% csrf_token %}
+    <div class="container register-form">
+      <div class="form">
+        <div class="note">
+          <p>Update patient tests</p>
+        </div>
+        <div class="form-content">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                  <h2>PATIENT NAME :  {{patient.id}} </h2>
+                  <select id="input"  name="Patient_type_1" placeholder="Doctor" class="form-control" required=""    onclick="random_function()">
+              
+                    <option>selectoption</option>
+                    <option value="pretreatment"  {% if patient.Patient_type_1 == "pretreatment" %}selected="selected"{% endif %} >pretreatment</option>
+              
+                    <option value="Registrationcount"   {% if patient.Patient_type_1 == "Registrationcount" %}selected="selected"{% endif %} >Registrationcount</option>
+              
+                    <option value="Preauthorisation" {% if patient.Patient_type_1 == "Preauthorisation" %}selected="selected"{% endif %} >Preauthorisation</option>
+              
+                    <option value="Dischargestate" {% if patient.Patient_type_1 == "Dischargestate" %}selected="selected"{% endif %} >Dischargestate</option>
+              
+                    <option value="Claimphase" {% if patient.Patient_type_1 == "Claimphase" %}selected="selected"{% endif %} >Claimphase</option>
+                    <option value="surgery_update"   {% if patient.Patient_type_1 == "surgery_update" %}selected="selected"{% endif %} >surgery_update</option> 
+                </select>
+                 
+                </div>
+                <div class="form-group">
+                  <select id="output"  name = 'status1' class="form-control" required=""  onchange="random_function1()">
+                    <option  >{{patient.status1}}</option>
+  
+                  </select>
+                  
+                </div
+              
+  
+  
+             
+             
+             
+              
+            </div>
+  
+          
+          <button type="submit" class="btnSubmit">Update</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  
+  
+  
+  
+  
+  
+  <script>
+    function random_function()
+    {
+        var a=document.getElementById("input").value;
+        if(a==="pretreatment")
+        {
+            var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+        }
+        else if(a==="Registrationcount")
+        {
+            var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+        }
+        else if(a==="SurgeryUpdate")
+        {
+            var arr=[''];
+        }
+        else if(a==="Preauthorisation")
+        {
+            var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+        }
+        else if(a==="Dischargestate")
+        {
+            var arr=["Running","compleated","DischargeUpdated",'DischargeUpdatePending','other'];
+        }
+        else if(a==="Claimphase")
+        {
+            var arr=["Running","compleated","needToApply",'claimApplied','claimPending','claimapproved','other'];
+        }
+        else if(a==="selectoption")
+        {
+            var arr=[];
+        }
+        else if(a==="surgery_update")
+        {
+            var arr=["Running","compleated",'other'];
+        }
+  
+     
+        var string="";
+     
+        for(i=0;i<arr.length;i++)
+        {
+            string=string+"<option value="+arr[i]+">"+arr[i]+"</option>";
+        }
+        document.getElementById("output").innerHTML=string;
+    }
+  </script>
+  
+  {% endblock content %}

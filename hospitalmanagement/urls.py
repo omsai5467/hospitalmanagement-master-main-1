@@ -57,6 +57,7 @@ urlpatterns = [
     path('delete-patient-from-hospital/<int:pk>', views.delete_patient_from_hospital_view,name='delete-patient-from-hospital'),
     path('update-patient/<int:pk>', views.update_patient_view,name='update-patient'),
     path('test-patient/<int:pk>',views.test , name = 'test-patient'),
+    path('update_doctor/<int:pk>',views.update_doctor, name = 'update_doctor'),
     # path('test1-patient/<int:pk>',views.folders , name = 'test-patient'),
     path('test/<int:pk>',views.folders , name = 'test'),
     path('test/images1', views.images1 , name = 'images1'),

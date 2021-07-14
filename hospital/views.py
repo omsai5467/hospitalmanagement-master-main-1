@@ -374,6 +374,7 @@ import os
 @login_required(login_url='adminlogin')
 @user_passes_test(is_admin)
 def admin_add_patient_view(request):
+    print(request.user)
    # userForm=forms.PatientUserForm()
     patientForm=forms.PatientForm()
     mydict={'patientForm':patientForm}
@@ -496,8 +497,8 @@ def admin_discharge_patient_view(request):
 
 
 
-@login_required(login_url='adminlogin')
-@user_passes_test(is_admin)
+@login_required()
+# @user_passes_test(is_admin)
 def discharge_patient_view(request,pk):
 
     p = models.Patient.objects.get(id=pk)
@@ -742,7 +743,7 @@ def doctor_dashboard_view(request):
     patientid=[]
     for a in appointments:
         patientid.append(a.patientId)
-    patients=models.Patient.objects.all().filter(status=True,user_id__in=patientid).order_by('-id')
+    patients=models.Patient.objects.all().filter(status=True).order_by('-id')
     appointments=zip(appointments,patients)
     mydict={
     'patientcount':patientcount,
@@ -1028,7 +1029,7 @@ def contactus_view(request):
     return render(request, 'hospital/contactus.html', {'form':sub})
 
 
-
+@login_required
 def pretreatment(request):
     Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
     pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
@@ -1066,12 +1067,24 @@ def pretreatment(request):
     'patients':patients
     #context=mydict
     }
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    # from datetime import datetime
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        e = d
+        print(e.split())
+        p.updated = 30 - int(e[0])
+        print(type(d))
 
     
 
     return render(request,'hospital/pretreatment.html',context=mydict)
-
+@login_required
 def Registrationcount(request):
+    today = datetime.now()
     Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Registrationcount')
@@ -1109,13 +1122,17 @@ def Registrationcount(request):
     'Preauthorisation':Preauthorisation,
     'Dischargestate':Dischargestate,
     'Claimphase':Claimphase,
+    'from_date': today
 
     #context=mydict
     }
+    days = []
+    # patients = models.Patient.objects.all().filter(Patient_type_1='Registrationcount')
+    print(patients)
 
     return render(request,'hospital/Registrationcount.html',context=mydict)
 
-
+@login_required
 def surgery(request):
 
     pretreatment = models.Patient.objects.all().filter(Patient_type_1='pretreatment').count()
@@ -1154,11 +1171,22 @@ def surgery(request):
     'patients':patients
     #context=mydict
     }
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    # from datetime import datetime
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        e = d
+        print(e.split())
+        p.updated = 30 - int(e[0])
+        print(type(d))
 
     
 
     return render(request,'hospital/surgery.html',context=mydict)
-
+@login_required
 def Registrationcount(request):
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Registrationcount')
@@ -1198,6 +1226,17 @@ def Registrationcount(request):
 
     #context=mydict
     }
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    # from datetime import datetime
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        e = d
+        print(e.split())
+        p.updated = 30 - int(e[0])
+        print(type(d))
 
     return render(request,'hospital/Registrationcount.html',context=mydict)
 
@@ -1219,7 +1258,7 @@ def Registrationcount(request):
 
 
 
-
+@login_required
 def Preauthorisation(request):
 
     patients = models.Patient.objects.all().filter(Patient_type_1='Preauthorisation')
@@ -1260,8 +1299,19 @@ def Preauthorisation(request):
     
     #context=mydict
     }
-    return render(request,'hospital/Preauthorisation.html',context=mydict)
+    from datetime import datetime, timezone
 
+    now = datetime.now(timezone.utc)
+    # from datetime import datetime
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        e = d
+        print(e.split())
+        p.updated = 30 - int(e[0])
+        print(type(d))
+    return render(request,'hospital/Preauthorisation.html',context=mydict)
+@login_required
 def Dischargestate(request):
     Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='Surgery_update').count()
 
@@ -1300,9 +1350,20 @@ def Dischargestate(request):
     'patients':patients
     #context=mydict
     }
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    # from datetime import datetime
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        e = d
+        print(e.split())
+        p.updated = 30 - int(e[0])
+        print(type(d))
     
     return render(request,'hospital/Dischargestate.html',context=mydict)  
-
+@login_required
 def Claimphase(request):
     Surgery_update =  models.Patient.objects.all().filter(Patient_type_1='surgery_update').count()
 
@@ -1342,6 +1403,17 @@ def Claimphase(request):
     'patients':patients
     #context=mydict
     }
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    # from datetime import datetime
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        e = d
+        print(e.split())
+        p.updated = 30 - int(e[0])
+        print(type(d))
     return render(request,'hospital/Claimphase.html',context=mydict)
 #---------------------------------------------------------------------------------
 #------------------------ ADMIN RELATED VIEWS END ------------------------------
@@ -1349,7 +1421,7 @@ def Claimphase(request):
 
 
 
-
+@login_required
 def test(request,pk):
 
     patient=models.Patient.objects.get(id=pk)
@@ -1369,8 +1441,10 @@ def test(request,pk):
         patient.save()
         print(Patient_type)
         # for i in range(20):
-
-        return redirect('admin-dashboard')
+        try:
+            return redirect('admin-dashboard')
+        except:
+            return redirect('')
 
 
         #userForm=forms.PatientUserForm(request.POST,instance=user)
@@ -1392,6 +1466,7 @@ def update(request, pk):
     pass
 # added python 3.9 dashboard update
 #addddd
+@login_required
 def search(request):
     search = request.POST['id']
     try:
@@ -1403,12 +1478,15 @@ def search(request):
         # return HttpResponse('<script> patient not found</script>')
 
 
-
+@login_required
 def folders(request,pk):
-    global patient_id
-    patient_id= pk
-    return render(request,'hospital/patientTest.html')
-
+    if login_required(login_url='adminlogin'):
+        print(bool(login_required(login_url='patientlogin')))
+        global patient_id
+        patient_id= pk
+        return render(request,'hospital/patientTest.html')
+    return HttpResponse('haaaa')
+@login_required
 def images2(request):
     if request.method == 'POST':
         v = request.POST['test2']
@@ -1423,12 +1501,14 @@ def images2(request):
     print(p.first_name)
     mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest2.html',context=mydict)
+@login_required
 def images1(request):
     print(patient_id)
     p = models.Patient.objects.get(id=patient_id)
     t = models.test1.objects.all().filter(Patient = p)
     mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest1.html',context=mydict)
+@login_required
 def images3(request):
     print(patient_id)
     if request.method == 'POST':
@@ -1441,7 +1521,7 @@ def images3(request):
     t = models.test3.objects.all().filter(Patient = p)
     mydict = {'p':p,'t':t}
     return render(request,'hospital/gallerytest3.html',context=mydict)
-
+@login_required
 def images4(request):
     print(patient_id)
     if request.method == 'POST':
@@ -1457,14 +1537,16 @@ def images4(request):
 
 
 
-
+@login_required
 def test_patient(request):
     patients=models.Patient.objects.all().filter(status=True)
     return render(request,'hospital/patient_test.html',{'patients':patients})
+@login_required
 def testing_patient(request,pk):
     global upload_id
     upload_id = pk
     return render (request,'testing_of_patient.html')
+@login_required
 def upload_test(request):
     patient = models.Patient.objects.get(pk=upload_id)
     if request.method =='POST':
@@ -1517,11 +1599,13 @@ def upload_test(request):
             
        
         print('test finished')        
-        return redirect('admin-dashboard')
+       
+        html = "<html><body><script> alert('uploaded......')  </script></body></html>" 
+        return HttpResponse(html)
     
 
 
-
+@login_required
 def Discharge_update(request):
     p = models.Patient.objects.all().filter(Patient_type_1='Dischargestate')
     return render(request,'Discharge_update.html',{'patients':p})
@@ -1533,16 +1617,60 @@ def Discharge_update(request):
 def Claim_update_pending(request):
     pass
 
-
+@login_required
 def deletePhoto(request,pk):
     p = models.test1.objects.get(id=pk)
     p.delete()
     return redirect('images1')
     
     
-
+@login_required
 def delete(request,pk):
     p = models.test2.objects.get(id=pk)
     p.delete()
     return redirect('images2')
+
+
+
+
+    # path('update_doctor/<int:pk>',views.update_doctor, name = 'update_doctor'),
+@login_required(login_url='doctorlogin')
+def update_doctor(request,pk):
+    print(login_required(login_url='doctorlogin'))
+    print(request.user)
+    patient=models.Patient.objects.get(id=pk)
     
+    patientForm=forms.PatientForm(instance=patient)
+  #  Patient_type_1=Claimphase&status1=compleated
+    mydict={'patientForm':patientForm,'patient':patient}
+    if request.method=='POST':
+        patient=models.Patient.objects.get(id=pk)
+        Patient_type = request.POST['Patient_type_1']
+        status1 = request.POST['status1']
+        #        p = models.Patient.objects.get_or_create(
+
+        #p = models.Patient.objects.update_or_create(id=pk,Patient_type_1=Patient_type,status1=status1)
+        patient.Patient_type_1 = Patient_type
+        patient.status1 = status1
+        patient.save()
+        print(Patient_type)
+        # for i in range(20):
+       
+        return redirect('doctor-view-patient')
+       
+           
+
+
+        #userForm=forms.PatientUserForm(request.POST,instance=user)
+        patientForm=forms.PatientForm(request.POST,instance=patient)
+        if   patientForm.is_valid():
+            
+            #user=userForm.save()
+            #user.set_password(user.password)
+            #user.save()
+            
+            
+            
+            patient.save()
+            return redirect('doctor-view-patient')
+    return render(request,'hospital/doctor_update_patient.html',context=mydict)

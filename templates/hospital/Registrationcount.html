@@ -10,7 +10,8 @@
     <tr>
       <th>id</th>
       <th>Name</th>
-      <th>no of days or time</th>
+      
+      <th>Remaining Days</th>
       <th>Mobile</th>
       <th>Address</th>
       <th>Status</th>
@@ -24,7 +25,11 @@
           <td>{{ p.id }}</td>
           <td> {{p.first_name}}</td>
          <!--  <td>{{p.symptoms}}</td> -->
-          <td >{{p.updated|timesince }} </td>
+         {% load mathfilters %}
+          
+
+          
+          <td >{{ p.updated }} </td>
           <td>{{p.mobile}}</td>
           <td>{{p.address}}</td>
          

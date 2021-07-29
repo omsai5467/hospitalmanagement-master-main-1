@@ -1,0 +1,67 @@
+
+{% extends 'hospital/admin_base.html' %}
+{% block content %}
+{%load static%}
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+</style>
+</head>
+<body>
+<p>  claimPhase pending status </p>
+<table id="customers">
+  <tr>
+    <th>ID</th>
+    <th>NAME</th>
+    
+    <th>PHONE</th>
+    <th>address</th>
+    <th>no of days</th>
+
+  </tr>
+  {%  for i in p       %}
+  <tr>
+    <td>{{i.id}}</td>
+    <td>{{i.first_name}}</td>
+
+    <td>{{i.mobile}}</td>
+    <td>{{i.address}}</td>
+    <td>{{i.updated | timesince}}</td>
+  </tr>
+  {% endfor %}
+  
+</table>
+
+</body>
+</html>
+{% endblock content %}

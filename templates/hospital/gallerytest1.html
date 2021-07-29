@@ -5,6 +5,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <style>
+    .button {
+      background-color: #ddd;
+      border: none;
+      color: black;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 16px;
+    }
+    
+    .button:hover {
+      background-color: #f1f1f1;
+    }
+    </style>
 <style>
 div.gallery {
   border: 1px solid #ccc;
@@ -55,16 +73,30 @@ div.desc {
 </style>
 </head>
 <body>
-
+  <br><br><br>
+  <form method="post" action ='uploadImage' enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type='hidden' name='idim' value='{{id}}'>
+  <input type="file" name ='image_01' accept="image/*;capture=camera" class="btnSubmit"> <input type="radio" id="html" name="fav_language" value="IMAGE">   <label for="html">IMAGE</label>
+    <input type="radio" id="css" name="fav_language" value="VIDEO">
+    <label for="css">VIDEO</label> <input type="text"  name = 'dis'> <button class="btnSubmit">UPLOAD</button> </form>
 <h2>{{ p.first_name }}</h2>
-<h4>test1 pictures</h4>
-{%     for i in t %}
+<h4></h4>
+{%     for i in a %}
 <div class="responsive">
  
   <div class="gallery">
-    <a target="_blank" href="img_5terre.jpg">
-      <img src="{% static i.test.url %}" alt="Cinque Terre" width="600" height="400">
-    </a>
+    <!-- <a target="_blank" href="{{ i.test.url }}"> -->
+      {%  if  i.type  == 'IMAGE'     %}
+      <img src="{% static i.test.url %}" alt="Cinque Terre" width="320" height="240">
+      {%  else %}
+      <video width="320" height="240" controls>
+        <source src="{% static i.test.url %}" type="video/mp4">
+      
+        Your browser does not support the video tag.
+      </video>
+      {% endif %}
+    
     <div class="desc">{{ i.discription   }}</div>
     <!-- <td><a class="btn btn-danger btn-xs" href="{% url 'delete-patient-from-hospital' i.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -85,8 +117,9 @@ div.desc {
       </style>
    
   </div>
-  <a class="btn" href="{% url 'delete-patient-photo' i.id  %}"><i class="fa fa-trash"></i> Trash</a>
-  <a class="btn" download = {{  i.test.name }} href="{% static i.test.url  %}"><i class="fa fa-trash"></i> download</a>
+  <!-- <a  href="{% url 'delete-patient-photo' i.id  %}"><i class="bi bi-arrow-down-circle"></i> </a> -->
+  <form method = 'GET' action = 'del'><button type="submit" class="button" >DELETE</button></form>
+  <a download = {{  i.test.name }} href="{% static i.test.url  %}"><button >DOWNLOAD</button></a>
 </div>
 
 

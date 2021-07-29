@@ -60,10 +60,12 @@ urlpatterns = [
     path('update_doctor/<int:pk>',views.update_doctor, name = 'update_doctor'),
     # path('test1-patient/<int:pk>',views.folders , name = 'test-patient'),
     path('test/<int:pk>',views.folders , name = 'test'),
-    path('test/images1', views.images1 , name = 'images1'),
-    path('test/images2', views.images2 , name = 'images2'),
-    path('test/images3', views.images3 , name = 'images3'),
-    path('test/images4', views.images4 , name = 'images4'),
+    path('test/createfolder',views.createfolder,name='createfolder'),
+    # path('test/gallery',views.gallery_photos , name = 'images'),
+    # path('test/images1', views.images1 , name = 'images1'),
+    # path('test/images2', views.images2 , name = 'images2'),
+    # path('test/images3', views.images3 , name = 'images3'),
+    # path('test/images4', views.images4 , name = 'images4'),
    
     
     path('admin-add-patient', views.admin_add_patient_view,name='admin-add-patient'),
@@ -93,9 +95,11 @@ urlpatterns = [
     path('admin_add_patient_view',views.admin_add_patient_view),
     path('testpatient',views.test_patient,name='testpatient'),
     path('testingpatient/<int:pk>',views.testing_patient,name='testingpatient'),
-    path('delete-patient-photo/<int:pk>',views.deletePhoto,name='delete-patient-photo'),
+    path('delete-patient-photo/<int:pk>',views.gallery_photos,name='delete-patient-photo'),
     path('testingpatient/upload_test',views.upload_test,name='upload_test'),
     path('delete/<int:pk>',views.delete,name='deletePhoto'),
+    path('delete-patient-photo/uploadImage', views.uploadImage,name='upload')
+    
     
     
     

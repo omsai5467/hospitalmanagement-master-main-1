@@ -141,31 +141,47 @@ class PatientDischargeDetails(models.Model):
 
 
 class test1(models.Model):
+    folderName = models.CharField(max_length=100 ,null=False)
     Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.folderName
+    # def __str__(self):
+    #     self.Patient
+
+# class test2(models.Model):
+#     Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+#     test = models.ImageField(upload_to='testphotos/test2/', null=True,blank=True)
+#     discription = models.CharField(max_length=100 ,null=False)
+#     def __str__(self):
+#         self.Patient
+
+# class test3(models.Model):
+#     Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+#     test = models.ImageField(upload_to='testphotos/test3/', null=True,blank=True)
+#     discription = models.CharField(max_length=100 ,null=False)
+#     def __str__(self):
+#         self.Patient
+# class test4(models.Model):
+#     Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+#     test = models.ImageField(upload_to='testphotos/test4/', null=True,blank=True)
+#     discription = models.CharField(max_length=100 ,null=False)
+#     def __str__(self):
+#         self.Patient    
+        
+# class names(models.Model):
+#     name = models.CharField(max_length=200)
+#     testname = models.ForeignKey(test3 ,on_delete=models.CASCADE) 
+
+
+class testphotos(models.Model):
     test = models.ImageField(upload_to='testphotos/test1/', null=True,blank=True)
     discription = models.CharField(max_length=100 ,null=False)
-    def __str__(self):
-        self.Patient
-
-class test2(models.Model):
+    type = models.CharField(max_length=100 ,null=False)
+    folderName = models.ForeignKey(test1,on_delete=models.CASCADE)
     Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
-    test = models.ImageField(upload_to='testphotos/test2/', null=True,blank=True)
-    discription = models.CharField(max_length=100 ,null=False)
-    def __str__(self):
-        self.Patient
-
-class test3(models.Model):
-    Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
-    test = models.ImageField(upload_to='testphotos/test3/', null=True,blank=True)
-    discription = models.CharField(max_length=100 ,null=False)
-    def __str__(self):
-        self.Patient
-class test4(models.Model):
-    Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
-    test = models.ImageField(upload_to='testphotos/test4/', null=True,blank=True)
-    discription = models.CharField(max_length=100 ,null=False)
-    def __str__(self):
-        self.Patient    
-
-
-
+    
+    # def __str__(self):
+    #     return self.folderName
+        
+  

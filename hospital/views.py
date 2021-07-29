@@ -1,4 +1,3 @@
-import turtledemo
 
 from django.shortcuts import render,redirect,reverse
 from . import forms,models
@@ -502,26 +501,27 @@ def admin_discharge_patient_view(request):
 def discharge_patient_view(request,pk):
 
     p = models.Patient.objects.get(id=pk)
-    t1 = models.test1.objects.all().filter(Patient = p).count()
-    t2 = models.test2.objects.all().filter(Patient = p).count()
-    t3 = models.test3.objects.all().filter(Patient = p).count()
-    t4 = models.test4.objects.all().filter(Patient=p).count() 
-    if t1 == 0 or t2 == 0 or t3 == 0 or t4 == 0:
+    # t1 = models.test1.objects.all().filter(Patient = p).count()
+    # t2 = models.test2.objects.all().filter(Patient = p).count()
+    # t3 = models.test3.objects.all().filter(Patient = p).count()
+    # t4 = models.test4.objects.all().filter(Patient=p).count() 
+    t1 = models.testphotos.objects.all().filter(Patient=p).count()
+    if t1 == 0 :
         print('hi')
         import datetime
         now = datetime.datetime.now()
         if t1 == 0:
-            html = "<html><body><script> alert('test the patient TEST1')  </script></body></html>" 
+            html = "<html><body><script> alert('test the patient TEST')  </script></body></html>" 
             return HttpResponse(html)
-        if t2 == 0:
-            html = "<html><body><script> alert('test the patient TEST2')  </script></body></html>" 
-            return HttpResponse(html)
-        if t3 == 0 :
-            html = "<html><body><script> alert('test the patient TEST3')  </script></body></html>" 
-            return HttpResponse(html)
-        if t4 == 0:
-            html = "<html><body><script> alert('test the patient TEST4')  </script></body></html>" 
-            return HttpResponse(html)            
+        # if t2 == 0:
+        #     html = "<html><body><script> alert('test the patient TEST2')  </script></body></html>" 
+        #     return HttpResponse(html)
+        # if t3 == 0 :
+        #     html = "<html><body><script> alert('test the patient TEST3')  </script></body></html>" 
+        #     return HttpResponse(html)
+        # if t4 == 0:
+        #     html = "<html><body><script> alert('test the patient TEST4')  </script></body></html>" 
+        #     return HttpResponse(html)            
     else:
         from datetime import datetime,date
 
@@ -1249,15 +1249,6 @@ def Registrationcount(request):
 
 
 
-
-
-
-
-
-
-
-
-
 @login_required
 def Preauthorisation(request):
 
@@ -1484,56 +1475,68 @@ def folders(request,pk):
         print(bool(login_required(login_url='patientlogin')))
         global patient_id
         patient_id= pk
-        return render(request,'hospital/patientTest.html')
+        p = models.Patient.objects.get(id=patient_id)
+        names = models.test1.objects.all().filter(Patient = p)
+        return render(request,'hospital/folder.html',{'folderName':names})
     return HttpResponse('haaaa')
 @login_required
-def images2(request):
-    if request.method == 'POST':
-        v = request.POST['test2']
-        p = models.test2.objects.get(id=v)
-        p.delete()
-        print('deleted')
-        return redirect('images2')
+def createfolder(request):
+    p = models.Patient.objects.get(id=patient_id)
+    folderName = request.GET['folderName']
+    t = models.test1.objects.get_or_create(Patient = p,folderName = folderName)
+    names = models.test1.objects.all().filter(Patient = p)
+    # t.folderName 
     
-    print(patient_id)
-    p = models.Patient.objects.get(id=patient_id)
-    t = models.test2.objects.all().filter(Patient = p)
-    print(p.first_name)
-    mydict = {'p':p,'t':t}
-    return render(request,'hospital/gallerytest2.html',context=mydict)
-@login_required
-def images1(request):
-    print(patient_id)
-    p = models.Patient.objects.get(id=patient_id)
-    t = models.test1.objects.all().filter(Patient = p)
-    mydict = {'p':p,'t':t}
-    return render(request,'hospital/gallerytest1.html',context=mydict)
-@login_required
-def images3(request):
-    print(patient_id)
-    if request.method == 'POST':
-        v = request.POST['test2']
-        p = models.test3.objects.get(id=v)
-        p.delete()
-        print('deleted')
-        return redirect('images3')
-    p = models.Patient.objects.get(id=patient_id)
-    t = models.test3.objects.all().filter(Patient = p)
-    mydict = {'p':p,'t':t}
-    return render(request,'hospital/gallerytest3.html',context=mydict)
-@login_required
-def images4(request):
-    print(patient_id)
-    if request.method == 'POST':
-        v = request.POST['test2']
-        p = models.test4.objects.get(id=v)
-        p.delete()
-        print('deleted')
-        return redirect('images4')
-    p = models.Patient.objects.get(id=patient_id)
-    t = models.test4.objects.all().filter(Patient = p)
-    mydict = {'p':p,'t':t}
-    return render(request,'hospital/gallerytest4.html',context=mydict)
+    print(folderName)
+    return render(request,'hospital/folder.html',{'folderName':names})
+    
+# def images2(request):
+#     if request.method == 'POST':
+#         v = request.POST['test2']
+#         p = models.test2.objects.get(id=v)
+#         p.delete()
+#         print('deleted')
+#         return redirect('images2')
+    
+#     print(patient_id)
+#     p = models.Patient.objects.get(id=patient_id)
+#     t = models.test2.objects.all().filter(Patient = p)
+#     print(p.first_name)
+#     mydict = {'p':p,'t':t}
+#     return render(request,'hospital/gallerytest2.html',context=mydict)
+# @login_required
+# def images1(request):
+#     print(patient_id)
+#     p = models.Patient.objects.get(id=patient_id)
+#     t = models.test1.objects.all().filter(Patient = p)
+#     mydict = {'p':p,'t':t}
+#     return render(request,'hospital/gallerytest1.html',context=mydict)
+# @login_required
+# def images3(request):
+#     print(patient_id)
+#     if request.method == 'POST':
+#         v = request.POST['test2']
+#         p = models.test3.objects.get(id=v)
+#         p.delete()
+#         print('deleted')
+#         return redirect('images3')
+#     p = models.Patient.objects.get(id=patient_id)
+#     t = models.test3.objects.all().filter(Patient = p)
+#     mydict = {'p':p,'t':t}
+#     return render(request,'hospital/gallerytest3.html',context=mydict)
+# @login_required
+# def images4(request):
+#     print(patient_id)
+#     if request.method == 'POST':
+#         v = request.POST['test2']
+#         p = models.test4.objects.get(id=v)
+#         p.delete()
+#         print('deleted')
+#         return redirect('images4')
+#     p = models.Patient.objects.get(id=patient_id)
+#     t = models.test4.objects.all().filter(Patient = p)
+#     mydict = {'p':p,'t':t}
+#     return render(request,'hospital/gallerytest4.html',context=mydict)
 
 
 
@@ -1546,6 +1549,27 @@ def testing_patient(request,pk):
     global upload_id
     upload_id = pk
     return render (request,'testing_of_patient.html')
+@login_required
+def gallery_photos(request,pk):
+    global user_id
+    user_id = pk
+    p = models.Patient.objects.get(id=patient_id)
+    test = models.test1.objects.get(id = pk)
+    a = models.testphotos.objects.all().filter(Patient=p,folderName=test )
+    return render(request,'hospital/gallerytest1.html',{'a':a,'id':pk})
+@login_required
+def uploadImage(request):
+    if request.method == 'POST':
+        id_om = request.POST['idim']
+        image_im = request.FILES['image_01']
+        type_file = request.POST['fav_language']
+        p = models.Patient.objects.get(id=patient_id)
+        ts = models.test1.objects.get(id=id_om)
+        up = models.testphotos.objects.get_or_create(Patient = p,test= image_im,discription = 'dis',folderName= ts,type = type_file)
+        # return redirect(f'gallery_photos/{patient_id}')
+        test = models.test1.objects.get(id = user_id)
+        a = models.testphotos.objects.all().filter(Patient=p,folderName=test )
+        return render(request,'hospital/gallerytest1.html',{'a':a,'id':user_id})
 @login_required
 def upload_test(request):
     patient = models.Patient.objects.get(pk=upload_id)
@@ -1613,9 +1637,10 @@ def Discharge_update(request):
 
 
 
-
+@login_required
 def Claim_update_pending(request):
-    pass
+    p = models.Patient.objects.all().filter(Patient_type_1='Claimphase',status1='claimPending')
+    return render(request,'claimupdate.html',{'p':p})
 
 @login_required
 def deletePhoto(request,pk):

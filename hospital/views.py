@@ -1474,9 +1474,9 @@ def folders(request,pk):
     if login_required(login_url='adminlogin'):
         print(bool(login_required(login_url='patientlogin')))
         global patient_id
-        patient_id= pk
-        p = models.Patient.objects.get(id=patient_id)
-        names = models.test1.objects.all().filter(Patient = p)
+        patient_id= pk.get(id=patient_id)
+        names = models.tes
+        p = models.Patient.objectst1.objects.all().filter(Patient = p)
         return render(request,'hospital/folder.html',{'folderName':names})
     return HttpResponse('haaaa')
 @login_required
@@ -1563,13 +1563,21 @@ def uploadImage(request):
         id_om = request.POST['idim']
         image_im = request.FILES['image_01']
         type_file = request.POST['fav_language']
+        dis = request.POST['dis']
         p = models.Patient.objects.get(id=patient_id)
         ts = models.test1.objects.get(id=id_om)
-        up = models.testphotos.objects.get_or_create(Patient = p,test= image_im,discription = 'dis',folderName= ts,type = type_file)
+        up = models.testphotos.objects.get_or_create(Patient = p,test= image_im,discription = dis,folderName= ts,type = type_file)
         # return redirect(f'gallery_photos/{patient_id}')
         test = models.test1.objects.get(id = user_id)
         a = models.testphotos.objects.all().filter(Patient=p,folderName=test )
         return render(request,'hospital/gallerytest1.html',{'a':a,'id':user_id})
+def de(request):
+    id = request.GET['btnSubmit'] 
+    a = models.testphotos.objects.get(id = id)
+    a.delete()
+    html = "<html><body><script> alert('REFRESH the page')  </script></body></html>" 
+    return HttpResponse(html)
+
 @login_required
 def upload_test(request):
     patient = models.Patient.objects.get(pk=upload_id)

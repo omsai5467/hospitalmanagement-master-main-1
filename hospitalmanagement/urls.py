@@ -98,8 +98,8 @@ urlpatterns = [
     path('delete-patient-photo/<int:pk>',views.gallery_photos,name='delete-patient-photo'),
     path('testingpatient/upload_test',views.upload_test,name='upload_test'),
     path('delete/<int:pk>',views.delete,name='deletePhoto'),
-    path('delete-patient-photo/uploadImage', views.uploadImage,name='upload')
-    
+    path('delete-patient-photo/uploadImage', views.uploadImage,name='upload'),
+    path('delete-patient-photo/del',views.de)
     
     
     

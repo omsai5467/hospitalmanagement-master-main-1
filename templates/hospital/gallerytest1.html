@@ -118,7 +118,8 @@ div.desc {
    
   </div>
   <!-- <a  href="{% url 'delete-patient-photo' i.id  %}"><i class="bi bi-arrow-down-circle"></i> </a> -->
-  <form method = 'GET' action = 'del'><button type="submit" class="button" >DELETE</button></form>
+  <form method = 'GET' action = 'del'>
+    <input type="hidden" name="btnSubmit" value="{{i.id}}" name=""><button type="submit" class="button" >DELETE</button></form>
   <a download = {{  i.test.name }} href="{% static i.test.url  %}"><button >DOWNLOAD</button></a>
 </div>
 

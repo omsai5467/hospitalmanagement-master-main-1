@@ -39,10 +39,11 @@
           <th>Patient_type</th>
           <th>Symptoms</th>
           <th>Mobile</th>
-          <th>Address</th>
-          <th>Update</th>
-          <th>Delete</th>
-          <th>Change</th>
+          <!-- <th>Address</th> -->
+          <!-- <th>Update</th> -->
+          <!-- <th>Delete</th> -->
+          <!-- <th>Rename</th> -->
+          <th>overview</th>
         </tr>
       </thead>
       {% for p in patients %}
@@ -56,10 +57,12 @@
         <td>{{p.Patient_type_1}}</td>
         <td>{{p.symptoms}}</td>
         <td>{{p.mobile}}</td>
-        <td>{{p.address}}</td>
-        <td><a class="btn btn-primary btn-xs" href="{% url 'update-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
-        <td><a class="btn btn-danger btn-xs" href="{% url 'delete-patient-from-hospital' p.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
-        <td><a class="btn btn-primary btn-xs" href="{% url 'test-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
+        <!-- <td>{{p.address}}</td> -->
+        <!-- <td><a class="btn btn-primary btn-xs" href="{% url 'update-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td> -->
+        <!-- <td><a class="btn btn-danger btn-xs" href="{% url 'delete-patient-from-hospital' p.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td> -->
+       <!--  <td><a class="btn btn-primary btn-xs" href="{% url 'test-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td> -->
+        <td><a class="btn btn-primary btn-xs" href="{% url 'overView' p.id %}"><span class="glyphicon glyphicon-edit"></span></a></td>
+
         
         
       </tr>

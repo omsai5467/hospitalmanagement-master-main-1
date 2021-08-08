@@ -1,0 +1,577 @@
+
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<style >
+  body{
+    margin-top:20px;
+    color: #1a202c;
+    text-align: left;
+    background-color: #e2e8f0;    
+}
+.main-body {
+    padding: 15px;
+}
+.card {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
+
+.gutters-sm {
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.gutters-sm>.col, .gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+.mb-3, .my-3 {
+    margin-bottom: 1rem!important;
+}
+
+.bg-gray-300 {
+    background-color: #e2e8f0;
+}
+.h-100 {
+    height: 100%!important;
+}
+.shadow-none {
+    box-shadow: none!important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+<div class="container">
+    <div class="main-body">
+    
+          <!-- Breadcrumb -->
+         
+          <!-- /Breadcrumb -->
+    
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                    <img src="{% static p.profile_pic.url %}" alt="Admin" class="rounded-circle" width="150">
+                    <div class="mt-3">
+                      <h4>{{ p.first_name}}</h4>
+                      <p class="text-secondary mb-1">Full Stack Developer</p>
+                      <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                <a href="{% url 'test-patient' p.id  %}">      <button class="btn btn-primary">Update</button> </a>
+                     <a href="{% url 'delete-patient-from-hospital' p.id  %}"> <button class="btn btn-outline-primary">Delete</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
+  <path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+</svg>admitDate</h6>
+                    <span class="text-secondary">{{ p.admitDate }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
+  <path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+</svg>updated Date</h6>
+                    <span class="text-secondary">{{ p.updated  }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Patient Type</h6>
+                    <span class="text-secondary">{{p.Patient_type_1}}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Status</h6>
+                    <span class="text-secondary">{{    p.status1  }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>assignedDoctorId</h6>
+                    <span class="text-secondary">{{ d.first_name  }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">First Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{   p.first_name }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Last Name</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ p.last_name   }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Phone</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                     {{ p.mobile }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">symptoms</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{  p.symptoms }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Address</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      {{ p.address   }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-info " target="__blank"href="{% url 'update-patient' p.id  %}">Edit</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Treatment Info</button>
+            <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Add Lab details
+</button>
+
+
+
+              <!-- <div class="row gutters-sm">
+                <div class="col-sm-6 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Project Status</h6>
+                      <small>Web Design</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small>Website Markup</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small>One Page</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small>Mobile Template</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small>Backend API</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 mb-3">
+                  <div class="card h-100">
+                    <div class="card-body">
+                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Project Status</h6>
+                      <small>Web Design</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small>Website Markup</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small>One Page</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small>Mobile Template</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <small>Backend API</small>
+                      <div class="progress mb-3" style="height: 5px">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+
+        </div>
+    </div> -->
+    <!-- <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
+  <path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+</svg>admitDate</h6>
+                    <span class="text-secondary">{{ p.admitDate }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
+  <path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
+  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+</svg>updated Date</h6>
+                    <span class="text-secondary">{{ p.updated  }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Patient Type</h6>
+                    <span class="text-secondary">{{p.Patient_type_1}}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0">Status</h6>
+                    <span class="text-secondary">{{    p.status1  }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>assignedDoctorId</h6>
+                    <span class="text-secondary">{{ d.first_name  }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+
+ -->
+
+
+                  <!-- Treatment info Tab -->
+
+
+
+
+<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <table class="table">
+  <thead>
+    <tr>
+      
+      <th scope="col">Treatment ID</th>
+      <th scope="col">Treatment Name</th>
+      <th scope="col">Treatment Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%   for i in o %}
+    <tr>
+     
+      <td>{{ i.TreatmentCode    }}</td>
+      <td>{{  i.TreatmentName  }}</td>
+      <td>{{  i.TreatmentCost   }}</td>
+    </tr>
+    {%  endfor %}
+   
+  </tbody>
+</table>
+
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+                     <!-- LAB DETEALS -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Lab Details</h5>
+        <h5 id = 'message' style="color:Green" > </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Lab ID</label>
+    <input type="text" class="form-control" id="LabID" name="LabID" placeholder="Lab ID">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">LAb Name</label>
+    <input type="text" class="form-control" name="LabName" id="LabName" placeholder="Lab Name">
+   
+    <label for="formGroupExampleInput2">Lab Address</label>
+    <input type="text" class="form-control" name="LabAddress" id="LabAddress" placeholder="Lab Address">
+    <input type="hidden" name="something" id = 'PatientId' value="{{ p.id }}">
+  </div>
+</form>
+
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="LabDetails()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+                                    <!-- view lab details -->
+                                    <!-- Button trigger modal -->
+                                    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" onclick="GetLab()" data-toggle="modal" data-target="#omsai">
+     View Lab details
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="omsai" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Lab Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- <style>
+table, th, td {
+  border: 1px solid black;
+}
+</style> -->
+
+      <div class="modal-body" id = 'modalBody'>
+        <!-- <table id = 'table'>
+                  <tr>
+                  <th>Lab Id</th>
+                  <th>LabName</th>
+                  <th>LabAddress</th>
+                </tr> -->
+                <!-- <table class="table" id = 'table'>
+                <thead>
+                  <tr>
+                    <th scope="col">S.no</th>
+                    <th scope="col">Lab Id</th>
+                    <th scope="col">Lab Name</th>
+                    <th scope="col">Lab Address</th>
+                  </tr>
+                </thead> -->
+          
+
+
+
+
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="remove()">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script >
+  let obj;
+  function remove(){
+      $("#myTable").remove();
+      console.log(obj)
+      // for (let i =0;i<obj.length;i++){
+
+      //  var tr = document.getElementsByTagName("tr")[i+1].remove();
+      // }
+      // for (let i = 0 ; i < obj.length;i++){
+      //            var table  = document.getElementById('table')
+      //             console.log(obj[i].fields.LabId)
+      //           var row = table.insertRow(i+1)
+      //           var cell1 = row.insertCell(0)
+      //           var cell2 = row.insertCell(1)
+      //           var cell3 = row.insertCell(2)
+      //           var cell4 = row.insertCell(3)
+
+      //           cell1.remove() 
+      //           cell2.remove()
+      //           cell3.remove()
+      //           cell4.remove()
+      //           }
+
+  }
+  function LabDetails(){
+    LabID = document.getElementById('LabID').value
+    LabName = document.getElementById('LabName').value
+    LabAddress = document.getElementById('LabAddress').value
+    PatientId = document.getElementById('PatientId').value
+    // token = document.getElementsByName("csrfToken").value;
+
+
+     $.ajax({
+            method: "POST",
+            url: "/labDetails",
+            data: {'LabID':LabID,'LabName':LabName,'LabAddress':LabAddress,'PatientId':PatientId}
+
+        })
+     .done(function(response){
+      LabID = document.getElementById('LabID').value =''
+    LabName = document.getElementById('LabName').value=''
+    LabAddress = document.getElementById('LabAddress').value = ''
+    // PatientId = document.getElementById('PatientId').value
+    console.log(response)
+    function sus(message){
+    // message = document.getElementById('message').innerHTML= response.a
+    // swal("Good job!", "success");
+//     Swal.fire(
+//   'Good job!',
+//   'You clicked the button!',
+//   'success'
+// )
+// swal({
+//   title: "Sweet!",
+//   text: "Here's a custom image.",
+//   imageUrl: 'http://url.to.the.image.you.want.a.thumbnail.of'
+// });
+swal("Good job!", "Saved", "success")
+
+
+  }
+  sus('saved')
+  // function clear(){
+  //   message = document.getElementById('message').innerHTML= ''
+
+  // }
+  // setTimeout(clear(), 3000);
+  
+      // sus('saved')
+   
+
+
+     })
+     .fail(function(response){
+      console.log(response)
+     })
+
+
+
+  }
+
+
+// deteals function
+ function GetLab(){
+    console.log('click')
+    PatientId = document.getElementById('PatientId').value
+    $.ajax({
+      method:'GET',
+      url: "/getLabDetails",
+      data :{'PatientId':PatientId}
+    })
+    .done(function(response){
+      // modalBody
+      var x = document.createElement("TABLE");
+        x.setAttribute("id", "myTable");
+        x.setAttribute('class',"table")
+        // document.body.appendChild(x);
+        a = document.getElementById('modalBody').appendChild(x)
+
+      // const tempOffices = JSON.parse(JSON.stringify(response))
+      // console.log(response.data[0])
+               obj = JSON.parse(response.data)
+               console.log(obj)
+                // var t = document.getElementById('table')
+
+                // var col = [];
+                for (let i = 0 ; i < obj.length;i++){
+                 var table  = document.getElementById('table')
+                  console.log(obj[i].fields.LabId)
+                var row = myTable.insertRow(i);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3)
+
+                cell1.innerHTML = i
+                cell2.innerHTML = obj[i].fields.LabId
+                cell3.innerHTML = obj[i].fields.LabName
+                cell4.innerHTML = obj[i].fields.LabAddress
+                }
+
+
+
+      
+    })
+    .fail(function(response){
+      console.log(response)
+    })
+
+  }
+
+
+
+
+</script>
+
+
+{% endblock content %}

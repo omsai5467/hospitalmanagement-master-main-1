@@ -8,6 +8,10 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required,user_passes_test
 from datetime import datetime,timedelta,date
 from django.conf import settings
+from django.forms.models import model_to_dict
+from django.http import JsonResponse , QueryDict
+from django.core import serializers
+
 
 # Create your views here.
 def home_view(request):
@@ -393,7 +397,7 @@ def admin_add_patient_view(request):
    
 
 
-        
+        Treatment_info = request.POST['Treatment_info']
         first_name = request.POST['first_name']
         address = request.POST['address']
         symptoms = request.POST['symptoms']
@@ -436,7 +440,7 @@ def admin_add_patient_view(request):
         # import os
         # os.remove('devnote.png')       
         #img2 = ContentFile(img1.save('om.jpg'), name=f"{_filename}.{_extension}")
-        p = models.Patient.objects.get_or_create(
+        obj, p = models.Patient.objects.get_or_create(
             first_name =first_name,
             address = address,
             symptoms =symptoms,
@@ -450,7 +454,17 @@ def admin_add_patient_view(request):
            
 
                                                           )
-        print('data sucessfully suubmitted')
+        print(p)
+        print(obj)
+        print(Treatment_info)
+        spit = Treatment_info.split(',')
+        spit.pop()
+        for i in spit:
+            spliting = i.split('*')
+            s = models.treatmentInfo.objects.get_or_create(Patient=obj,TreatmentCode=spliting[0],TreatmentName= spliting[1],TreatmentCost= spliting[2])
+
+        print(spit)
+        
         return render(request,'hospital/admin_add_patient.html',context=mydict)
     return render(request,'hospital/admin_add_patient.html',context=mydict)
 
@@ -1416,6 +1430,8 @@ def Claimphase(request):
 def test(request,pk):
 
     patient=models.Patient.objects.get(id=pk)
+    p=models.Patient.objects.get(id=pk)
+    d = models.Doctor.objects.get(user = p.assignedDoctorId)
     
     patientForm=forms.PatientForm(instance=patient)
   #  Patient_type_1=Claimphase&status1=compleated
@@ -1432,10 +1448,7 @@ def test(request,pk):
         patient.save()
         print(Patient_type)
         # for i in range(20):
-        try:
-            return redirect('admin-dashboard')
-        except:
-            return redirect('')
+        return render(request,'hospital/overview_patient.html',{'p':p,'d':d})
 
 
         #userForm=forms.PatientUserForm(request.POST,instance=user)
@@ -1451,6 +1464,17 @@ def test(request,pk):
             patient.save()
             return redirect('admin-view-patient')
     return render(request,'hospital/test1.html',context=mydict)
+
+def overView(request,pk):
+    print(pk)
+    p = models.Patient.objects.get(id = pk)
+    d = models.Doctor.objects.get(user= p.assignedDoctorId)
+    overView = models.treatmentInfo.objects.all().filter(Patient= p)
+    print(overView)
+    return render(request,'hospital/overview_patient.html',{'p':p,'d':d, 'o':overView      })
+
+
+
 
 
 def update(request, pk):
@@ -1474,9 +1498,13 @@ def folders(request,pk):
     if login_required(login_url='adminlogin'):
         print(bool(login_required(login_url='patientlogin')))
         global patient_id
-        patient_id= pk.get(id=patient_id)
-        names = models.tes
-        p = models.Patient.objectst1.objects.all().filter(Patient = p)
+        # patient_id= pk.get(id=patient_id)
+        # names = models.tes
+        # p = models.Patient.objectst1.objects.all().filter(Patient = p)
+        # return render(request,'hospital/folder.html',{'folderName':names})
+        patient_id= pk
+        p = models.Patient.objects.get(id=patient_id)
+        names = models.test1.objects.all().filter(Patient = p)
         return render(request,'hospital/folder.html',{'folderName':names})
     return HttpResponse('haaaa')
 @login_required
@@ -1707,3 +1735,33 @@ def update_doctor(request,pk):
             patient.save()
             return redirect('doctor-view-patient')
     return render(request,'hospital/doctor_update_patient.html',context=mydict)
+
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+
+def lab(request):
+    
+    # print(details)
+    if request.method == 'POST':
+        p = models.Patient.objects.get(id= request.POST.get('PatientId',False))
+
+        obj,lab = models.LabDetails.objects.get_or_create(Patient=p,LabId=request.POST['LabID'],LabName=request.POST['LabName'],LabAddress=request.POST['LabAddress'])
+        # return JsonResponse(model_to_dict(obj),safe = False)
+        return JsonResponse({'a':'a'},safe = False)
+    # return JsonResponse(model_to_dict(details),safe = False)
+    
+
+
+
+
+def getLab(request):
+    id = request.GET['PatientId']
+    p = models.Patient.objects.get(id = id)
+    # r = models.LabDetails.objects.all().filter(Patient=p)
+    # data = [r]
+
+    
+    data= serializers.serialize("json", models.LabDetails.objects.all().filter(Patient=p),fields=('LabId','LabName','LabAddress'))
+    
+    return JsonResponse({'data':data},safe=False)

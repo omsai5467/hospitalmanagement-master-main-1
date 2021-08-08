@@ -6,6 +6,90 @@
 <script src="{% static '\dist\cropper.js'%}"></script>
 
 <head>
+  <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup form - hidden by default */
+/*.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}*/
+
+.form-popup {
+  /*display: none;
+  position: center;*/
+  display: none;
+  margin: auto;
+  width: 60%;
+  border: 3px solid #73AD21;
+  padding: 10px;
+  
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+</style>
+
   <style media="screen">
     a:link {
       text-decoration: none;
@@ -107,12 +191,14 @@
       <div class="note">
         <p>Admit Patient To Hospital</p>
       </div>
+      <div align="right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Treatment info</button></div>
       <div class="form-content">
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               {% render_field patientForm.first_name class="form-control" placeholder="First Name" %}
             </div>
+            <input type="hidden" name="Treatment_info" id = 'Treatment_info'>
             <!--
             <div class="form-group">
               {% render_field patientForm.username class="form-control" placeholder="Username" %}
@@ -135,7 +221,7 @@
               <div><button  class = 'btnSubmit'   id="startbutton">Take photo</button></div>
               
               <div class="output">
-                  <input type="text" name = 'img'  id= 'om'>
+                  <input type="hidden" name = 'img'  id= 'om'>
               </div>
           </div>
             <!--
@@ -183,9 +269,14 @@
             <div><canvas id="canvas"></canvas></div>
             <div class="output">
             <img id="image" alt="The screen capture will appear in this box."     >
+
             </div>
-            
+             <div class="form-group">
+              <select id="Treatment" placeholder= 'Treatment Info' class = 'form-control'  name="TreatmentType" >
+              </select> </div>
+
           </div>
+           
         </div>
         <button type="submit" id ='btn'onclick='myFunction()'   class="btnSubmit">Admit</button>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -428,6 +519,82 @@ function validateForm() {
 
 </script>
 
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
 
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+<!-- added popup form here -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Treatment info Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form >
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Treatment Code:</label>
+            <input type="text" class="form-control" id="recipient-name" placeholder=" Enter Treatment Id or Ems code">
+          </div>
+          <div class="form-group">
+            <label for="TreatmentName" class="col-form-label">Treatment Name:</label>
+            <input type="text" class="form-control" id='TreatmentName' placeholder="Treatment Name">
+          </div>
+          <div class="form-group">
+            <label for="TreatmentCost" class="col-form-label">Treatment Cost:</label>
+            <input type="text" class="form-control" id='TreatmentCost' placeholder="Treatment Cost">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick ="myFunction()" class="btn btn-primary">add</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- <input type="text" id = 'reddy'> -->
+<script>
+  let arr = []
+  
+  function myFunction(){
+  TreatmentCode = document.getElementById('recipient-name').value
+  TreatmentName = document.getElementById('TreatmentName').value
+  TreatmentCost = document.getElementById('TreatmentCost').value
+  let names = []
+  names.push(TreatmentName)
+
+  a = ['[' + TreatmentCode + '*'  + TreatmentName + '*' + TreatmentCost +']']
+  arr.push(a)
+  console.log(arr)
+  dropDown = document.getElementById('Treatment')
+
+  // document.getElementById('reddy').value= arr
+  for(val of names){
+     var option = document.createElement("option");
+      option.value = val;
+      option.text = val.charAt(0).toUpperCase() + val.slice(1);
+      dropDown.appendChild(option);
+
+  }
+  treatment_info = document.getElementById('Treatment_info').value = arr
+
+  TreatmentCode = document.getElementById('recipient-name').value = ''
+  TreatmentName = document.getElementById('TreatmentName').value =''
+  TreatmentCost = document.getElementById('TreatmentCost').value = ''
+}
+</script>
 {% endblock content %}
+
+<!-- [54646,6464646,64646],[54646hht,6464646hhgjfjgf,64646jhgjfghfg] -->
+<!-- [5467.5467.5467],[hhhhhh.hhhhh.ghcvvjj] -->
+<!-- [54647*5467*54674],[omsai*sathish*chgaithanya],[karthik*pavan*karthik] -->

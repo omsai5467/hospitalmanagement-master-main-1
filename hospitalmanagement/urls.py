@@ -66,6 +66,10 @@ urlpatterns = [
     # path('test/images2', views.images2 , name = 'images2'),
     # path('test/images3', views.images3 , name = 'images3'),
     # path('test/images4', views.images4 , name = 'images4'),
+    # path('test-patie/<int:pk>',views.overView,name='overView'),
+    path('overView/<int:pk>',views.overView , name = 'overView'),
+    path('labDetails',views.lab,name='lab'),
+    path('getLabDetails',views.getLab,name='lab'),
    
     
     path('admin-add-patient', views.admin_add_patient_view,name='admin-add-patient'),

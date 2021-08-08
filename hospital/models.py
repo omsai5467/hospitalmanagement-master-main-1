@@ -185,3 +185,19 @@ class testphotos(models.Model):
     #     return self.folderName
         
   
+class treatmentInfo(models.Model):
+    Patient= models.ForeignKey(Patient,on_delete=models.CASCADE)
+    TreatmentCode = models.CharField(max_length=200,null=False)
+    TreatmentName = models.CharField(max_length=200,null=False)
+    TreatmentCost = models.CharField(max_length=200,null =False)
+    def __str__(self):
+        return self.TreatmentName
+
+
+
+
+class LabDetails(models.Model):
+    LabId=models.CharField(max_length=200,null=False) 
+    LabName = models.CharField(max_length=200,null=False)
+    LabAddress = models.CharField(max_length=200,null=False)
+    Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)       

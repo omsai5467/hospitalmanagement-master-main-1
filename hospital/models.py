@@ -89,6 +89,7 @@ class Patient(models.Model):
     profile_pic= models.ImageField(upload_to='profile_pic/PatientProfilePic/',null=True,blank=True)
     first_name = models.CharField(max_length=100,null=False)
     last_name = models.CharField(max_length=100,null=False)
+    age = models.PositiveIntegerField()
     address = models.CharField(max_length=40)
     mobile = models.CharField(max_length=20,null=False)
     symptoms = models.CharField(max_length=100,null=False)
@@ -200,4 +201,11 @@ class LabDetails(models.Model):
     LabId=models.CharField(max_length=200,null=False) 
     LabName = models.CharField(max_length=200,null=False)
     LabAddress = models.CharField(max_length=200,null=False)
-    Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)       
+    Patient = models.ForeignKey(Patient,on_delete=models.CASCADE) 
+
+
+# class priscriptrion(models.Model):
+
+class priscriptrion(models.Model):
+    Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
+    text = models.CharField(max_length=200,null=False) 

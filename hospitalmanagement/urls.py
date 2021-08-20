@@ -70,6 +70,8 @@ urlpatterns = [
     path('overView/<int:pk>',views.overView , name = 'overView'),
     path('labDetails',views.lab,name='lab'),
     path('getLabDetails',views.getLab,name='lab'),
+    path('Addpriscriptrion',views.priscriptrion),
+    path('SaveChanges',views.SaveChanges,name='SaveChanges'),
    
     
     path('admin-add-patient', views.admin_add_patient_view,name='admin-add-patient'),
@@ -103,7 +105,8 @@ urlpatterns = [
     path('testingpatient/upload_test',views.upload_test,name='upload_test'),
     path('delete/<int:pk>',views.delete,name='deletePhoto'),
     path('delete-patient-photo/uploadImage', views.uploadImage,name='upload'),
-    path('delete-patient-photo/del',views.de)
+    path('delete-patient-photo/del',views.de),
+    path('test/zip_download',views.download)
     
     
     

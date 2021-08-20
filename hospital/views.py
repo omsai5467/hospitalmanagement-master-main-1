@@ -11,6 +11,9 @@ from django.conf import settings
 from django.forms.models import model_to_dict
 from django.http import JsonResponse , QueryDict
 from django.core import serializers
+from zipfile import ZipFile
+from wsgiref.util import FileWrapper
+import os
 
 
 # Create your views here.
@@ -450,7 +453,8 @@ def admin_add_patient_view(request):
             mobile = mobile,
             Patient_type_1 =Patient_type_1,
             assignedDoctorId = assignedDoctorId,
-            status1= status1
+            status1= status1,
+            age = request.POST['age']
            
 
                                                           )
@@ -1136,7 +1140,9 @@ def Registrationcount(request):
     'Preauthorisation':Preauthorisation,
     'Dischargestate':Dischargestate,
     'Claimphase':Claimphase,
-    'from_date': today
+    'from_date': today,
+    'source':'Registrationcount',
+    # 'color': 'red'
 
     #context=mydict
     }
@@ -1739,7 +1745,7 @@ def update_doctor(request,pk):
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-
+@login_required
 def lab(request):
     
     # print(details)
@@ -1754,7 +1760,8 @@ def lab(request):
 
 
 
-
+@csrf_exempt
+@login_required
 def getLab(request):
     id = request.GET['PatientId']
     p = models.Patient.objects.get(id = id)
@@ -1764,4 +1771,71 @@ def getLab(request):
     
     data= serializers.serialize("json", models.LabDetails.objects.all().filter(Patient=p),fields=('LabId','LabName','LabAddress'))
     
+    return JsonResponse({'data':data},safe=False)
+
+
+
+@csrf_exempt
+@login_required
+def priscriptrion(request):
+    patientId = request.POST['id']
+    text = request.POST['text']
+    p = models.Patient.objects.get(id = patientId)
+    o = models.priscriptrion.objects.get_or_create(Patient = p,text = text)
+    return JsonResponse({'message':'saved'})
+
+
+@csrf_exempt
+@login_required
+def download(request):
+    # import zipfile
+    
+    # image_path = settings.MEDIA_ROOT+ product_image_url[6:]
+    p = models.Patient.objects.get(id = patient_id)
+    test = models.test1.objects.get(id = request.GET['folder_id'])
+    a = models.testphotos.objects.all().filter(Patient=p,folderName=test )
+
+
+    from django.http import HttpResponse
+    ZIPFILE_NAME = 'pybites_codesnippets.zip'
+    # file_name = f"{}.zip"
+    # response = HttpResponse(content_type='application/zip')
+    # file = test.folderName
+    with ZipFile('export.zip', 'w') as export_zip:
+        for i in a:
+            image_path = i.test.path
+            # im = 
+            # settings.MEDIA_ROOT+
+            export_zip.write(image_path, '{0}.png'.format(i.discription))
+    # response['Content-Disposition'] = f'attachment; filename={ZIPFILE_NAME}'        
+    wrapper = FileWrapper(open('export.zip', 'rb'))
+    content_type = 'application/zip'
+    content_disposition = 'attachment; filename={0}.zip'.format(test.folderName)
+
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Disposition'] = content_disposition
+    return response
+
+
+
+
+
+
+
+# p = models.Patient.objects.get(id=patient_id)
+#     test = models.test1.objects.get(id = pk)
+#     a = models.testphotos.objects.all().filter(Patient=p,folderName=test )
+#     return render(request,'hospital/gallerytest1.html',{'a':a,'id':pk})
+# @csrf_exempt
+@login_required
+def SaveChanges(request):
+    p = models.Patient.objects.get(id = request.GET['PatientId'])
+    p.first_name = request.GET['FirstName']
+    p.last_name = request.GET['LastName']
+    p.mobile = request.GET['PhoneNumber']
+    p.address = request.GET['Address']
+    p.save()
+    # data= models.Patient.objects.get(id= request.GET['PatientId'])
+    obj = models.Patient.objects.get(id= request.GET['PatientId'])
+    data = serializers.serialize("json",[obj] )
     return JsonResponse({'data':data},safe=False)

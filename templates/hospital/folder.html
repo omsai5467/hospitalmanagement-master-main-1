@@ -2,6 +2,9 @@
 {% load widget_tweaks %}
 {% block content %}
 {% load static %}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
 <link  href="{%static 'dist\cropper.css'%}" rel="stylesheet">
 <script src="{% static '\dist\cropper.js'%}"></script>
 <!-- <script src = "{% static '\js\folder.js'    %}" ></script> -->
@@ -112,8 +115,8 @@
         <!-- <div class="row">
           <div class="col-md-6"> -->
             <div class="form-group">
-            <form method="GET" action='createfolder'>
-              <input type='text' name="folderName" placeholder='enter folder name' class="btnSubmit" >
+            <form method="GET" action='createfolder' onsubmit=" return validateform()">
+              <input type='text'id = 'folderName' name="folderName" placeholder='enter folder name' class="btnSubmit" >
               <button class="btnSubmit">Create</button> 
             </form>
               
@@ -129,16 +132,40 @@
                     <i class="mdi mdi-folder"></i>
                     </a>
                     <h3>{{  item.folderName   }}</h3>
-                    <p>Something something</p>
+                    <form action="zip_download">
+                      <input type="hidden" value="{{ item.id}}" name="folder_id">
+                    <p><button id = {{  item.id }} type="submit" >download</button></form></p>
                   </div><!-- .tile.folder -->
                   {% endfor %}
+
                  
                   
                  
                 
               </div><!-- .stage -->
             
-            
+            <!-- <script type="text/javascript">
+              function download(id){
+                console.log(id)
+                $.ajax({
+                  method:'GET',
+                  url: "/zip_download",
+                  data:{
+                    // PatientId : {{ p.id}}
+                    folder_id : id
+                  }
+              
+
+                })
+                .done(function(response){
+                    console.log(response)
+                  })
+                  .fail(function(response){
+                    console.log(response)
+                  })
+
+              }
+            </script> -->
             
             
             
@@ -314,7 +341,15 @@
 <!-- </form> -->
 
 
-
+<script >
+  function validateform(){
+    name = document.getElementById('folderName').value
+    if (name == ''){
+      alert('enter folderName')
+       return false;
+    }
+  }
+</script>
 
 
 

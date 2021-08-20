@@ -3,6 +3,7 @@
 {% load widget_tweaks %}
 {% block content %}
 {% load static %}
+ <meta name="viewport" content="width=device-width, initial-scale=1">
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
         crossorigin="anonymous"></script>
@@ -80,18 +81,19 @@
          
           <!-- /Breadcrumb -->
     
-          <div class="row gutters-sm">
+          <div class="row gutters-sm" >
             <div class="col-md-4 mb-3">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
                     <img src="{% static p.profile_pic.url %}" alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3">
-                      <h4>{{ p.first_name}}</h4>
-                      <p class="text-secondary mb-1">Full Stack Developer</p>
-                      <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                      <h4 id='ReeFirstName'>{{ p.first_name}}</h4>
+                      
                 <a href="{% url 'test-patient' p.id  %}">      <button class="btn btn-primary">Update</button> </a>
-                     <a href="{% url 'delete-patient-from-hospital' p.id  %}"> <button class="btn btn-outline-primary">Delete</button></a>
+                     <a onclick="return confirm('Are you sure?')" href="{% url 'delete-patient-from-hospital' p.id  %}"> <button class="btn btn-outline-primary">Delete</button></a>
+
+                     </script>
                     </div>
                   </div>
                 </div>
@@ -114,7 +116,7 @@
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h6 class="mb-0">Patient Type</h6>
-                    <span class="text-secondary">{{p.Patient_type_1}}</span>
+                    <span class="text-secondary"><strong>{{p.Patient_type_1}}</strong></span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h6 class="mb-0">Status</h6>
@@ -127,7 +129,14 @@
                 </ul>
               </div>
             </div>
-            <div class="col-md-8">
+
+
+
+
+
+
+            <!-- here satrt editing -->
+            <div class="col-md-8" >
               <div class="card mb-3">
                 <div class="card-body">
                   <div class="row">
@@ -135,7 +144,7 @@
                       <h6 class="mb-0">First Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{   p.first_name }}
+                      <strong id="ReFirstName"> {{   p.first_name }} </strong>
                     </div>
                   </div>
                   <hr>
@@ -144,7 +153,16 @@
                       <h6 class="mb-0">Last Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{ p.last_name   }}
+                     <strong id="ReLastName">{{ p.last_name   }} </strong> 
+                    </div>
+                  </div>
+                  <hr>
+                   <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Age</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                     <strong id="ReLastName">{{ p.age   }} </strong> 
                     </div>
                   </div>
                   <hr>
@@ -153,7 +171,7 @@
                       <h6 class="mb-0">Phone</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                     {{ p.mobile }}
+                     <strong id="ReMobile">{{ p.mobile }}</strong>
                     </div>
                   </div>
                   <hr>
@@ -162,7 +180,7 @@
                       <h6 class="mb-0">symptoms</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{  p.symptoms }}
+                     <strong> {{  p.symptoms }} </strong>
                     </div>
                   </div>
                   <hr>
@@ -171,20 +189,20 @@
                       <h6 class="mb-0">Address</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      {{ p.address   }}
+                     <strong id='ReAddress'>{{ p.address   }} </strong> 
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-info " target="__blank"href="{% url 'update-patient' p.id  %}">Edit</a>
+                     <!--  <a class="btn btn-info " href="{% url 'update-patient' p.id  %}">Edit</a> -->
+                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Editing"  > Edit</button>
                     </div>
                   </div>
                 </div>
               </div>
-
-
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Treatment Info</button>
+          
+           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Treatment Info</button>
             <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
   Add Lab details
@@ -192,106 +210,10 @@
 
 
 
-              <!-- <div class="row gutters-sm">
-                <div class="col-sm-6 mb-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                      <small>Web Design</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>Website Markup</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>One Page</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>Mobile Template</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>Backend API</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 mb-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Project Status</h6>
-                      <small>Web Design</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>Website Markup</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>One Page</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>Mobile Template</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>Backend API</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+     
 
 
-
-            </div>
-          </div>
-
-        </div>
-    </div> -->
-    <!-- <div class="card mt-3">
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
-  <path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
-  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-</svg>admitDate</h6>
-                    <span class="text-secondary">{{ p.admitDate }}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
-  <path d="M6.445 11.688V6.354h-.633A12.6 12.6 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"/>
-  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
-</svg>updated Date</h6>
-                    <span class="text-secondary">{{ p.updated  }}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0">Patient Type</h6>
-                    <span class="text-secondary">{{p.Patient_type_1}}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0">Status</h6>
-                    <span class="text-secondary">{{    p.status1  }}</span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>assignedDoctorId</h6>
-                    <span class="text-secondary">{{ d.first_name  }}</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-
- -->
-
-
+             
                   <!-- Treatment info Tab -->
 
 
@@ -340,7 +262,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Lab Details</h5>
-        <h5 id = 'message' style="color:Green" > </h5>
+        <div class="alert alert-success">
+        <strong id = 'sus'></strong> 
+              </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -462,12 +386,17 @@ table, th, td {
 
   }
   function LabDetails(){
+    let real = true
     LabID = document.getElementById('LabID').value
     LabName = document.getElementById('LabName').value
     LabAddress = document.getElementById('LabAddress').value
     PatientId = document.getElementById('PatientId').value
     // token = document.getElementsByName("csrfToken").value;
+    if (LabID == ''){alert('enter Lab id');real = false}
+    if (LabName== ''){alert('enter LabName');real = false}
+    if (LabAddress == ''){alert('enter LabAddress');real = false}
 
+    if(real){
 
      $.ajax({
             method: "POST",
@@ -481,32 +410,14 @@ table, th, td {
     LabAddress = document.getElementById('LabAddress').value = ''
     // PatientId = document.getElementById('PatientId').value
     console.log(response)
-    function sus(message){
-    // message = document.getElementById('message').innerHTML= response.a
-    // swal("Good job!", "success");
-//     Swal.fire(
-//   'Good job!',
-//   'You clicked the button!',
-//   'success'
-// )
-// swal({
-//   title: "Sweet!",
-//   text: "Here's a custom image.",
-//   imageUrl: 'http://url.to.the.image.you.want.a.thumbnail.of'
-// });
-swal("Good job!", "Saved", "success")
+    sus = document.getElementById('sus').innerHTML = 'Success!'
+    setTimeout(function(){
+      sus = document.getElementById('sus').innerHTML = ''
+    },5000)
 
-
-  }
-  sus('saved')
-  // function clear(){
-  //   message = document.getElementById('message').innerHTML= ''
-
-  // }
-  // setTimeout(clear(), 3000);
-  
-      // sus('saved')
    
+
+  
 
 
      })
@@ -514,7 +425,8 @@ swal("Good job!", "Saved", "success")
       console.log(response)
      })
 
-
+    }
+    console.log('not real')
 
   }
 
@@ -572,6 +484,110 @@ swal("Good job!", "Saved", "success")
 
 
 </script>
+
+<!-- editing done here -->
+<div class="modal fade" id="Editing" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile Names</h5>
+        <div class="alert alert-success" role="alert">
+  <strong id = 'success'></strong>
+</div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- editing box statrets here -->
+         <div class="form-group">
+    <label for="exampleInputEmail1">First Name</label>
+    <input type="text" class="form-control" id="editFirstname" aria-describedby="emailHelp" placeholder="Enter First Name" value="{{  p.first_name   }}">
+    
+      </div>
+
+       <div class="form-group">
+    <label for="exampleInputEmail1">Last Name</label>
+    <input type="text" class="form-control" id="editLastName" aria-describedby="emailHelp" placeholder="Enter LastName" value="{{  p.last_name }}">
+    
+      </div>
+
+      <div class="form-group">
+    <label for="exampleInputEmail1">Phone Number</label>
+    <input type="text" class="form-control" id="editPhoneNumber" aria-describedby="emailHelp" placeholder="Enter Phone Number" value="{{  p.mobile }}">
+    
+      </div>
+       
+       <div class="form-group">
+    <label for="exampleInputEmail1">Address</label>
+    <input type="text" class="form-control" id="editAddress" aria-describedby="emailHelp" placeholder="Enter Address" value="{{ p.address   }}">
+    
+      </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveuserinformation()">Save changes</button>
+        <script type="text/javascript">
+          let real = true
+          function saveuserinformation(){
+            FirstName = document.getElementById('editFirstname').value
+            LastName = document.getElementById('editLastName').value
+            PhoneNumber = document.getElementById('editPhoneNumber').value
+            Address = document.getElementById('editAddress').value
+            PatientId = document.getElementById('PatientId').value
+            if(FirstName == ''){alert('enter FirstName');real = false}
+            if(LastName == ''){alert('enter Last Name');real = false}
+            if(PhoneNumber == ''){alert('enter phone number');real = false}
+            if(Address == ''){alert('Enter Address');real=false}
+            if (real){
+              $.ajax({
+                method : 'GET',
+                url: "/SaveChanges",
+                data :{'PatientId':PatientId,'FirstName':FirstName,'LastName':LastName,'PhoneNumber':PhoneNumber,'Address':Address}
+
+
+              })
+              .done(function(response){
+                obj = JSON.parse(response.data)
+                console.log(obj)
+                 first_name = obj[0].fields.first_name
+                 last_name = obj[0].fields.last_name
+                 PhoneNumber = obj[0].fields.mobile
+                 Address = obj[0].fields.address
+                 profile_name = document.getElementById('ReeFirstName').innerHTML = first_name
+                 FirstName = document.getElementById('ReFirstName').innerHTML = first_name
+                 LastName = document.getElementById('ReLastName').innerHTML = last_name
+                 AAddress = document.getElementById('ReAddress').innerHTML = Address
+                 mobile = document.getElementById('ReMobile').innerHTML = PhoneNumber
+
+                 FirstName = document.getElementById('editFirstname').value = first_name
+                 LastName = document.getElementById('editLastName').value = last_name
+                 PhoneNumber = document.getElementById('editPhoneNumber').value = PhoneNumber
+                 Address = document.getElementById('editAddress').value = Address
+                 s = document.getElementById('success').innerHTML = 'Success!'
+                 setTimeout(function(){
+      su = document.getElementById('success').innerHTML = ''
+    },5000)
+
+
+              })
+              .fail(function(response){
+                console.log(response)
+              })
+            }
+          }
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
 
 
 {% endblock content %}

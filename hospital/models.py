@@ -57,9 +57,21 @@ status = [
 ]
 
 
+class LabDetails(models.Model):
+    LabId=models.CharField(max_length=200) 
+    LabName = models.CharField(max_length=200)
+    LabAddress = models.CharField(max_length=200)
+    def __str__(self):
+        return self.LabId
 
 
-
+class treatmentInfo(models.Model):
+    # Patient= models.ForeignKey(Patient,on_delete=models.CASCADE)
+    TreatmentCode = models.CharField(max_length=200,null=False)
+    TreatmentName = models.CharField(max_length=200,null=False)
+    TreatmentCost = models.CharField(max_length=200,null =False)
+    def __str__(self):
+        return self.TreatmentName
 
 
 
@@ -99,6 +111,8 @@ class Patient(models.Model):
     status=models.BooleanField(default=False)
     Patient_type_1  = models.CharField(max_length=50,choices=Patient_type)
     status1  = models.CharField(max_length=50,choices=Patient)
+    LabDetails = models.ForeignKey(LabDetails,null = True,on_delete=models.CASCADE)
+    treatmentInfo = models.ForeignKey(treatmentInfo,null = True , on_delete=models.CASCADE)
 
     
     
@@ -186,22 +200,16 @@ class testphotos(models.Model):
     #     return self.folderName
         
   
-class treatmentInfo(models.Model):
-    Patient= models.ForeignKey(Patient,on_delete=models.CASCADE)
-    TreatmentCode = models.CharField(max_length=200,null=False)
-    TreatmentName = models.CharField(max_length=200,null=False)
-    TreatmentCost = models.CharField(max_length=200,null =False)
-    def __str__(self):
-        return self.TreatmentName
 
 
 
 
-class LabDetails(models.Model):
-    LabId=models.CharField(max_length=200,null=False) 
-    LabName = models.CharField(max_length=200,null=False)
-    LabAddress = models.CharField(max_length=200,null=False)
-    Patient = models.ForeignKey(Patient,on_delete=models.CASCADE) 
+
+# class LabDetails(models.Model):
+#     LabId=models.CharField(max_length=200,null=False) 
+#     LabName = models.CharField(max_length=200,null=False)
+#     LabAddress = models.CharField(max_length=200,null=False)
+    # Patient = models.ForeignKey(Patient,on_delete=models.CASCADE) 
 
 
 # class priscriptrion(models.Model):

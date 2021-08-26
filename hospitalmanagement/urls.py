@@ -19,6 +19,9 @@ urlpatterns = [
     path('aboutus', views.aboutus_view),
     path('contactus', views.contactus_view),
     path('search', views.search),
+    path('AddOpereations',views.AddOpereations),
+    path('TreatmentInfo',views.TreatmentInfo),
+    path('showTreatments',views.showTreatments),
 
 
     path('adminclick', views.adminclick_view),
@@ -61,6 +64,7 @@ urlpatterns = [
     # path('test1-patient/<int:pk>',views.folders , name = 'test-patient'),
     path('test/<int:pk>',views.folders , name = 'test'),
     path('test/createfolder',views.createfolder,name='createfolder'),
+    path('test/DeleteFolder',views.DeleteFolder),
     # path('test/gallery',views.gallery_photos , name = 'images'),
     # path('test/images1', views.images1 , name = 'images1'),
     # path('test/images2', views.images2 , name = 'images2'),

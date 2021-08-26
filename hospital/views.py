@@ -14,6 +14,7 @@ from django.core import serializers
 from zipfile import ZipFile
 from wsgiref.util import FileWrapper
 import os
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -400,7 +401,7 @@ def admin_add_patient_view(request):
    
 
 
-        Treatment_info = request.POST['Treatment_info']
+        # Treatment_info = request.POST['Treatment_info']
         first_name = request.POST['first_name']
         address = request.POST['address']
         symptoms = request.POST['symptoms']
@@ -458,16 +459,10 @@ def admin_add_patient_view(request):
            
 
                                                           )
-        print(p)
-        print(obj)
-        print(Treatment_info)
-        spit = Treatment_info.split(',')
-        spit.pop()
-        for i in spit:
-            spliting = i.split('*')
-            s = models.treatmentInfo.objects.get_or_create(Patient=obj,TreatmentCode=spliting[0],TreatmentName= spliting[1],TreatmentCost= spliting[2])
+        
+        
 
-        print(spit)
+        # print(spit)
         
         return render(request,'hospital/admin_add_patient.html',context=mydict)
     return render(request,'hospital/admin_add_patient.html',context=mydict)
@@ -1475,9 +1470,18 @@ def overView(request,pk):
     print(pk)
     p = models.Patient.objects.get(id = pk)
     d = models.Doctor.objects.get(user= p.assignedDoctorId)
-    overView = models.treatmentInfo.objects.all().filter(Patient= p)
-    print(overView)
-    return render(request,'hospital/overview_patient.html',{'p':p,'d':d, 'o':overView      })
+    # overView = models.treatmentInfo.objects.all().filter(Patient= p)
+    # print(overView)
+    LabDetails = models.LabDetails.objects.all()
+    TreatmentInfo = models.treatmentInfo.objects.all()
+    # try:
+    # patientLab = models.LabDetails.objects.get(id = p.LabDetails)
+    # patientTreatmentInfo = models.treatmentInfo.objects.get(id = p.treatmentInfo)
+        
+    # except:
+    patientLab = 'none'
+    patientTreatmentInfo = 'none'
+    return render(request,'hospital/overview_patient.html',{'p':p,'d':d, 'LabDetails':LabDetails,'TreatmentInfo':TreatmentInfo ,'patientLab':patientLab,'patientTreatmentInfo':patientTreatmentInfo   })
 
 
 
@@ -1514,7 +1518,28 @@ def folders(request,pk):
         return render(request,'hospital/folder.html',{'folderName':names})
     return HttpResponse('haaaa')
 @login_required
+@csrf_exempt
 def createfolder(request):
+    
+
+    if request.method == "POST":
+        patient12 = models.Patient.objects.get(id=patient_id)
+        # names_Rename = models.test1.objects.all().filter(Patient = patient12)
+        # names_Rename.folderName = request.POST['folderId']
+        reName = models.test1.objects.get(id = request.POST['folderId'] )
+        reName.folderName = request.POST['Name']
+        reName.save()
+
+
+
+
+        
+        names = models.test1.objects.all().filter(Patient = patient12)
+
+        return render(request,'hospital/folder.html',{'folderName':names})
+
+
+
     p = models.Patient.objects.get(id=patient_id)
     folderName = request.GET['folderName']
     t = models.test1.objects.get_or_create(Patient = p,folderName = folderName)
@@ -1523,7 +1548,14 @@ def createfolder(request):
     
     print(folderName)
     return render(request,'hospital/folder.html',{'folderName':names})
-    
+@login_required
+@csrf_exempt
+def DeleteFolder(request):
+    if request.method == "POST":
+        d = models.test1.objects.get(id = request.POST['ZZid'])
+        d.delete()
+        return JsonResponse({'hi':"HI"},safe=False)
+
 # def images2(request):
 #     if request.method == 'POST':
 #         v = request.POST['test2']
@@ -1742,7 +1774,7 @@ def update_doctor(request,pk):
             return redirect('doctor-view-patient')
     return render(request,'hospital/doctor_update_patient.html',context=mydict)
 
-from django.views.decorators.csrf import csrf_exempt
+
 
 @csrf_exempt
 @login_required
@@ -1750,12 +1782,12 @@ def lab(request):
     
     # print(details)
     if request.method == 'POST':
-        p = models.Patient.objects.get(id= request.POST.get('PatientId',False))
+        # p = models.Patient.objects.get(id= request.POST.get('PatientId',False))
 
-        obj,lab = models.LabDetails.objects.get_or_create(Patient=p,LabId=request.POST['LabID'],LabName=request.POST['LabName'],LabAddress=request.POST['LabAddress'])
+        obj,lab = models.LabDetails.objects.get_or_create(LabId=request.POST['LabID'],LabName=request.POST['LabName'],LabAddress=request.POST['LabAddress'])
         # return JsonResponse(model_to_dict(obj),safe = False)
         return JsonResponse({'a':'a'},safe = False)
-    # return JsonResponse(model_to_dict(details),safe = False)
+    return render(request,'hospital/Lab_Details.html')
     
 
 
@@ -1763,13 +1795,13 @@ def lab(request):
 @csrf_exempt
 @login_required
 def getLab(request):
-    id = request.GET['PatientId']
-    p = models.Patient.objects.get(id = id)
-    # r = models.LabDetails.objects.all().filter(Patient=p)
+    # id = request.GET['PatientId']
+    # p = models.Patient.objects.get(id = id)
+    r = models.LabDetails.objects.all()
     # data = [r]
 
     
-    data= serializers.serialize("json", models.LabDetails.objects.all().filter(Patient=p),fields=('LabId','LabName','LabAddress'))
+    data= serializers.serialize("json", models.LabDetails.objects.all(),fields=('LabId','LabName','LabAddress'))
     
     return JsonResponse({'data':data},safe=False)
 
@@ -1780,7 +1812,7 @@ def getLab(request):
 def priscriptrion(request):
     patientId = request.POST['id']
     text = request.POST['text']
-    p = models.Patient.objects.get(id = patientId)
+    # p = models.Patient.objects.get(id = patientId)
     o = models.priscriptrion.objects.get_or_create(Patient = p,text = text)
     return JsonResponse({'message':'saved'})
 
@@ -1834,8 +1866,54 @@ def SaveChanges(request):
     p.last_name = request.GET['LastName']
     p.mobile = request.GET['PhoneNumber']
     p.address = request.GET['Address']
+    L = 'hi'
+    t = 'hi'
+    if request.GET['LabId'] != 0:
+        # global Lab
+        Lab = models.LabDetails.objects.get(id = request.GET['LabId'])
+        p.LabDetails = Lab
+        L = serializers.serialize("json",[Lab] )
+        print('came lab')
+    if request.GET['T'] != 0:
+        # global tr
+        tr = models.treatmentInfo.objects.get(id = request.GET['T'])
+        p.treatmentInfo = tr
+        t = serializers.serialize("json",[tr] )
+        print('cam t')
     p.save()
     # data= models.Patient.objects.get(id= request.GET['PatientId'])
     obj = models.Patient.objects.get(id= request.GET['PatientId'])
     data = serializers.serialize("json",[obj] )
+    L = serializers.serialize("json",[obj] )
+
+    return JsonResponse({'data':data,'L':L,"T":t},safe=False)
+
+
+
+
+
+@login_required
+def AddOpereations(request):
+    return render(request,'AddLabDetails.html')
+
+
+@csrf_exempt
+@login_required
+def TreatmentInfo(request):
+    if request.method == 'POST':
+        x = models.treatmentInfo.objects.get_or_create(TreatmentCode = request.POST['TreatmentId'],TreatmentName = request.POST['TreatmentName'],TreatmentCost=request.POST['TreatmentCost'])
+        return JsonResponse({'hi':'saved'})
+    return render(request,'Treatmentinfo.html')
+
+@login_required
+@csrf_exempt
+def showTreatments(request):
+    if request.method == "POST":
+
+        t = models.treatmentInfo.objects.get(id = request.POST['TreatmentId'])
+        t.delete()
+        return JsonResponse({"msg":'saved'},safe=False)
+
+    y = models.treatmentInfo.objects.all()
+    data= serializers.serialize("json",y )
     return JsonResponse({'data':data},safe=False)

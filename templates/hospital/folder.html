@@ -131,12 +131,33 @@
                     <a href="{% url 'delete-patient-photo' item.id  %}">
                     <i class="mdi mdi-folder"></i>
                     </a>
-                    <h3>{{  item.folderName   }}</h3>
+                    <h3 >{{  item.folderName   }}</h3>
+                    <p><button type="button" id = {{ item.id  }} name="{{  item.folderName }}" onclick="rename(this.id,this.name)" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Rename</button></p>
                     <form action="zip_download">
                       <input type="hidden" value="{{ item.id}}" name="folder_id">
                     <p><button id = {{  item.id }} type="submit" >download</button></form></p>
+          <p> <button id = "{{ item.id  }}" onclick="Folder123(this.id)" >Delete</button> </p>
                   </div><!-- .tile.folder -->
                   {% endfor %}
+                  <script type="text/javascript">
+                    function Folder123(ZZid)
+                    {
+                      r = confirm('Are you Sure ! .....')
+                      if(r){
+                        $.ajax({
+                          method:"POST",
+                          url :"/test/DeleteFolder",
+                          data:{"ZZid":ZZid}
+                        })
+                        .done(function(response){
+                          $(document).ajaxStop(function(){
+    window.location.reload();
+});
+                        })
+                      }
+                    }
+                  </script>
 
                  
                   
@@ -349,6 +370,76 @@
        return false;
     }
   }
+</script>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input id= "renameText" type="text" width="40px" height="20">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveChangesFolderName()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<script type="text/javascript">
+  let folderId
+  s = true
+
+  function rename(id,name)
+  {
+    name = document.getElementById("renameText").value = name
+    folderId = id
+
+  }
+  function saveChangesFolderName()
+  {
+    if(name == '')
+    {
+      alert('enter Re name')
+      s= false
+    }
+    if(s)
+    {
+      name = document.getElementById('renameText').value
+      $.ajax({
+        method : "POST",
+        url : "/test/createfolder",
+        data : {"folderId": folderId,"Name":name}
+      })
+      .done(function(response){
+        console.log('saved...')
+        $(document).ajaxStop(function(){
+    window.location.reload();
+});
+
+      })
+      .fail(function(response){
+        console.log('error Occured...')
+        alert("Something Went Wrong ..........")
+      })
+    }
+  }
+
 </script>
 
 

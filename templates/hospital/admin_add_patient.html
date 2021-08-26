@@ -191,14 +191,14 @@ body {font-family: Arial, Helvetica, sans-serif;}
       <div class="note">
         <p>Admit Patient To Hospital</p>
       </div>
-      <div align="right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Treatment info</button></div>
+     <!--  <div align="right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Treatment info</button></div> -->
       <div class="form-content">
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               {% render_field patientForm.first_name class="form-control" placeholder="First Name" %}
             </div>
-            <input type="hidden" name="Treatment_info" id = 'Treatment_info'>
+            <!-- <input type="hidden" name="Treatment_info" id = 'Treatment_info'> -->
             
             <div class="form-group">
               {% render_field patientForm.age  class="form-control" placeholder="enter Patient Age" %}
@@ -424,6 +424,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
 // cropper.rotate(-90);
 
                   om.value = a
+                  setTimeout(function(){
+                    cropper.destroy()
+                  },10000)
+                  
                   
 
 
@@ -527,75 +531,8 @@ function openForm() {
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
+
+
 </script>
-<!-- added popup form here -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Treatment info Form</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form >
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Treatment Code:</label>
-            <input type="text" class="form-control" id="recipient-name" placeholder=" Enter Treatment Id or Ems code">
-          </div>
-          <div class="form-group">
-            <label for="TreatmentName" class="col-form-label">Treatment Name:</label>
-            <input type="text" class="form-control" id='TreatmentName' placeholder="Treatment Name">
-          </div>
-          <div class="form-group">
-            <label for="TreatmentCost" class="col-form-label">Treatment Cost:</label>
-            <input type="text" class="form-control" id='TreatmentCost' placeholder="Treatment Cost">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" onclick ="myFunction()" class="btn btn-primary">add</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- <input type="text" id = 'reddy'> -->
-<script>
-  let arr = []
-  
-  function myFunction(){
-  TreatmentCode = document.getElementById('recipient-name').value
-  TreatmentName = document.getElementById('TreatmentName').value
-  TreatmentCost = document.getElementById('TreatmentCost').value
-  let names = []
-  names.push(TreatmentName)
-
-  a = ['[' + TreatmentCode + '*'  + TreatmentName + '*' + TreatmentCost +']']
-  arr.push(a)
-  console.log(arr)
-  dropDown = document.getElementById('Treatment')
-
-  // document.getElementById('reddy').value= arr
-  for(val of names){
-     var option = document.createElement("option");
-      option.value = val;
-      option.text = val.charAt(0).toUpperCase() + val.slice(1);
-      dropDown.appendChild(option);
-
-  }
-  treatment_info = document.getElementById('Treatment_info').value = arr
-
-  TreatmentCode = document.getElementById('recipient-name').value = ''
-  TreatmentName = document.getElementById('TreatmentName').value =''
-  TreatmentCost = document.getElementById('TreatmentCost').value = ''
-}
-</script>
-
 {% endblock content %}
 
-<!-- [54646,6464646,64646],[54646hht,6464646hhgjfjgf,64646jhgjfghfg] -->
-<!-- [5467.5467.5467],[hhhhhh.hhhhh.ghcvvjj] -->
-<!-- [54647*5467*54674],[omsai*sathish*chgaithanya],[karthik*pavan*karthik] -->

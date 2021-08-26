@@ -1,0 +1,328 @@
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Add Lab details
+</button>
+ -->
+
+
+<br><br>
+
+<head>
+  <meta charset="utf-8">
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+
+  <style type="text/css">
+    a:link {
+      text-decoration: none;
+    }
+
+    .menu {
+      top: 50px;
+    }
+
+    h6 {
+      color: white;
+    }
+
+    .order-card {
+      color: #fff;
+    }
+
+    .bg-c-blue {
+      background: linear-gradient(45deg, #4099ff, #73b4ff);
+    }
+
+    .bg-c-green {
+      background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    }
+
+    .bg-c-yellow {
+      background: linear-gradient(45deg, #FFB64D, #ffcb80);
+    }
+
+    .bg-c-pink {
+      background: linear-gradient(45deg, #FF5370, #ff869a);
+    }
+
+
+    .card {
+      border-radius: 5px;
+      -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+      box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+      border: none;
+      margin-bottom: 30px;
+      -webkit-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .card .card-block {
+      padding: 25px;
+    }
+
+    .order-card i {
+      font-size: 26px;
+    }
+
+    .f-left {
+      float: left;
+    }
+
+    .f-right {
+      float: right;
+    }
+  </style>
+</head>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 col-xl-3">
+      <div class="card bg-c-blue order-card">
+        <div class="card-block">
+          <a href="/labDetails">
+            <h6 class="m-b-20">Add Lab Details</h6>
+          </a>
+          <br>
+          <h2 class="text-right"><i class="fas fa-user-injured f-left"></i></h2>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-xl-3">
+      <div class="card bg-c-green order-card">
+        <div class="card-block">
+          <a href="/TreatmentInfo">
+            <h6 class="m-b-20">Add Treatment Info</h6>
+          </a>
+          <br>
+          <h2 class="text-right"><i class="fas fa-user-plus f-left"></i></h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-md-4 col-xl-3">
+      <div class="card bg-c-yellow order-card">
+        <div class="card-block">
+          <a href="/admin-approve-patient">
+            <h6 class="m-b-20">Approve Patient</h6>
+          </a>
+          <br>
+          <h2 class="text-right"><i class="fas fa-check-circle f-left"></i></h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-xl-3">
+      <div class="card bg-c-pink order-card">
+        <div class="card-block">
+          <a href="/admin-discharge-patient">
+            <h6 class="m-b-20">Discharge Patient</h6>
+          </a>
+          <br>
+          <h2 class="text-right"><i class="fas fa-eject f-left"></i></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+</div>
+
+<br><br><br><br><br><br><br>
+
+
+
+
+
+
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Lab Details</h5>
+        <div class="alert alert-success">
+        <strong id = 'sus'></strong> 
+              </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Lab ID</label>
+    <input type="text" class="form-control" id="LabID" name="LabID" placeholder="Lab ID">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">LAb Name</label>
+    <input type="text" class="form-control" name="LabName" id="LabName" placeholder="Lab Name">
+   
+    <label for="formGroupExampleInput2">Lab Address</label>
+    <input type="text" class="form-control" name="LabAddress" id="LabAddress" placeholder="Lab Address">
+    <input type="hidden" name="something" id = 'PatientId' value="{{ p.id }}">
+  </div>
+</form>
+
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="LabDetails()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script >
+  let obj;
+  function remove(){
+      $("#myTable").remove();
+      console.log(obj)
+      // for (let i =0;i<obj.length;i++){
+
+      //  var tr = document.getElementsByTagName("tr")[i+1].remove();
+      // }
+      // for (let i = 0 ; i < obj.length;i++){
+      //            var table  = document.getElementById('table')
+      //             console.log(obj[i].fields.LabId)
+      //           var row = table.insertRow(i+1)
+      //           var cell1 = row.insertCell(0)
+      //           var cell2 = row.insertCell(1)
+      //           var cell3 = row.insertCell(2)
+      //           var cell4 = row.insertCell(3)
+
+      //           cell1.remove() 
+      //           cell2.remove()
+      //           cell3.remove()
+      //           cell4.remove()
+      //           }
+
+  }
+  function LabDetails(){
+    let real = true
+    LabID = document.getElementById('LabID').value
+    LabName = document.getElementById('LabName').value
+    LabAddress = document.getElementById('LabAddress').value
+    PatientId = document.getElementById('PatientId').value
+    // token = document.getElementsByName("csrfToken").value;
+    if (LabID == ''){alert('enter Lab id');real = false}
+    if (LabName== ''){alert('enter LabName');real = false}
+    if (LabAddress == ''){alert('enter LabAddress');real = false}
+
+    if(real){
+
+     $.ajax({
+            method: "POST",
+            url: "/labDetails",
+            data: {'LabID':LabID,'LabName':LabName,'LabAddress':LabAddress,'PatientId':PatientId}
+
+        })
+     .done(function(response){
+      LabID = document.getElementById('LabID').value =''
+    LabName = document.getElementById('LabName').value=''
+    LabAddress = document.getElementById('LabAddress').value = ''
+    // PatientId = document.getElementById('PatientId').value
+    console.log(response)
+    sus = document.getElementById('sus').innerHTML = 'Success!'
+    setTimeout(function(){
+      sus = document.getElementById('sus').innerHTML = ''
+    },5000)
+
+   
+
+  
+
+
+     })
+     .fail(function(response){
+      console.log(response)
+     })
+
+    }
+    console.log('not real')
+
+  }
+
+
+// deteals function
+ function GetLab(){
+    console.log('click')
+    PatientId = document.getElementById('PatientId').value
+    $.ajax({
+      method:'GET',
+      url: "/getLabDetails",
+      data :{'PatientId':PatientId}
+    })
+    .done(function(response){
+      // modalBody
+      var x = document.createElement("TABLE");
+        x.setAttribute("id", "myTable");
+        x.setAttribute('class',"table")
+        // document.body.appendChild(x);
+        a = document.getElementById('modalBody').appendChild(x)
+
+      // const tempOffices = JSON.parse(JSON.stringify(response))
+      // console.log(response.data[0])
+               obj = JSON.parse(response.data)
+               console.log(obj)
+                // var t = document.getElementById('table')
+
+                // var col = [];
+                for (let i = 0 ; i < obj.length;i++){
+                 var table  = document.getElementById('table')
+                  console.log(obj[i].fields.LabId)
+                var row = myTable.insertRow(i);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3)
+
+                cell1.innerHTML = i
+                cell2.innerHTML = obj[i].fields.LabId
+                cell3.innerHTML = obj[i].fields.LabName
+                cell4.innerHTML = obj[i].fields.LabAddress
+                }
+
+
+
+      
+    })
+    .fail(function(response){
+      console.log(response)
+    })
+
+  }
+
+
+
+
+</script>
+{% endblock content %}

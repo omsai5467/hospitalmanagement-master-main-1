@@ -10,6 +10,11 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+
+
+
+
+
 <style >
   body{
     margin-top:20px;
@@ -202,22 +207,105 @@
                 </div>
               </div>
           
-           <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-xl">Treatment Info</button>
+
             <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  Add Lab details
-</button>
 
 
 
+<style type="text/css">
+  /* Float four columns side by side */
+.column {
+  float: left;
+  width: 50%;
+  padding: 0 10px;
+}
+
+/* Remove extra left and right margins, due to padding */
+.row {margin: 0 -5px;}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+    display: block;
+    margin-bottom: 20px;
+  }
+}
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  /*text-align: center;*/
+  background-color: #f1f1f1;
+}
+</style>
      
+<div class="row">
+  <div class="column">
+    <div class="card">
+      <small>Treatment Info Details..</small>
+     <!--  <h3><strong>Lab Details</strong></h3>
+     <label>LabId</label> <p>{{p.LabDetails.LabId }}</p> 
+      <p>{{ p.LabDetails.LabName  }}</p>
+      <p>{{  p.LabDetails.LabAddress  }}</p> -->
+      <table class="table">
+  <thead>
+    <tr>
+      <!-- <th scope="col">#</th> -->
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <!-- <th scope="row">1</th> -->
+      <td  ><strong id = "ptreatId" style="color:blue;">{{p.treatmentInfo.TreatmentCode }}</strong></td>
+      <td ><strong id = "ptreatName" style="color:blue;">{{ p.treatmentInfo.TreatmentName  }} </strong> </td>
+      <td ><strong id = "ptreatAddress" style="color:blue;">{{  p.treatmentInfo.TreatmentCost  }}  </strong></td>
+    </tr>
+       </tbody>
+</table>
+    </div>
+  </div>
+  <!-- ptreatId ptreatName ptreatAddress -->
 
+  <div class="column">
+    <div class="card">
+      <small>Lab Details</small>
+      <table class="table">
+  <thead>
+    <tr>
+      <!-- <th scope="col">#</th> -->
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <!-- <th scope="row">1</th> -->
+      <td  ><strong  id = "pLabId" style="color:blue;">{{p.LabDetails.LabId }}</strong></td>
+      <td ><strong id = "pLabName" style="color:blue;">{{ p.LabDetails.LabName  }} </strong> </td>
+      <td ><strong id = "pLabAddress" style="color:blue;">{{  p.LabDetails.LabAddress  }}  </strong></td>
+    </tr>
+       </tbody>
+</table>
+    </div>
+  </div>
 
              
-                  <!-- Treatment info Tab -->
 
 
-
+</div></div></div>
 
 <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
@@ -308,56 +396,6 @@
                                     <!-- view lab details -->
                                     <!-- Button trigger modal -->
                                     <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" onclick="GetLab()" data-toggle="modal" data-target="#omsai">
-     View Lab details
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="omsai" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Lab Details</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- <style>
-table, th, td {
-  border: 1px solid black;
-}
-</style> -->
-
-      <div class="modal-body" id = 'modalBody'>
-        <!-- <table id = 'table'>
-                  <tr>
-                  <th>Lab Id</th>
-                  <th>LabName</th>
-                  <th>LabAddress</th>
-                </tr> -->
-                <!-- <table class="table" id = 'table'>
-                <thead>
-                  <tr>
-                    <th scope="col">S.no</th>
-                    <th scope="col">Lab Id</th>
-                    <th scope="col">Lab Name</th>
-                    <th scope="col">Lab Address</th>
-                  </tr>
-                </thead> -->
-          
-
-
-
-
-        </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="remove()">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <script >
@@ -518,11 +556,29 @@ table, th, td {
     
       </div>
        
-       <div class="form-group">
+      <div class="form-group">
     <label for="exampleInputEmail1">Address</label>
     <input type="text" class="form-control" id="editAddress" aria-describedby="emailHelp" placeholder="Enter Address" value="{{ p.address   }}">
     
       </div>
+      <div class="form-group">
+        <label>Lab Details</label>
+      <select class="form-control" id = 'LabSelect'>
+        <option value="0">----------</option>
+        {%  for i in LabDetails %}
+        <option class="form-control" value="{{ i.id }}">{{i.LabId}} And {{ i.LabName }}</option>
+        {%   endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Treatment Info</label>
+    <select class="form-control" id = 'TreatmentInfoSelect'>
+        <option value="0">----------</option>
+        {%  for i in TreatmentInfo %}
+        <option class="form-control" value="{{ i.id }}">{{i.TreatmentCode}} And {{ i.TreatmentName }}</option>
+        {%   endfor %}
+      </select>
+    </div>
 
       </div>
       <div class="modal-footer">
@@ -540,16 +596,22 @@ table, th, td {
             if(LastName == ''){alert('enter Last Name');real = false}
             if(PhoneNumber == ''){alert('enter phone number');real = false}
             if(Address == ''){alert('Enter Address');real=false}
+            LabId = document.getElementById('LabSelect').value
+            TreatmentInfoSelect = document.getElementById('TreatmentInfoSelect').value
             if (real){
               $.ajax({
                 method : 'GET',
                 url: "/SaveChanges",
-                data :{'PatientId':PatientId,'FirstName':FirstName,'LastName':LastName,'PhoneNumber':PhoneNumber,'Address':Address}
+                data :{'PatientId':PatientId,'FirstName':FirstName,'LastName':LastName,'PhoneNumber':PhoneNumber,'Address':Address,'LabId':LabId,'T':TreatmentInfoSelect}
 
 
               })
               .done(function(response){
                 obj = JSON.parse(response.data)
+                L = JSON.parse(response.L)
+                console.log(L)
+                T = JSON.parse(response.T)
+                console.log(T)
                 console.log(obj)
                  first_name = obj[0].fields.first_name
                  last_name = obj[0].fields.last_name
@@ -565,6 +627,16 @@ table, th, td {
                  LastName = document.getElementById('editLastName').value = last_name
                  PhoneNumber = document.getElementById('editPhoneNumber').value = PhoneNumber
                  Address = document.getElementById('editAddress').value = Address
+                   // </div>ptreatId ptreatName ptreatAddress
+
+                 treaId = document.getElementById('ptreatId').innerHTML = T[0].fields.TreatmentCode
+                 treaName = document.getElementById('ptreatName').innerHTML = T[0].fields.TreatmentName
+                 treacost = document.getElementById('ptreatName').innerHTML = T[0].fields.ptreatAddress
+                 // pLabId pLabName pLabAddress
+                 lid  = document.getElementById('pLabId').innerHTML = L[0].fields.LabId
+                 lname = document.getElementById('pLabName').innerHTML = L[0].fields.LabName
+                 lad = document.getElementById('pLabAddress').innerHTML = L[0].fields.LabAddress
+
                  s = document.getElementById('success').innerHTML = 'Success!'
                  setTimeout(function(){
       su = document.getElementById('success').innerHTML = ''

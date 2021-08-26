@@ -1,0 +1,239 @@
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+
+        <br><br>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+  Add Lab details
+</button>
+
+                     <!-- LAB DETEALS -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Lab Details</h5>
+        <div class="alert alert-success">
+        <strong id = 'sus'></strong> 
+              </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Lab ID</label>
+    <input type="text" class="form-control" id="LabID" name="LabID" placeholder="Lab ID">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">LAb Name</label>
+    <input type="text" class="form-control" name="LabName" id="LabName" placeholder="Lab Name">
+   
+    <label for="formGroupExampleInput2">Lab Address</label>
+    <input type="text" class="form-control" name="LabAddress" id="LabAddress" placeholder="Lab Address">
+    <input type="hidden" name="something" id = 'PatientId' value="{{ p.id }}">
+  </div>
+</form>
+
+
+
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="LabDetails()">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<button type="button" class="btn btn-primary" onclick="GetLab()" data-toggle="modal" data-target="#omsai">
+     View Lab details
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="omsai" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Lab Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- <style>
+table, th, td {
+  border: 1px solid black;
+}
+</style> -->
+
+      <div class="modal-body" id = 'modalBody'>
+        <!-- <table id = 'table'>
+                  <tr>
+                  <th>Lab Id</th>
+                  <th>LabName</th>
+                  <th>LabAddress</th>
+                </tr> -->
+                <!-- <table class="table" id = 'table'>
+                <thead>
+                  <tr>
+                    <th scope="col">S.no</th>
+                    <th scope="col">Lab Id</th>
+                    <th scope="col">Lab Name</th>
+                    <th scope="col">Lab Address</th>
+                  </tr>
+                </thead> -->
+          
+
+
+
+
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="remove()">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script >
+  let obj;
+  function remove(){
+      $("#myTable").remove();
+      console.log(obj)
+      // for (let i =0;i<obj.length;i++){
+
+      //  var tr = document.getElementsByTagName("tr")[i+1].remove();
+      // }
+      // for (let i = 0 ; i < obj.length;i++){
+      //            var table  = document.getElementById('table')
+      //             console.log(obj[i].fields.LabId)
+      //           var row = table.insertRow(i+1)
+      //           var cell1 = row.insertCell(0)
+      //           var cell2 = row.insertCell(1)
+      //           var cell3 = row.insertCell(2)
+      //           var cell4 = row.insertCell(3)
+
+      //           cell1.remove() 
+      //           cell2.remove()
+      //           cell3.remove()
+      //           cell4.remove()
+      //           }
+
+  }
+  function LabDetails(){
+    let real = true
+    LabID = document.getElementById('LabID').value
+    LabName = document.getElementById('LabName').value
+    LabAddress = document.getElementById('LabAddress').value
+    PatientId = document.getElementById('PatientId').value
+    // token = document.getElementsByName("csrfToken").value;
+    if (LabID == ''){alert('enter Lab id');real = false}
+    if (LabName== ''){alert('enter LabName');real = false}
+    if (LabAddress == ''){alert('enter LabAddress');real = false}
+
+    if(real){
+
+     $.ajax({
+            method: "POST",
+            url: "/labDetails",
+            data: {'LabID':LabID,'LabName':LabName,'LabAddress':LabAddress,'PatientId':11}
+
+        })
+     .done(function(response){
+      LabID = document.getElementById('LabID').value =''
+    LabName = document.getElementById('LabName').value=''
+    LabAddress = document.getElementById('LabAddress').value = ''
+    // PatientId = document.getElementById('PatientId').value
+    console.log(response)
+    sus = document.getElementById('sus').innerHTML = 'Success!'
+    setTimeout(function(){
+      sus = document.getElementById('sus').innerHTML = ''
+    },5000)
+
+   
+
+  
+
+
+     })
+     .fail(function(response){
+      console.log(response)
+     })
+
+    }
+    console.log('not real')
+
+  }
+
+
+// deteals function
+ function GetLab(){
+    console.log('click')
+    PatientId = document.getElementById('PatientId').value
+    $.ajax({
+      method:'GET',
+      url: "/getLabDetails",
+      data :{'PatientId':11}
+    })
+    .done(function(response){
+      // modalBody
+      var x = document.createElement("TABLE");
+        x.setAttribute("id", "myTable");
+        x.setAttribute('class',"table")
+        // document.body.appendChild(x);
+        a = document.getElementById('modalBody').appendChild(x)
+
+      // const tempOffices = JSON.parse(JSON.stringify(response))
+      // console.log(response.data[0])
+               obj = JSON.parse(response.data)
+               console.log(obj)
+                // var t = document.getElementById('table')
+
+                // var col = [];
+                for (let i = 0 ; i < obj.length;i++){
+                 var table  = document.getElementById('table')
+                  console.log(obj[i].fields.LabId)
+                var row = myTable.insertRow(i);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3)
+
+                cell1.innerHTML = i
+                cell2.innerHTML = obj[i].fields.LabId
+                cell3.innerHTML = obj[i].fields.LabName
+                cell4.innerHTML = obj[i].fields.LabAddress
+                }
+
+
+
+      
+    })
+    .fail(function(response){
+      console.log(response)
+    })
+
+  }
+
+
+
+
+</script>
+
+{% endblock content %}

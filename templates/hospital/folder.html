@@ -386,7 +386,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <input id= "renameText" type="text" width="40px" height="20">
+        <input id= "renameText" type="text" width="40px" height="20" value="{{ item.}}">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -404,6 +404,7 @@
 <script type="text/javascript">
   let folderId
   s = true
+  let name
 
   function rename(id,name)
   {
@@ -420,11 +421,11 @@
     }
     if(s)
     {
-      name = document.getElementById('renameText').value
+      Rename = document.getElementById('renameText').value
       $.ajax({
         method : "POST",
         url : "/test/createfolder",
-        data : {"folderId": folderId,"Name":name}
+        data : {"folderId": folderId,"Name":Rename}
       })
       .done(function(response){
         console.log('saved...')

@@ -1,16 +1,29 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from simple_history.models import HistoricalRecords
 import datetime
 
 
-departments=[('Cardiologist','Cardiologist'),
-('Dermatologists','Dermatologists'),
-('Emergency Medicine Specialists','Emergency Medicine Specialists'),
-('Allergists/Immunologists','Allergists/Immunologists'),
-('Anesthesiologists','Anesthesiologists'),
-('Colon and Rectal Surgeons','Colon and Rectal Surgeons')
+# departments=[('Cardiologist','Cardiologist'),
+# ('Dermatologists','Dermatologists'),
+# ('Emergency Medicine Specialists','Emergency Medicine Specialists'),
+# ('Allergists/Immunologists','Allergists/Immunologists'),
+# ('Anesthesiologists','Anesthesiologists'),
+# ('Colon and Rectal Surgeons','Colon and Rectal Surgeons')
+# ]
+departments = [
+('orthodontist','orthodontist'),
+('endodontist','endodontist'),
+('maxillofacialSurgeon','maxillofacialSurgeon'),
+('prosthodontist','prosthodontist'),
+('implotology','implotology'),
+('pedodontist','pedodontist'),
+('oralmedicine&pathologist','oralmedicine&pathologist'),
+('other','other')
+
+
 ]
+
 Patient_type = [
     ('pretreatment','pretreatment'),
     ('Registrationcount','Registrationcount'),
@@ -61,6 +74,7 @@ class LabDetails(models.Model):
     LabId=models.CharField(max_length=200) 
     LabName = models.CharField(max_length=200)
     LabAddress = models.CharField(max_length=200)
+    history = HistoricalRecords()
     def __str__(self):
         return self.LabId
 
@@ -70,6 +84,7 @@ class treatmentInfo(models.Model):
     TreatmentCode = models.CharField(max_length=200,null=False)
     TreatmentName = models.CharField(max_length=200,null=False)
     TreatmentCost = models.CharField(max_length=200,null =False)
+    history = HistoricalRecords()
     def __str__(self):
         return self.TreatmentName
 
@@ -82,6 +97,7 @@ class Doctor(models.Model):
     mobile = models.CharField(max_length=20,null=True)
     department= models.CharField(max_length=50,choices=departments,default='Cardiologist')
     status=models.BooleanField()
+    history = HistoricalRecords()
     @property
     def get_name(self):
         return self.user.first_name+" "+self.user.last_name
@@ -92,7 +108,8 @@ class Doctor(models.Model):
         return "{} ({})".format(self.user.first_name,self.department)
 
 
-
+class his(models.Model):
+    user_id = models.ForeignKey('auth.User',null = False,on_delete=models.CASCADE)
 
 
 
@@ -113,11 +130,21 @@ class Patient(models.Model):
     status1  = models.CharField(max_length=50,choices=Patient)
     LabDetails = models.ForeignKey(LabDetails,null = True,on_delete=models.CASCADE)
     treatmentInfo = models.ForeignKey(treatmentInfo,null = True , on_delete=models.CASCADE)
+    history = HistoricalRecords(history_change_reason_field=models.TextField(null=True))
+    # changed_by = models.ForeignKey(his, null = True,on_delete=models.CASCADE)
+    @property
+    def _history_user(self):
+        return self.changed_by
+
+    @_history_user.setter
+    def _history_user(self, value):
+        self.changed_by = value
 
     
     
    
     def __str__(self):
+        
         return self.first_name
     
 
@@ -130,6 +157,7 @@ class Appointment(models.Model):
     appointmentDate=models.DateField(auto_now=True)
     description=models.TextField(max_length=500)
     status=models.BooleanField(default=False)
+    history = HistoricalRecords()
 
 
 
@@ -151,6 +179,7 @@ class PatientDischargeDetails(models.Model):
     doctorFee=models.PositiveIntegerField(null=False)
     OtherCharge=models.PositiveIntegerField(null=False)
     total=models.PositiveIntegerField(null=False)
+    history = HistoricalRecords()
 
 
 
@@ -158,6 +187,7 @@ class PatientDischargeDetails(models.Model):
 class test1(models.Model):
     folderName = models.CharField(max_length=100 ,null=False)
     Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+    history = HistoricalRecords()
     
     def __str__(self):
         return self.folderName
@@ -195,6 +225,7 @@ class testphotos(models.Model):
     type = models.CharField(max_length=100 ,null=False)
     folderName = models.ForeignKey(test1,on_delete=models.CASCADE)
     Patient = models.ForeignKey(Patient ,on_delete=models.CASCADE)
+    history = HistoricalRecords()
     
     # def __str__(self):
     #     return self.folderName
@@ -217,3 +248,4 @@ class testphotos(models.Model):
 class priscriptrion(models.Model):
     Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     text = models.CharField(max_length=200,null=False) 
+    history = HistoricalRecords()

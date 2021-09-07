@@ -202,6 +202,7 @@
                     <div class="col-sm-12">
                      <!--  <a class="btn btn-info " href="{% url 'update-patient' p.id  %}">Edit</a> -->
                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Editing"  > Edit</button>
+                     <!-- <a class="btn btn-primary btn-xs" href="{% url 'discharge-patient' p.id  %}"><span class="glyphicon glyphicon-log-out"> -->
                     </div>
                   </div>
                 </div>
@@ -607,10 +608,14 @@
 
               })
               .done(function(response){
+                console.log("helooo !!!!!")
                 obj = JSON.parse(response.data)
+                console.log(response)
                 L = JSON.parse(response.L)
                 console.log(L)
                 T = JSON.parse(response.T)
+                LAb = JSON.parse(response.Labb)
+                console.log(LAb)
                 console.log(T)
                 console.log(obj)
                  first_name = obj[0].fields.first_name
@@ -631,13 +636,16 @@
 
                  treaId = document.getElementById('ptreatId').innerHTML = T[0].fields.TreatmentCode
                  treaName = document.getElementById('ptreatName').innerHTML = T[0].fields.TreatmentName
-                 treacost = document.getElementById('ptreatName').innerHTML = T[0].fields.ptreatAddress
+                 treacost = document.getElementById('ptreatName').innerHTML = T[0].fields.TreatmentCost
                  // pLabId pLabName pLabAddress
                  lid  = document.getElementById('pLabId').innerHTML = L[0].fields.LabId
                  lname = document.getElementById('pLabName').innerHTML = L[0].fields.LabName
                  lad = document.getElementById('pLabAddress').innerHTML = L[0].fields.LabAddress
 
                  s = document.getElementById('success').innerHTML = 'Success!'
+                   $(document).ajaxStop(function(){
+    window.location.reload();
+});
                  setTimeout(function(){
       su = document.getElementById('success').innerHTML = ''
     },5000)

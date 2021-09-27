@@ -609,38 +609,38 @@
               })
               .done(function(response){
                 console.log("helooo !!!!!")
-                obj = JSON.parse(response.data)
-                console.log(response)
-                L = JSON.parse(response.L)
-                console.log(L)
-                T = JSON.parse(response.T)
-                LAb = JSON.parse(response.Labb)
-                console.log(LAb)
-                console.log(T)
-                console.log(obj)
-                 first_name = obj[0].fields.first_name
-                 last_name = obj[0].fields.last_name
-                 PhoneNumber = obj[0].fields.mobile
-                 Address = obj[0].fields.address
-                 profile_name = document.getElementById('ReeFirstName').innerHTML = first_name
-                 FirstName = document.getElementById('ReFirstName').innerHTML = first_name
-                 LastName = document.getElementById('ReLastName').innerHTML = last_name
-                 AAddress = document.getElementById('ReAddress').innerHTML = Address
-                 mobile = document.getElementById('ReMobile').innerHTML = PhoneNumber
+                // obj = JSON.parse(response.data)
+                // console.log(response)
+                // L = JSON.parse(response.L)
+                // console.log(L)
+                // T = JSON.parse(response.T)
+                // LAb = JSON.parse(response.Labb)
+                // console.log(LAb)
+                // console.log(T)
+                // console.log(obj)
+                //  first_name = obj[0].fields.first_name
+                //  last_name = obj[0].fields.last_name
+                //  PhoneNumber = obj[0].fields.mobile
+                //  Address = obj[0].fields.address
+                //  profile_name = document.getElementById('ReeFirstName').innerHTML = first_name
+                //  FirstName = document.getElementById('ReFirstName').innerHTML = first_name
+                //  LastName = document.getElementById('ReLastName').innerHTML = last_name
+                //  AAddress = document.getElementById('ReAddress').innerHTML = Address
+                //  mobile = document.getElementById('ReMobile').innerHTML = PhoneNumber
 
-                 FirstName = document.getElementById('editFirstname').value = first_name
-                 LastName = document.getElementById('editLastName').value = last_name
-                 PhoneNumber = document.getElementById('editPhoneNumber').value = PhoneNumber
-                 Address = document.getElementById('editAddress').value = Address
-                   // </div>ptreatId ptreatName ptreatAddress
+                //  FirstName = document.getElementById('editFirstname').value = first_name
+                //  LastName = document.getElementById('editLastName').value = last_name
+                //  PhoneNumber = document.getElementById('editPhoneNumber').value = PhoneNumber
+                //  Address = document.getElementById('editAddress').value = Address
+                //    // </div>ptreatId ptreatName ptreatAddress
 
-                 treaId = document.getElementById('ptreatId').innerHTML = T[0].fields.TreatmentCode
-                 treaName = document.getElementById('ptreatName').innerHTML = T[0].fields.TreatmentName
-                 treacost = document.getElementById('ptreatName').innerHTML = T[0].fields.TreatmentCost
-                 // pLabId pLabName pLabAddress
-                 lid  = document.getElementById('pLabId').innerHTML = L[0].fields.LabId
-                 lname = document.getElementById('pLabName').innerHTML = L[0].fields.LabName
-                 lad = document.getElementById('pLabAddress').innerHTML = L[0].fields.LabAddress
+                //  treaId = document.getElementById('ptreatId').innerHTML = T[0].fields.TreatmentCode
+                //  treaName = document.getElementById('ptreatName').innerHTML = T[0].fields.TreatmentName
+                //  treacost = document.getElementById('ptreatName').innerHTML = T[0].fields.TreatmentCost
+                //  // pLabId pLabName pLabAddress
+                //  lid  = document.getElementById('pLabId').innerHTML = L[0].fields.LabId
+                //  lname = document.getElementById('pLabName').innerHTML = L[0].fields.LabName
+                //  lad = document.getElementById('pLabAddress').innerHTML = L[0].fields.LabAddress
 
                  s = document.getElementById('success').innerHTML = 'Success!'
                    $(document).ajaxStop(function(){
@@ -671,3 +671,4 @@
 
 
 {% endblock content %}
+});

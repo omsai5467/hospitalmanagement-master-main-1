@@ -46,6 +46,7 @@
       </thead>
       
       <tr>
+        {% for p in p%}
         <td>{{p.id}}</td>
         <td> {{p.first_name }}</td>
         
@@ -59,7 +60,7 @@
         <td><a class="btn btn-primary btn-xs" href="{% url 'test-patient' p.id  %}"><span class="glyphicon glyphicon-edit"></span></a></td>
         <td><a class="btn btn-danger btn-xs" href="{% url 'delete-patient-from-hospital' p.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
         
-        
+        {% endfor %}
         
       </tr>
       

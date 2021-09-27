@@ -1500,13 +1500,13 @@ def update(request, pk):
 @login_required
 def search(request):
     search = request.POST['id']
-    try:
-        p = models.Patient.objects.get(id=search)
-        return render(request,'hospital/search.html',{'p':p})
-    except:
-        html = "<html><body><script> alert('Not found patient')  </script></body></html>" 
-        return HttpResponse(html)
-        # return HttpResponse('<script> patient not found</script>')
+    # try:
+    p = models.Patient.objects.all().filter(first_name__contains = search)
+    return render(request,'hospital/search.html',{'p':p})
+    # except:
+    #     html = "<html><body><script> alert('Not found patient')  </script></body></html>" 
+    #     return HttpResponse(html)
+    #     # return HttpResponse('<script> patient not found</script>')
 
 
 @login_required
@@ -1875,32 +1875,40 @@ def SaveChanges(request):
     p.address = request.GET['Address']
     L = 'hi'
     t = 'hi'
-    if request.GET['LabId'] != 0:
-        # global Lab
-        Lab = models.LabDetails.objects.get(id = request.GET['LabId'])
-        p.LabDetails = Lab
-        Labb= serializers.serialize("json",[Lab] )
-        # print(L)
-        print('came lab')
-    if request.GET['T'] != 0:
-        # global tr
-        tr = models.treatmentInfo.objects.get(id = request.GET['T'])
-        p.treatmentInfo = tr
-        t = serializers.serialize("json",[tr] )
-        print('cam t')
+
+    print(request.GET['LabId'])
+    try:
+        if request.GET['LabId'] != 0:
+
+            print("lab camme ............")
+            # global Lab
+            Lab = models.LabDetails.objects.get(id = request.GET['LabId'])
+            p.LabDetails = Lab
+            Labb= serializers.serialize("json",[Lab] )
+            # print(L)
+            print('came lab')
+        if request.GET['T'] != 0:
+            print("treatment info came")
+            # global tr
+            tr = models.treatmentInfo.objects.get(id = request.GET['T'])
+            p.treatmentInfo = tr
+            t = serializers.serialize("json",[tr] )
+            print('cam t')
+    except:
+        print("lab and other details not updatywed")
     p.save()
     # data= models.Patient.objects.get(id= request.GET['PatientId'])
-    obj = models.Patient.objects.get(id= request.GET['PatientId'])
-    data = serializers.serialize("json",[obj] )
-    L = serializers.serialize("json",[obj] )
+    # obj = models.Patient.objects.get(id= request.GET['PatientId'])
+    # data = serializers.serialize("json",[obj] )
+    # L = serializers.serialize("json",[obj] )
     # print(Labb)
-    h= p.history.all()
-    for i in  h:
-        print(i.first_name,i.updated,i.Patient_type_1)
+    # h= p.history.all()
+    # for i in  h:
+        # print(i.first_name,i.updated,i.Patient_type_1)
     # p._change_reason 
-    print(h)
+    # print(h)
 
-    return JsonResponse({'data':data,'L':L,"T":t,'Labb':Labb},safe=False)
+    return JsonResponse({'data':"omsayt"},safe=False)
 
 
 
@@ -1917,7 +1925,7 @@ def TreatmentInfo(request):
     if request.method == 'POST':
         x = models.treatmentInfo.objects.get_or_create(TreatmentCode = request.POST['TreatmentId'],TreatmentName = request.POST['TreatmentName'],TreatmentCost=request.POST['TreatmentCost'])
         return JsonResponse({'hi':'saved'})
-    return render(request,'Treatmentinfo.html')
+    return render(request,'TreatmentInfo.html')
 
 @login_required
 @csrf_exempt

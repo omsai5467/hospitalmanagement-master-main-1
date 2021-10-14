@@ -15,6 +15,51 @@ from zipfile import ZipFile
 from wsgiref.util import FileWrapper
 import os
 from django.views.decorators.csrf import csrf_exempt
+@login_required(login_url='adminlogin')
+# @user_passes_test(is_admin)
+@csrf_exempt
+def gupdate(request):
+    p= models.genaral.objects.get(id =request.POST['g-id'])
+    p.first_name = request.POST.get('fe',False)
+    p.last_name = request.POST.get('lname',False)
+    p.phone_number = request.POST.get('gphone',False)
+    p.address = request.POST.get('gadd',False)
+    p.age = request.POST.get('gage',False)
+    p.save()
+    return JsonResponse({'data':"suc"})
+
+@login_required(login_url='adminlogin')
+# @user_passes_test(is_admin)
+def dis(request):
+    p = models.genaral.objects.get(id = request.POST['g-d'])
+    q= p
+    p.delete()
+    return render(request,'invoice.html',{'p' : q})
+    
+@login_required(login_url='adminlogin')
+# @user_passes_test(is_admin)      
+def det(request):
+    p =  models.genaral.objects.get(id = request.POST['g-d'])
+    p.delete()
+    p = models.genaral.objects.all()
+    # print(p)
+    return render(request,'gpatientrecord.html' ,{'p' : p})
+    # return redirect()
+@login_required(login_url='adminlogin')
+# @user_passes_test(is_admin)
+def General(request):
+    return render (request,'genaraltab.html')
+@login_required(login_url='adminlogin')
+# @user_passes_test(is_admin)
+def gpatientrecord(request):
+    p = models.genaral.objects.all()
+    # print(p)
+    return render(request,'gpatientrecord.html' ,{'p' : p})
+@login_required(login_url='adminlogin')
+# @user_passes_test(is_admin)
+def viewG(request):
+    i = models.genaral.objects.get(id = request.POST['idofg'])
+    return render(request,'goverview.html',{'p' : i})
 
 
 # Create your views here.
@@ -400,8 +445,23 @@ def admin_add_patient_view(request):
         now = str(datetime.now())
 
         print(now)
+        if request.POST['ptype'] == "genaral":
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            address = request.POST['address']
+            symptoms = request.POST['symptoms']
+            mobile = request.POST['mobile']
+            photo = img
+            j = models.genaral.objects.get_or_create(
+                first_name = first_name ,
+                last_name =  last_name,
+                age = request.POST['age'],
+                phone_number = mobile,
+                photo =  img,
+                address  = address
+                )
 
-
+            return render(request,'hospital/admin_add_patient.html')
    
 
 

@@ -14,6 +14,11 @@ from django.contrib.auth.views import LoginView,LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home_view,name=''),
+    path('gpatientrecord',views.gpatientrecord),
+    path('viewG',views.viewG),
+    path('gupdate',views.gupdate),
+    path('dis',views.dis),
+    path('det',views.det),
 
 
     path('aboutus', views.aboutus_view),
@@ -22,6 +27,7 @@ urlpatterns = [
     path('AddOpereations',views.AddOpereations),
     path('TreatmentInfo',views.TreatmentInfo),
     path('showTreatments',views.showTreatments),
+    path('General',views.General),
 
 
     path('adminclick', views.adminclick_view),

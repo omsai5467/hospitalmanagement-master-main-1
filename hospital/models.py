@@ -249,3 +249,20 @@ class priscriptrion(models.Model):
     Patient = models.ForeignKey(Patient,on_delete=models.CASCADE)
     text = models.CharField(max_length=200,null=False) 
     history = HistoricalRecords()
+
+
+
+class genaral(models.Model):
+    first_name = models.CharField(max_length = 100,null = False)
+    last_name = models.CharField(max_length = 100,null = True)
+    age = models.PositiveIntegerField()
+    phone_number = models.CharField(max_length = 15,null = False)
+    photo = models.TextField()
+    address = models.CharField(max_length=40)
+    # assignedDoctorId = models.PositiveIntegerField(null=True)
+    admitDate=models.DateTimeField(auto_now_add=True)
+    updated=models.DateTimeField(auto_now=True)
+
+    # def __str__(self):
+    #     return self.first_name + last_name
+

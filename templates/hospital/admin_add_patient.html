@@ -272,7 +272,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
 
             </div>
              <div class="form-group">
-              <select id="Treatment" placeholder= 'Treatment Info' class = 'form-control'  name="TreatmentType" >
+              <select name = "ptype" >
+                <option value="ehs">ehs</option>
+                <option value = "genaral" >Genaral</option>
               </select> </div>
 
           </div>
@@ -342,7 +344,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
           value = document.getElementById('om')
 
           navigator.mediaDevices.getUserMedia({
-                  video: true,
+                  video: {
+                    facingMode: "environment"
+                  },
                   audio: false
               })
               .then(function(stream) {

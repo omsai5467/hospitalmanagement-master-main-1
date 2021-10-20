@@ -57,8 +57,14 @@
         <td>{{p.updated}}</td>
         <td>{{p.status1}}</td>
 
-        <td >{{p.updated|timesince }} </td>
-        
+        <td > <h1 style="background-color: {% if p.updated > 10 %} green
+       {% else %}
+       red
+
+
+    {% endif %}
+
+    ">{{p.updated }}</h1></td>
 
       
         <td>{{p.mobile}}</td>

@@ -1,0 +1,553 @@
+{% extends 'hospital/admin_base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+<link  href="{%static 'dist\cropper.css'%}" rel="stylesheet">
+<script src="{% static '\dist\cropper.js'%}"></script>
+
+<head>
+  <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+/* The popup form - hidden by default */
+/*.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}*/
+
+.form-popup {
+  /*display: none;
+  position: center;*/
+  display: none;
+  margin: auto;
+  width: 60%;
+  border: 3px solid #73AD21;
+  padding: 10px;
+
+}
+
+/* Add styles to the form container */
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
+
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+</style>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    .note {
+      text-align: center;
+      height: 80px;
+      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
+      color: #fff;
+      font-weight: bold;
+      line-height: 80px;
+    }
+
+    .form-content {
+      padding: 5%;
+      border: 1px solid #ced4da;
+      margin-bottom: 2%;
+    }
+
+    .form-control {
+      border-radius: 2rem;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 3rem;
+      padding: 1%;
+      width: 20%;
+      cursor: pointer;
+      background: #0062cc;
+      color: #fff;
+      align-items: center;
+    }
+
+    .menu {
+      top: 50px;
+    }
+  </style>
+    <style>
+      /* CSS comes here */
+      #video {
+          border: 1px solid black;
+          width: 320px;
+          height: 240px;
+      }
+
+      #photo {
+          border: 1px solid black;
+          width: 320px;
+          height: 240px;
+      }
+
+      #canvas {
+          display: none;
+      }
+
+      .camera {
+          width: 340px;
+          display: inline-block;
+      }
+
+      .output {
+          width: 340px;
+          display: inline-block;
+      }
+
+      #startbutton {
+          display: block;
+          position: relative;
+          margin-left: auto;
+          margin-right: auto;
+          bottom: 36px;
+          padding: 5px;
+          background-color: #6a67ce;
+          border: 1px solid rgba(255, 255, 255, 0.7);
+          font-size: 14px;
+          color: rgba(255, 255, 255, 1.0);
+          cursor: pointer;
+      }
+
+      .contentarea {
+          font-size: 16px;
+          font-family: Arial;
+          text-align: center;
+      }
+      </style>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<br><br><br>
+<!------ signup page for doctor by admin(sumit)  ---------->
+<form       name="myForm"  onsubmit="return validateForm()"      method="POST" action='admin_add_patient_view' >
+  {% csrf_token %}
+  <div class="container register-form">
+    <div class="form">
+      <div class="note">
+        <p>Admit Patient To Hospital</p>
+      </div>
+     <!--  <div align="right"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Add Treatment info</button></div> -->
+      <div class="form-content">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              {% render_field patientForm.first_name class="form-control" placeholder="First Name" %}
+            </div>
+            <!-- <input type="hidden" name="Treatment_info" id = 'Treatment_info'> -->
+
+            <div class="form-group">
+              {% render_field patientForm.age  class="form-control" placeholder="enter Patient Age" %}
+            </div>
+
+            <div class="form-group">
+              {% render_field patientForm.address class="form-control" placeholder="Address" %}
+            </div>
+            <div class="form-group">
+              {% render_field patientForm.symptoms class="form-control" placeholder="Symptoms" %}
+            </div>
+            <div class="form-group">
+              <p>approve patient</p>
+              {% render_field patientForm.status class="form-control" placeholder="approve" %}
+            </div>
+            <div class="contentarea">
+              <div class="camera">
+                  <video id="video">Video stream not available.</video>
+              </div>
+              <div><button  class = 'btnSubmit'   id="startbutton">Take photo</button></div>
+
+              <div class="output">
+                  <input type="hidden" name = 'img'  id= 'om'>
+              </div>
+          </div>
+            <!--
+            <div class="form-group">
+              {% render_field patientForm.profile_pic required="required" class="form-control" placeholder="Profile Picture" %}
+            </div>
+            -->
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              {% render_field patientForm.last_name class="form-control" placeholder="Last Name" %}
+            </div>
+            <!--
+            <div class="form-group">
+              {% render_field patientForm.password class="form-control" placeholder="Password" %}
+            </div>
+          -->
+            <div class="form-group">
+              {% render_field patientForm.mobile  class="form-control" placeholder="Mobile" %}
+            </div>
+            <div class="form-group">
+              {% render_field patientForm.assignedDoctorId class="form-control" placeholder="Doctor" %}
+            </div>
+            <div class="form-group">
+              <select id="input"  name="Patient_type_1" placeholder="Doctor" class="form-control" required=""    onchange="random_function()">
+
+                <option>selectoption</option>
+                <option value="pretreatment">pretreatment</option>
+
+                <option value="Registrationcount">Registrationcount</option>
+
+                <option value="Preauthorisation">Preauthorisation</option>
+                <option value="surgery_update">surgery_update</option>
+
+                <option value="Dischargestate">Dischargestate</option>
+
+                <option value="Claimphase">Claimphase</option>
+
+               </select>
+            </div>
+            <div class="form-group">
+              <select id="output"  name = 'status1' class="form-control" required=""  onchange="random_function1()">
+             </select>
+            </div>
+            <div><canvas id="canvas"></canvas></div>
+            <div class="output">
+            <img id="image" alt="The screen capture will appear in this box."     >
+
+            </div>
+             <div class="form-group">
+              <select name = "ptype" >
+                <option value="ehs">ehs</option>
+                <option value = "genaral" >Genaral</option>
+              </select> </div>
+
+          </div>
+
+        </div>
+        <button type="submit" id ='btn'onclick='myFunction()'   class="btnSubmit">Admit</button>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script>
+  function myFunction() {
+
+    var a = 'saved'
+    const first_name = document.getElementsByName('first_name');
+    console.log(first_name)
+    const address = document.getElementsByName('address');
+    console.log(first_name)
+    const symptoms = document.getElementsByName('symptoms');
+    console.log(symptoms)
+    const status = document.getElementsByName('status');
+    console.log(first_name)
+    const profile_pic = document.getElementsByName('profile_pic');
+    console.log(first_name)
+    const mobile = document.getElementsByName('mobile');
+    console.log(first_name)
+    const assignedDoctorId = document.getElementsByName('assignedDoctorId');
+    console.log(assignedDoctorId)
+    const Patient_type_1 = document.getElementsByName('Patient_type_1');
+    console.log(Patient_type_1)
+    swal("Good job!",a, "success");
+
+
+
+
+
+  }
+
+
+
+</script> -->
+
+
+
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<script>
+  /* JS comes here */
+  (function() {
+
+      var width = 320; // We will scale the photo width to this
+      var height = 0; // This will be computed based on the input stream
+
+      var streaming = false;
+
+      var video = null;
+      var canvas = null;
+      var photo = null;
+      var startbutton = null;
+
+      function startup() {
+          video = document.getElementById('video');
+          canvas = document.getElementById('canvas');
+          photo = document.getElementById('image');
+          startbutton = document.getElementById('startbutton');
+          value = document.getElementById('om')
+
+          navigator.mediaDevices.getUserMedia(
+              { audio: false, video: { facingMode:  "environment"  } }
+
+                  )
+              .then(function(stream) {
+                  video.srcObject = stream;
+                  video.play();
+              })
+              .catch(function(err) {
+                  console.log("An error occurred: " + err);
+              });
+
+          video.addEventListener('canplay', function(ev) {
+              if (!streaming) {
+                  height = video.videoHeight / (video.videoWidth / width);
+
+                  if (isNaN(height)) {
+                      height = width / (4 / 3);
+                  }
+
+                  video.setAttribute('width', width);
+                  video.setAttribute('height', height);
+                  photo.setAttribute('width', width);
+                  photo.setAttribute('height', height);
+                  streaming = true;
+              }
+          }, false);
+
+          startbutton.addEventListener('click', function(ev) {
+              takepicture();
+              ev.preventDefault();
+          }, false);
+
+          clearphoto();
+      }
+
+
+      function clearphoto() {
+          var context = canvas.getContext('2d');
+          context.fillStyle = "#AAA";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+
+          var data = canvas.toDataURL('image/png');
+          photo.setAttribute('src', data);
+      }
+
+      function takepicture() {
+          var context = canvas.getContext('2d');
+          if (width && height) {
+              canvas.width = width;
+              canvas.height = height;
+              context.drawImage(video, 0, 0, width, height);
+
+              var data = canvas.toDataURL('image/png');
+              // console.log(data)
+              photo.setAttribute('src', data);
+              const image = document.getElementById('image');
+              const cropper = new Cropper(image, {
+              aspectRatio:  10/ 9,
+              crop(event) {
+                  Cropper.zoomOnWheel = false;
+                  // cropper.rotate(90);
+                  // console.log(event.detail.x);
+                  // console.log(event.detail.y);
+                  // console.log(event.detail.width);
+                  // console.log(event.detail.height);
+                  // console.log(event.detail.rotate);
+                  // console.log(event.detail.scaleX);
+                  // console.log(event.detail.scaleY);
+                  a = cropper.getCroppedCanvas().toDataURL('image/jpeg')
+                  om = document.getElementById('om');
+                  // // om.value =this.cropper.crop()
+
+                  // const imageData = cropper.getCropBoxData();
+                  // // // imageData.toDataURL('image/png');
+                  // // console.log(imageData);
+                  // // cropper.replace(imageData) = url;
+                  // // console.log(cropper.image.src = url)
+                  cropper.background = false;
+
+// cropper.rotate(-90);
+
+                  om.value = a
+                  setTimeout(function(){
+                    cropper.destroy()
+                  },10000)
+
+
+
+
+              },
+              });
+          } else {
+              clearphoto();
+          }
+      }
+
+      window.addEventListener('load', startup, false);
+  })();
+  </script>
+
+
+
+
+
+
+
+
+
+<script>
+  function random_function()
+  {
+      var a=document.getElementById("input").value;
+      if(a==="pretreatment")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="Registrationcount")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="SurgeryUpdate")
+      {
+          var arr=[''];
+      }
+      else if(a==="Preauthorisation")
+      {
+          var arr=["approved","pending",'approvedExcept','other','caseStartedWithoutApproval'];
+      }
+      else if(a==="Dischargestate")
+      {
+          var arr=["Running","compleated","DischargeUpdated",'DischargeUpdatePending','other'];
+      }
+      else if(a==="Claimphase")
+      {
+          var arr=["Running","compleated","needToApply",'claimApplied','claimPending','claimapproved','other'];
+      }
+      else if(a==="surgery_update")
+      {
+          var arr=["Running","compleated",'other'];
+      }
+
+
+
+
+
+      else if(a==="selectoption")
+      {
+          var arr=[];
+      }
+
+      var string="";
+
+      for(i=0;i<arr.length;i++)
+      {
+          string=string+"<option value="+arr[i]+">"+arr[i]+"</option>";
+      }
+      document.getElementById("output").innerHTML=string;
+  }
+</script>
+
+
+
+<script>
+function validateForm() {
+  var x = document.forms["myForm"]["img"].value;
+  if (x == "") {
+    alert("please capture photo");
+    return false;
+  }
+  var y = document.forms["myForm"]["test"].value;
+  if (y == "") {
+      alert("select option")
+      return false;
+  }
+
+}
+
+
+
+</script>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
+
+</script>
+{% endblock content %}
+
+
+<!-- 
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+ -->
+

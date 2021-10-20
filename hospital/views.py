@@ -1150,14 +1150,16 @@ def pretreatment(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    for p in patients:
+    for p in pa:
         # print(datetime.now() )
         d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
         e = d
+        print("came here")
         print(e.split())
-        p.updated = 30 - int(e[0])
+        p.updated = 30 - int(x.days)
         print(type(d))
-
     
 
     return render(request,'hospital/pretreatment.html',context=mydict)
@@ -1256,12 +1258,15 @@ def surgery(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    for p in patients:
+    for p in pa:
         # print(datetime.now() )
         d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
         e = d
+        print("came here")
         print(e.split())
-        p.updated = 30 - int(e[0])
+        p.updated = 30 - int(x.days)
         print(type(d))
 
     
@@ -1311,12 +1316,15 @@ def Registrationcount(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    for p in patients:
+    for p in pa:
         # print(datetime.now() )
         d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
         e = d
+        print("came here")
         print(e.split())
-        p.updated = 30 - int(e[0])
+        p.updated = 30 - int(x.days)
         print(type(d))
 
     return render(request,'hospital/Registrationcount.html',context=mydict)
@@ -1375,12 +1383,15 @@ def Preauthorisation(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    for p in patients:
+    for p in pa:
         # print(datetime.now() )
         d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
         e = d
+        print("came here")
         print(e.split())
-        p.updated = 30 - int(e[0])
+        p.updated = 30 - int(x.days)
         print(type(d))
     return render(request,'hospital/Preauthorisation.html',context=mydict)
 @login_required
@@ -1426,12 +1437,15 @@ def Dischargestate(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    for p in patients:
+    for p in pa:
         # print(datetime.now() )
         d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
         e = d
+        print("came here")
         print(e.split())
-        p.updated = 30 - int(e[0])
+        p.updated = 30 - int(x.days)
         print(type(d))
     
     return render(request,'hospital/Dischargestate.html',context=mydict)  
@@ -1481,11 +1495,15 @@ def Claimphase(request):
     # from datetime import datetime
     for p in patients:
         # print(datetime.now() )
+        x = now - p.updated
+        print('came in patients')
+        print(x.days)
         d = str(now - p.updated)
+
         e = d
         print(e.split())
         p.updated = 30 - int(e[0])
-        print(type(d))
+        print(d)
     return render(request,'hospital/Claimphase.html',context=mydict)
 #---------------------------------------------------------------------------------
 #------------------------ ADMIN RELATED VIEWS END ------------------------------
@@ -1771,16 +1789,44 @@ def upload_test(request):
 
 @login_required
 def Discharge_update(request):
-    p = models.Patient.objects.all().filter(Patient_type_1='Dischargestate')
-    return render(request,'Discharge_update.html',{'patients':p})
+    pa = models.Patient.objects.all().filter(Patient_type_1='Dischargestate')
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    # from datetime import datetime
+    for p in pa:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
+        e = d
+        print("came here")
+        print(e.split())
+        p.updated = 30 - int(x.days)
+        print(type(d))
+    return render(request,'Discharge_update.html',{'patients':pa})
 
 
 
 
 @login_required
 def Claim_update_pending(request):
-    p = models.Patient.objects.all().filter(Patient_type_1='Claimphase',status1='claimPending')
-    return render(request,'claimupdate.html',{'p':p})
+    pa = models.Patient.objects.all().filter(Patient_type_1='Claimphase',status1='claimPending')
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    # from datetime import datetime
+    for p in pa:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
+        e = d
+        print("came here")
+        print(e.split())
+        p.updated = 30 - int(x.days)
+        print(type(d))
+    return render(request,'claimupdate.html',{'p':pa})
 
 @login_required
 def deletePhoto(request,pk):

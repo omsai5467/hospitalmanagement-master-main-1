@@ -56,7 +56,14 @@
 
     <td>{{i.mobile}}</td>
     <td>{{i.address}}</td>
-    <td>{{i.updated | timesince}}</td>
+    <td > <h1 style="background-color: {% if i.updated > 10 %} green
+       {% else %}
+       red
+
+
+    {% endif %}
+
+    ">{{i.updated }}</h1></td>
   </tr>
   {% endfor %}
   

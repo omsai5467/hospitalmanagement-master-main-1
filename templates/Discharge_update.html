@@ -57,14 +57,19 @@
         <td>{{p.updated}}</td>
         <td>{{p.status1}}</td>
 
-        <td > <h1 style="background-color: {% if p.updated > 10 %} green
-       {% else %}
-       red
+        <td >  <p       style="color:
+         {% if p.updated > 15 %} 
+              green
+          {% endif %}
+          {% if p.updated < 5 %}
+           red
 
+          {% endif %}
+          {% if p.updated > 5 and  p.updated < 15 %}
+          yellow
+          {%  endif %}
 
-    {% endif %}
-
-    ">{{p.updated }}</h1></td>
+    ;font-size:180%;font-weight : bold">{{p.updated }}</p></td>
 
       
         <td>{{p.mobile}}</td>

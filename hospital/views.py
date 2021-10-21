@@ -1149,17 +1149,17 @@ def pretreatment(request):
     from datetime import datetime, timezone
 
     now = datetime.now(timezone.utc)
-    # from datetime import datetime
-    # for p in pa:
-    #     # print(datetime.now() )
-    #     d = str(now - p.updated)
-    #     x= now - p.updated
-    #     print(x.days)
-    #     e = d
-    #     print("came here")
-    #     print(e.split())
-    #     p.updated = 30 - int(x.days)
-    #     print(type(d))
+    from datetime import datetime
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
+        e = d
+        print("came here")
+        print(e.split())
+        p.updated = 30 - int(x.days)
+        print(type(d))
     
 
     return render(request,'hospital/pretreatment.html',context=mydict)
@@ -1211,6 +1211,16 @@ def Registrationcount(request):
     }
     days = []
     # patients = models.Patient.objects.all().filter(Patient_type_1='Registrationcount')
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
+        e = d
+        print("came here")
+        print(e.split())
+        p.updated = 30 - int(x.days)
+        print(type(d))
     print(patients)
 
     return render(request,'hospital/Registrationcount.html',context=mydict)
@@ -1258,16 +1268,16 @@ def surgery(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    # for p in pa:
-    #     # print(datetime.now() )
-    #     d = str(now - p.updated)
-    #     x= now - p.updated
-    #     print(x.days)
-    #     e = d
-    #     print("came here")
-    #     print(e.split())
-    #     p.updated = 30 - int(x.days)
-    #     print(type(d))
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
+        e = d
+        print("came here")
+        print(e.split())
+        p.updated = 30 - int(x.days)
+        print(type(d))
 
     
 
@@ -1316,16 +1326,17 @@ def Registrationcount(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    # for p in pa:
-    #     # print(datetime.now() )
-    #     d = str(now - p.updated)
-    #     x= now - p.updated
-    #     print(x.days)
-    #     e = d
-    #     print("came here")
-    #     print(e.split())
-    #     p.updated = 30 - int(x.days)
-    #     print(type(d))
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
+        e = d
+        print("came here")
+        print(e.split())
+        p.updated = 30 - int(x.days)
+        print(type(d))
+    
 
     return render(request,'hospital/Registrationcount.html',context=mydict)
 
@@ -1383,16 +1394,16 @@ def Preauthorisation(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    # for p in pa:
-    #     # print(datetime.now() )
-    #     d = str(now - p.updated)
-    #     x= now - p.updated
-    #     print(x.days)
-    #     e = d
-    #     print("came here")
-    #     print(e.split())
-    #     p.updated = 30 - int(x.days)
-    #     print(type(d))
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
+        e = d
+        print("came here")
+        print(e.split())
+        p.updated = 30 - int(x.days)
+        print(type(d))
     return render(request,'hospital/Preauthorisation.html',context=mydict)
 @login_required
 def Dischargestate(request):
@@ -1437,16 +1448,16 @@ def Dischargestate(request):
 
     now = datetime.now(timezone.utc)
     # from datetime import datetime
-    # for p in pa:
-    #     # print(datetime.now() )
-    #     d = str(now - p.updated)
-    #     x= now - p.updated
-    #     print(x.days)
-    #     e = d
-    #     print("came here")
-    #     print(e.split())
-    #     p.updated = 30 - int(x.days)
-    #     print(type(d))
+    for p in patients:
+        # print(datetime.now() )
+        d = str(now - p.updated)
+        x= now - p.updated
+        print(x.days)
+        e = d
+        print("came here")
+        print(e.split())
+        p.updated = 21 - int(x.days)
+        print(type(d))
     
     return render(request,'hospital/Dischargestate.html',context=mydict)  
 @login_required
@@ -1502,7 +1513,7 @@ def Claimphase(request):
 
         e = d
         print(e.split())
-        p.updated = 30 - int(e[0])
+        p.updated = 21 - int(e[0])
         print(d)
     return render(request,'hospital/Claimphase.html',context=mydict)
 #---------------------------------------------------------------------------------

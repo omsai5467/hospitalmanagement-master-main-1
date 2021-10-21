@@ -24,7 +24,19 @@
           <td>{{ p.id }}</td>
           <td> {{p.first_name}}</td>
          <!--  <td>{{p.symptoms}}</td> -->
-          <td >{{p.updated }} </td>
+          <td >  <p       style="color:
+         {% if p.updated > 15 %} 
+              green
+          {% endif %}
+          {% if p.updated < 5 %}
+           red
+
+          {% endif %}
+          {% if p.updated > 5 and  p.updated < 15 %}
+          yellow
+          {%  endif %}
+
+    ;font-size:180%;font-weight : bold">{{p.updated }}</p> </td>
           <td>{{p.mobile}}</td>
           <td>{{p.address}}</td>
          
